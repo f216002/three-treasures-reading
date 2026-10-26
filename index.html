@@ -169,7 +169,10 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
 .edit-btn{display:none}
 body.sanbao-admin .edit-btn{display:inline-block}
 .card.editing .en-s,.card.editing .zh-s,.card.editing .expl-paste{outline:2px dashed #b8933a;outline-offset:2px;background:#fff8e1}
-.expl-paste{border:1px dashed var(--line);border-radius:var(--radius);padding:12px 14px;line-height:1.75;color:var(--ink);min-height:24px}
+.expl-paste{border:1px dashed var(--line);border-radius:var(--radius);padding:12px 14px;line-height:1.8;color:var(--ink);min-height:24px;font-size:calc(15.5px * var(--fs,1))}
+/* 貼上區跟著字級鍵放大（2026-10-26 Cheng 指出只放大到英文與中文大意）：容器字級用 --fs，
+   子元素預設繼承所以跟著放大；只有貼進來的內容自帶 inline font-size 時才強制覆蓋。 */
+.expl-paste [style*="font-size"]{font-size:calc(15.5px * var(--fs,1)) !important}
 .expl-paste:empty:before{content:''}
 body.sanbao-admin .expl-paste{min-height:120px}
 body.sanbao-admin .expl-paste:empty:before{content:'點一下這裡，貼上 Gemini 的詳細解釋（貼上後點別處即自動儲存）';color:var(--muted)}
