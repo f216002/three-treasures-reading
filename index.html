@@ -555,6 +555,8 @@ function playCardAzure(card,tk){
    1. 先找預合成檔 audio/{id}.mp3（140 張批次）；
    2. 沒有預合成檔，就走 V4 Cloud Function synthesizeV4Source 即時合成中文段＋英文段，
       函式端有雲端快取（第一次合成後，之後所有人拿快取，Azure 不再計費）；
+      2026-10-26 新規格：呼叫時帶 rate '-20%'＋style（中文 gentle／英文 affectionate），
+      須等函式改版部署後才生效，部署前舊函式會忽略這兩個參數、維持原語速（中文 -10%／英文 -15%、無語氣）；
       本機再用 IndexedDB 快取一次，同一台裝置第二次播連函式都不用打；
    3. 函式失敗（未登入、未核准、單句超過 300 字上限、當日新合成額度用完）就退回裝置語音，
       絕不讓句子播不出來。管理員（f216002@gmail.com）在函式端無上限，
@@ -598,7 +600,8 @@ async function getAzureSegment(locale,text){
   if(local){AZ_SEG_CACHE.set(key,local);return local;}
   if(!window.firebase||!window.firebase.app||!window.firebase.app().functions)throw new Error('no-functions');
   if(!AZ_SYNTH_FN)AZ_SYNTH_FN=window.firebase.app().functions('us-east1').httpsCallable('synthesizeV4Source',{timeout:60000});
-  var r=await AZ_SYNTH_FN({locale:locale,text:text});
+  var style=locale==='zh-TW'?'gentle':'affectionate';
+  var r=await AZ_SYNTH_FN({locale:locale,text:text,rate:'-20%',style:style});
   var d=(r&&r.data)||{};
   if(!d.audioBase64)throw new Error('empty-audio');
   var url='data:'+(d.contentType||'audio/mpeg')+';base64,'+d.audioBase64;
@@ -633,9 +636,9 @@ async function playCardOnDemand(card,tk){
   return tk===playToken;
 }
 async function playCardSeq(card,tk){
-  setRep(card,'Azure 錄音');
-  var ok=await playCardAzure(card,tk);
-  if(ok||tk!==playToken)return ok;
+  /* 2026-10-26 Cheng 指示：停用 140 張預合成檔，改為點播才合成。
+     順序：函式即時合成（中英皆放慢 20%＋溫柔語氣，雲端快取、只合成一次）
+     → 失敗才退回裝置語音。預合成檔不再被播放鍵呼叫。 */
   try{
     var ok2=await playCardOnDemand(card,tk);
     if(ok2||tk!==playToken)return ok2;
