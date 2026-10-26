@@ -167,6 +167,12 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
 .empty-note{border:1px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center;color:var(--muted);font-size:14.5px;display:none}
 </style>
 <style id="sanbaoGateCss">body:not(.sanbao-approved) .wrap{display:none!important}</style>
+<style>
+.edit-btn{display:none}
+body.sanbao-admin .edit-btn{display:inline-block}
+.card.editing .en-s,.card.editing .zh-s,.card.editing .detail dd{outline:2px dashed #b8933a;outline-offset:2px;background:#fff8e1}
+.audio-src{font-size:.8rem;color:#8a8172;margin-left:8px}
+</style>
 </head>
 <body>
 <div id="sanbaoGate" style="max-width:560px;margin:8vh auto;padding:28px;background:#fffdf8;border:1px solid #ddd2bd;border-radius:16px;font-family:'Noto Sans TC',sans-serif;line-height:1.8;color:#26221b">
@@ -185,6 +191,7 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
 </div>
 
 
+<audio id="sanbaoAudio" preload="none" style="display:none"></audio>
 <div class="topbar">
   <div class="topbar-in">
     <a class="brand" href="#top">三寶真義與修道<small>英文三寶線上讀書會</small></a>
@@ -211,20 +218,6 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
       <a class="btn" href="#toc">看全書目錄</a>
       <a class="btn" href="#schedule">共讀時間</a>
     </div>
-    <div class="factgrid">
-      <div class="fact">
-        <div class="k">共讀時間 · 台灣</div>
-        <div class="v">21:30 – 22:30<small>每週 5–6 天，Zoom 線上會議室</small></div>
-      </div>
-      <div class="fact">
-        <div class="k">共讀時間 · 印度</div>
-        <div class="v">19:00 – 20:00<small>與台灣時間同步換算（慢 2.5 小時）</small></div>
-      </div>
-      <div class="fact">
-        <div class="k">目前進度</div>
-        <div class="v">封面＋書頁 1–27<small>Preface、Foreword、求道的殊勝已全文轉錄；下一缺口是書頁 28「壹、什麼是道」</small></div>
-      </div>
-    </div>
     <div class="reminder">
       <b>Kind Reminder · 溫馨提醒</b>（書頁 3，書上原文只有英文）
       <p>This book is meant to promote greater inter-faith understanding and <i>not meant specifically for Muslim consumption</i>.</p>
@@ -249,7 +242,7 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
   <!-- ================= PREFACE ================= -->
   <section class="block" id="preface">
     <div class="sec-head"><h2>Preface</h2><span class="en">書頁 8–11 · 全文轉錄</span></div>
-    <p class="sec-sub">共 32 句（P-01 – P-32）加編者的話 5 句（E-01 – E-05），照書上文字轉錄，書上原寫法（如 ones、not deviated）不擅自改。每張卡附中文大意與「剝洋蔥五層」詳細解釋（預設收合）；中文大意與解釋是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。朗讀用裝置內建語音：每張卡一個播放鍵，依序播中文大意 1 遍、英文 3 遍。</p>
+    <p class="sec-sub">共 32 句（P-01 – P-32）加編者的話 5 句（E-01 – E-05），照書上文字轉錄，書上原寫法（如 ones、not deviated）不擅自改。每張卡附中文大意與「剝洋蔥五層」詳細解釋（預設收合）；中文大意與解釋是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。朗讀用 Azure 錄音：每張卡一個播放鍵，依序播中文大意 1 遍、英文 3 遍（美式女聲 en-US-JennyNeural、中文女聲 zh-TW-HsiaoChenNeural，兩段合併為一個音檔全站共用；尚未上線的句子先以裝置語音代替）。</p>
     <div class="reader-tools" data-reader="preface">
       <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋 Preface 句子">
       <button class="toolbtn" data-act="playall">▶ 連播本節（中文 1 遍＋英文 3 遍）</button>
@@ -281,7 +274,7 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
   <!-- ================= SIGNIFICANCE ================= -->
   <section class="block" id="significance">
     <div class="sec-head"><h2>二、求道的殊勝</h2><span class="en">B. The Extraordinary and Sacred Significance of Receiving Tao · 書頁 15–27 · 全文轉錄</span></div>
-    <p class="sec-sub">共 88 句（B-01 – B-88），照書上英文原樣轉錄；跨頁句 B-34、B-39、B-49、B-56、B-63、B-68／B-69、B-88 皆以完整形收錄。這 13 頁的中英文不是逐行對照，句子卡維持「以英文句為主、中文作學習解釋」：書上的中文段（書頁 15、20、22、24）照原樣穿插在相應位置，書頁 16 的可蘭經中文註、書頁 17 的龍天表註、註 3（書頁 19–20 完整版）與註 4（收圓，書頁 23 全文）收在本節後段。中文大意與五層解釋是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。朗讀用裝置內建語音：每張卡一個播放鍵，依序播中文大意 1 遍、英文 3 遍。</p>
+    <p class="sec-sub">共 88 句（B-01 – B-88），照書上英文原樣轉錄；跨頁句 B-34、B-39、B-49、B-56、B-63、B-68／B-69、B-88 皆以完整形收錄。這 13 頁的中英文不是逐行對照，句子卡維持「以英文句為主、中文作學習解釋」：書上的中文段（書頁 15、20、22、24）照原樣穿插在相應位置，書頁 16 的可蘭經中文註、書頁 17 的龍天表註、註 3（書頁 19–20 完整版）與註 4（收圓，書頁 23 全文）收在本節後段。中文大意與五層解釋是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。朗讀用 Azure 錄音：每張卡一個播放鍵，依序播中文大意 1 遍、英文 3 遍（美式女聲 en-US-JennyNeural、中文女聲 zh-TW-HsiaoChenNeural，兩段合併為一個音檔全站共用；尚未上線的句子先以裝置語音代替）。</p>
     <div class="reader-tools" data-reader="signif">
       <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋求道的殊勝句子">
       <button class="toolbtn" data-act="playall">▶ 連播本節（中文 1 遍＋英文 3 遍）</button>
@@ -317,10 +310,10 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
         <h3>共讀方式</h3>
         <ul class="plist">
           <li><span class="dot"></span><span>逐句編號共讀<small>句子卡以英文句為主、逐句編號，點名或搜尋都能直接找到</small></span></li>
-          <li><span class="dot"></span><span>朗讀跟讀<small>每張卡一個播放鍵，依序朗讀中文大意 1 遍、英文 3 遍（裝置內建語音）；整節連播也是同樣的順序</small></span></li>
+          <li><span class="dot"></span><span>朗讀跟讀<small>每張卡一個播放鍵，依序朗讀中文大意 1 遍、英文 3 遍（Azure 錄音，未上線的句子先以裝置語音代替）；整節連播也是同樣的順序</small></span></li>
           <li><span class="dot"></span><span>剝洋蔥五層解釋<small>收在每張卡的「詳細解釋」裡，預設不展開，共讀時逐層打開</small></span></li>
           <li><span class="dot"></span><span>專有名詞原則<small>三寶等專有名詞沿用音譯為主、意譯為輔的審定原則，如 Ming Ming Shang Di、Lao Mu、Dian Chuan Shi</small></span></li>
-          <li class="todo"><span class="dot"></span><span>待辦<small>中文 1 遍＋英文 3 遍的美式女聲音檔（Azure TTS 全站共用快取）尚未合成，先以裝置語音代替</small></span></li>
+          <li class="todo"><span class="dot"></span><span>待辦<small>中文 1 遍＋英文 3 遍的 Azure 錄音正在陸續合成上線，未上線的句子先以裝置語音代替</small></span></li>
         </ul>
       </div>
     </div>
@@ -523,8 +516,10 @@ function resetBtn(btn){
   btn.classList.remove('playing','stop');
   if(btn.dataset.label)btn.textContent=btn.dataset.label;
 }
+var AZ_AUDIO=document.getElementById('sanbaoAudio');
 function stopPlay(){
   playToken++;
+  if(AZ_AUDIO){try{AZ_AUDIO.pause();AZ_AUDIO.removeAttribute('src');AZ_AUDIO.load();}catch(e){}}
   if(synth)synth.cancel();
   if(currentBtn){resetBtn(currentBtn);currentBtn=null;}
   document.querySelectorAll('.toolbtn[data-act="playall"]').forEach(function(b){b.classList.remove('playing');b.textContent=PLAYALL_LABEL;});
@@ -545,6 +540,29 @@ async function speakCardSeq(card,tk){
   }
   return tk===playToken;
 }
+
+/* Azure 錄音優先：每張卡一個合併音檔 audio/{id}.mp3（中文 1 遍＋英文 3 遍，全站共用）。
+   音檔不存在或播不出來時，退回裝置語音的 speakCardSeq，絕不讓句子播不出來。 */
+function playCardAzure(card,tk){
+  return new Promise(function(resolve){
+    if(!AZ_AUDIO){resolve(false);return;}
+    var finished=false;
+    function done(ok){if(finished)return;finished=true;AZ_AUDIO.onended=null;AZ_AUDIO.onerror=null;resolve(ok);}
+    AZ_AUDIO.onended=function(){done(true);};
+    AZ_AUDIO.onerror=function(){done(false);};
+    AZ_AUDIO.src='audio/'+card._s.id+'.mp3';
+    var pr=AZ_AUDIO.play();
+    if(pr&&pr.catch)pr.catch(function(){done(false);});
+    setTimeout(function(){if(!finished&&AZ_AUDIO.paused&&!AZ_AUDIO.currentTime)done(false);},8000);
+  });
+}
+async function playCardSeq(card,tk){
+  setRep(card,'Azure 錄音');
+  var ok=await playCardAzure(card,tk);
+  if(ok||tk!==playToken)return ok;
+  setRep(card,'');
+  return await speakCardSeq(card,tk);
+}
 async function playCard(card,btn){
   if(!synth)return;
   if(currentBtn===btn){stopPlay();return;}
@@ -552,7 +570,7 @@ async function playCard(card,btn){
   var tk=playToken;
   currentBtn=btn;btn.classList.add('playing','stop');btn.textContent='■ 停止';
   currentCard=card;card.classList.add('playing-now');
-  var ok=await speakCardSeq(card,tk);
+  var ok=await playCardSeq(card,tk);
   if(ok&&tk===playToken){
     setRep(card,'');
     resetBtn(btn);
@@ -576,7 +594,7 @@ async function playAll(section,btn){
     c.scrollIntoView({block:'center',behavior:'smooth'});
     await new Promise(function(r){setTimeout(r,350);});
     if(tk!==playToken)return;
-    var ok=await speakCardSeq(c,tk);
+    var ok=await playCardSeq(c,tk);
     if(!ok||tk!==playToken)return;
     setRep(c,'');
   }
@@ -597,18 +615,25 @@ function makeCard(s,pageLabel){
   if(!synth){b1.disabled=true;b1.textContent='此裝置無語音';}
   b1.addEventListener('click',function(){playCard(card,b1);});
   acts.appendChild(b1);
+  var bEdit=document.createElement('button');bEdit.className='abtn edit-btn';bEdit.textContent='✎ 編輯';
+  bEdit.setAttribute('aria-label','編輯這張卡的全部欄位');
+  bEdit.addEventListener('click',function(){toggleEdit(card,bEdit);});
+  acts.appendChild(bEdit);
+  card._f={en:en,zhText:zhText,dds:fieldDds};
   top.appendChild(sid);top.appendChild(pg);top.appendChild(rep);top.appendChild(acts);
   var en=document.createElement('p');en.className='en-s';en.textContent=s.en;
   var zh=document.createElement('p');zh.className='zh-s';
   var lbl=document.createElement('span');lbl.className='lbl';lbl.textContent='大意';
-  zh.appendChild(lbl);zh.appendChild(document.createTextNode(s.zh));
+  var zhText=document.createElement('span');zhText.className='zh-text';zhText.textContent=s.zh;
+  zh.appendChild(lbl);zh.appendChild(zhText);
   var tg=document.createElement('button');tg.className='toggle-detail';tg.textContent='詳細解釋（剝洋蔥五層）';
   var det=document.createElement('div');det.className='detail';
   var dl=document.createElement('dl');
+  var fieldDds=[];
   [['句型',s.pat],['單字片語',s.vocab],['道義內涵',s.dao],['記憶＋仿造',s.ex]].forEach(function(row){
     if(!row[1])return;
     var dt=document.createElement('dt');dt.textContent=row[0];
-    var dd=document.createElement('dd');
+    var dd=document.createElement('dd');dd.dataset.field=row[0];fieldDds.push(dd);
     if(row[0]==='記憶＋仿造'){var sp=document.createElement('span');sp.className='ex-en';sp.textContent=row[1];dd.appendChild(sp);}
     else dd.textContent=row[1];
     dl.appendChild(dt);dl.appendChild(dd);
@@ -621,6 +646,57 @@ function makeCard(s,pageLabel){
   card.appendChild(top);card.appendChild(en);card.appendChild(zh);card.appendChild(tg);card.appendChild(det);
   return card;
 }
+
+/* ================= 句子卡編輯（每一個欄位都可編輯） =================
+   編輯鍵只顯示給管理員（sanbao-gate.js 在管理員登入時加 body.sanbao-admin）。
+   儲存時同時寫兩處：本機 localStorage（立即生效）＋ Firestore sanbao_cardEdits/{卡號}
+   （管理員核准名單共用，規則發布後才生效；規則未發布前只有本機這台看得到修改）。
+   讀取時：本機修改先套用，管理員登入後 gate 再把雲端修改套用覆蓋。 */
+function cardFieldValues(card){
+  var f=card._f;var out={en:f.en.textContent,zh:f.zhText.textContent,pat:'',vocab:'',dao:'',ex:''};
+  var map={'句型':'pat','單字片語':'vocab','道義內涵':'dao','記憶＋仿造':'ex'};
+  f.dds.forEach(function(dd){var k=map[dd.dataset.field];if(k)out[k]=dd.textContent;});
+  return out;
+}
+function applyEditToCard(card,v){
+  var s=card._s;var f=card._f;
+  s.en=v.en;s.zh=v.zh;s.pat=v.pat;s.vocab=v.vocab;s.dao=v.dao;s.ex=v.ex;
+  f.en.textContent=v.en;f.zhText.textContent=v.zh;
+  var map={'句型':'pat','單字片語':'vocab','道義內涵':'dao','記憶＋仿造':'ex'};
+  f.dds.forEach(function(dd){var k=map[dd.dataset.field];if(k&&v[k]!==undefined)dd.textContent=v[k];});
+}
+function readLocalEdits(){
+  try{return JSON.parse(localStorage.getItem('sanbao_edits')||'{}');}catch(e){return {};}
+}
+function applyEdits(edits){
+  document.querySelectorAll('.card').forEach(function(card){
+    var v=edits[card._s.id];if(v)applyEditToCard(card,v);
+  });
+}
+window.SANBAO_applyEdits=applyEdits;
+function toggleEdit(card,btn){
+  var editing=card.classList.contains('editing');
+  var f=card._f;
+  if(!editing){
+    card.classList.add('editing');
+    f.en.contentEditable='true';f.zhText.contentEditable='true';
+    f.dds.forEach(function(dd){dd.contentEditable='true';});
+    btn.textContent='✓ 儲存';
+    return;
+  }
+  var v=cardFieldValues(card);
+  card.classList.remove('editing');
+  f.en.contentEditable='false';f.zhText.contentEditable='false';
+  f.dds.forEach(function(dd){dd.contentEditable='false';});
+  btn.textContent='✎ 編輯';
+  applyEditToCard(card,v);
+  var all=readLocalEdits();all[card._s.id]=v;
+  try{localStorage.setItem('sanbao_edits',JSON.stringify(all));}catch(e){}
+  if(window.SANBAO_DB){
+    window.SANBAO_DB.collection('sanbao_cardEdits').doc(card._s.id).set(v).catch(function(){});
+  }
+}
+
 function renderCards(list,hostId,pageOf){
   var host=document.getElementById(hostId);
   list.forEach(function(s){host.appendChild(makeCard(s,pageOf(s)));});
@@ -831,6 +907,7 @@ renderCards(SIGNIF,'signifCards',function(s){return '書頁 '+s.pg;});
   zhpara('書上中文段（書頁 24）','我們所拜的當代明師是濟公活佛、月慧菩薩，不是拜人為師或拜點傳為師。剛剛求道時，是濟公活佛老師借著點傳師的手，點化我們，打開生死門戶，找到自家的真主人、靈性、佛性。而點傳師是代理濟公活佛老師，借火傳法，代師收徒，將回天的無上密寶「性理真傳」，口傳心印傳授予我們，這叫做「求道」。',cards[67]);
 })();
 wireReader('signif');
+applyEdits(readLocalEdits());
 </script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
