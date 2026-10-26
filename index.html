@@ -168,7 +168,15 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
 <style>
 .edit-btn{display:none}
 body.sanbao-admin .edit-btn{display:inline-block}
-.card.editing .en-s,.card.editing .zh-s,.card.editing .detail dd{outline:2px dashed #b8933a;outline-offset:2px;background:#fff8e1}
+.card.editing .en-s,.card.editing .zh-s,.card.editing .expl-paste{outline:2px dashed #b8933a;outline-offset:2px;background:#fff8e1}
+.expl-paste{border:1px dashed var(--line);border-radius:var(--radius);padding:12px 14px;line-height:1.75;color:var(--ink);min-height:24px}
+.expl-paste:empty:before{content:''}
+body.sanbao-admin .expl-paste{min-height:120px}
+body.sanbao-admin .expl-paste:empty:before{content:'點一下這裡，貼上 Gemini 的詳細解釋（貼上後點別處即自動儲存）';color:var(--muted)}
+.expl-btns{display:none;gap:8px;flex-wrap:wrap;margin-top:10px}
+body.sanbao-admin .expl-btns{display:flex}
+.expl-btns .abtn{font-size:.9rem}
+.expl-saved{font-size:.85rem;color:var(--muted);align-self:center;display:none}
 .audio-src{font-size:.8rem;color:#8a8172;margin-left:8px}
 </style>
 </head>
@@ -711,26 +719,30 @@ function makeCard(s,pageLabel){
   zh.appendChild(lbl);zh.appendChild(zhText);
   var tg=document.createElement('button');tg.className='toggle-detail';tg.textContent='詳細解釋（剝洋蔥五層）';
   var det=document.createElement('div');det.className='detail';
-  var dl=document.createElement('dl');
-  var fieldDds=[];
-  [['句型',s.pat],['單字片語',s.vocab],['道義內涵',s.dao],['記憶＋仿造',s.ex]].forEach(function(row){
-    if(!row[1])return;
-    var dt=document.createElement('dt');dt.textContent=row[0];
-    var dd=document.createElement('dd');dd.dataset.field=row[0];fieldDds.push(dd);
-    if(row[0]==='記憶＋仿造'){var sp=document.createElement('span');sp.className='ex-en';sp.textContent=row[1];dd.appendChild(sp);}
-    else dd.textContent=row[1];
-    dl.appendChild(dt);dl.appendChild(dd);
-  });
-  det.appendChild(dl);
+  /* 詳細解釋區（2026-10-26 Cheng 指示）：不再預填 AI 解釋，留空白給管理員貼上 Gemini 解釋好的內容。
+     舊的四欄 AI 草稿（句型／單字片語／道義內涵／記憶＋仿造）不再顯示，資料仍留在句子陣列裡未刪除。 */
+  var expl=document.createElement('div');expl.className='expl-paste';expl.contentEditable='false';
+  expl.addEventListener('blur',function(){saveExpl(card);});
+  var explBtns=document.createElement('div');explBtns.className='expl-btns';
+  var explSaved=document.createElement('span');explSaved.className='expl-saved';explSaved.textContent='已儲存 ✓';
+  function explBtn(label,openUrl){
+    var b=document.createElement('button');b.className='abtn';b.type='button';b.textContent=label;
+    b.addEventListener('click',function(){copyExplPrompt(card,openUrl,b);});
+    return b;
+  }
+  explBtns.appendChild(explBtn('複製提示詞 Copy prompt',null));
+  explBtns.appendChild(explBtn('複製並開啟 ChatGPT ↗ Copy & open ChatGPT ↗','https://chatgpt.com/'));
+  explBtns.appendChild(explBtn('複製並開啟 Gemini ↗ Copy & open Gemini ↗','https://gemini.google.com/app'));
+  explBtns.appendChild(explSaved);
+  det.appendChild(expl);det.appendChild(explBtns);
   tg.addEventListener('click',function(){
     var open=card.classList.toggle('open');
     tg.textContent=open?'收合詳細解釋':'詳細解釋（剝洋蔥五層）';
   });
   card.appendChild(top);card.appendChild(en);card.appendChild(zh);card.appendChild(tg);card.appendChild(det);
-  /* _f 必須在 en／zhText／fieldDds 建立完成後才指派（2026-10-26 修正：
-     先前寫在前面，var 提升讓三者全是 undefined，toggleEdit 一設 contentEditable 就出錯，
-     只剩虛線框樣式、欄位根本無法編輯）。 */
-  card._f={en:en,zhText:zhText,dds:fieldDds};
+  /* _f 必須在 en／zhText／expl 建立完成後才指派（2026-10-26 修正：先前寫在前面，
+     var 提升讓三者全是 undefined，toggleEdit 一設 contentEditable 就出錯）。 */
+  card._f={en:en,zhText:zhText,expl:expl,explSaved:explSaved};
   return card;
 }
 
@@ -739,18 +751,68 @@ function makeCard(s,pageLabel){
    儲存時同時寫兩處：本機 localStorage（立即生效）＋ Firestore sanbao_cardEdits/{卡號}
    （管理員核准名單共用，規則發布後才生效；規則未發布前只有本機這台看得到修改）。
    讀取時：本機修改先套用，管理員登入後 gate 再把雲端修改套用覆蓋。 */
+
+/* 詳細解釋提示詞（2026-10-26 Cheng 提供，原文照錄；使用時在最後貼上該句英文）。
+   注意：其中「英文原文 (Devanagari)」與性／數／格等段落像從印地語模板帶過來的，
+   若 Gemini 解釋方向不對，須再改成純英文版。 */
+var SANBAO_EXPL_PROMPT = `作為英文專家，請針對當前頁面或選取的內容進行深度教學。請遵循以下結構進行分析：
+
+### 1. 核心內容
+- 呈現英文原文 (Devanagari)。
+- 提供整句中文翻譯。
+
+### 2. 語法拆解 (俄羅斯洋娃娃/剝洋蔥法)
+請從大架構到小架構，層層剝離分析語法：
+- 句子結構分析：解釋句子的主幹（主謂賓關係）。
+- 詞彙詳解：針對每一個單詞進行剖析。
+- 形態變化說明：若出現動詞、名詞、形容詞，請務必詳細說明：
+  - 性別 (陰陽性)
+  - 數 (單複數)
+  - 格位變化 (若適用)
+  - 動詞時態與一致性 (為何這樣變化？請結合性數格提供具體規則與範例)
+
+### 3. 日常應用與輔助
+- 當提到任何單詞或片語時，請務必使用格式：原文 (羅馬拼音)。
+- 針對每個關鍵詞彙或片語，請提供 1-2 個日常生活中的實際應用例句，並包含：
+  - 英文垣文
+   - 中文翻譯
+
+請以耐心且細緻的導師口吻進行解說，確保初學者能理解所有細節。請解釋以下內容:
+`;
+function explPromptFor(card){return SANBAO_EXPL_PROMPT + '\n' + card._s.en;}
+function copyTextFallback(text){
+  var ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+}
+async function copyExplPrompt(card,openUrl,btn){
+  var text=explPromptFor(card);
+  try{await navigator.clipboard.writeText(text);}catch(e){copyTextFallback(text);}
+  if(openUrl)window.open(openUrl,'_blank');
+  if(btn){var old=btn.textContent;btn.textContent='已複製 ✓';setTimeout(function(){btn.textContent=old;},2000);}
+}
+function saveExpl(card){
+  /* 貼上區自動儲存（只限管理員；離開貼上區即存）：本機＋雲端（merge，不動其他欄）。 */
+  if(!document.body.classList.contains('sanbao-admin'))return;
+  var f=card._f;var html=f.expl.innerHTML;
+  var all=readLocalEdits();var v=all[card._s.id]||{};
+  v.en=card._s.en;v.zh=card._s.zh;v.expl=html;all[card._s.id]=v;
+  try{localStorage.setItem('sanbao_edits',JSON.stringify(all));}catch(e){}
+  if(window.SANBAO_DB){
+    window.SANBAO_DB.collection('sanbao_cardEdits').doc(card._s.id).set({expl:html},{merge:true}).catch(function(){});
+  }
+  if(f.explSaved){f.explSaved.style.display='inline';setTimeout(function(){f.explSaved.style.display='none';},2000);}
+}
 function cardFieldValues(card){
-  var f=card._f;var out={en:f.en.textContent,zh:f.zhText.textContent,pat:'',vocab:'',dao:'',ex:''};
-  var map={'句型':'pat','單字片語':'vocab','道義內涵':'dao','記憶＋仿造':'ex'};
-  f.dds.forEach(function(dd){var k=map[dd.dataset.field];if(k)out[k]=dd.textContent;});
-  return out;
+  var f=card._f;
+  return {en:f.en.textContent,zh:f.zhText.textContent,expl:f.expl.innerHTML};
 }
 function applyEditToCard(card,v){
   var s=card._s;var f=card._f;
-  s.en=v.en;s.zh=v.zh;s.pat=v.pat;s.vocab=v.vocab;s.dao=v.dao;s.ex=v.ex;
-  f.en.textContent=v.en;f.zhText.textContent=v.zh;
-  var map={'句型':'pat','單字片語':'vocab','道義內涵':'dao','記憶＋仿造':'ex'};
-  f.dds.forEach(function(dd){var k=map[dd.dataset.field];if(k&&v[k]!==undefined)dd.textContent=v[k];});
+  if(v.en!==undefined){s.en=v.en;f.en.textContent=v.en;}
+  if(v.zh!==undefined){s.zh=v.zh;f.zhText.textContent=v.zh;}
+  if(v.expl!==undefined){f.expl.innerHTML=v.expl;}
 }
 function readLocalEdits(){
   try{return JSON.parse(localStorage.getItem('sanbao_edits')||'{}');}catch(e){return {};}
@@ -769,14 +831,14 @@ function toggleEdit(card,btn){
   if(!editing){
     card.classList.add('editing');
     f.en.contentEditable='true';f.zhText.contentEditable='true';
-    f.dds.forEach(function(dd){dd.contentEditable='true';});
+    f.expl.contentEditable='true';
     btn.textContent='✓ 儲存';
     return;
   }
   var v=cardFieldValues(card);
   card.classList.remove('editing');
   f.en.contentEditable='false';f.zhText.contentEditable='false';
-  f.dds.forEach(function(dd){dd.contentEditable='false';});
+  f.expl.contentEditable='true';
   btn.textContent='✎ 編輯';
   applyEditToCard(card,v);
   var all=readLocalEdits();all[card._s.id]=v;
@@ -1003,6 +1065,6 @@ applyEdits(readLocalEdits());
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
-<script src="sanbao-gate.js?v=20261026-03"></script>
+<script src="sanbao-gate.js?v=20261026-04"></script>
 </body>
 </html>
