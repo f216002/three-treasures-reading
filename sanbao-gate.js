@@ -328,7 +328,6 @@
     var user = auth.currentUser;
     if (!user) return;
     if (applyForm && applyName) {
-      if (!applyName.value) applyName.value = user.displayName || '';
       show(applyBtn, false); show(applyForm, true);
       applyName.focus();
     } else {
