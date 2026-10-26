@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1160" width="1100" height="1160">
+<rect x="0" y="0" width="1100" height="1160" fill="white"/>
+<text x="550" y="72" text-anchor="middle" font-size="56" font-weight="bold" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">皇極八卦圖</text>
+<text x="550" y="118" text-anchor="middle" font-size="26" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">Figure 5 · Huang-Ji · 先天八卦（乾上坤下）</text>
+<defs><clipPath id="tj"><circle cx="550" cy="620" r="150"/></clipPath></defs>
+<circle cx="550" cy="620" r="150" fill="white" stroke="#1e1a13" stroke-width="4"/>
+<g clip-path="url(#tj)"><rect x="550" y="470" width="150" height="300" fill="#1e1a13"/><circle cx="550" cy="545.0" r="75.0" fill="white"/><circle cx="550" cy="695.0" r="75.0" fill="#1e1a13"/></g>
+<circle cx="550" cy="620" r="150" fill="none" stroke="#1e1a13" stroke-width="4"/>
+<circle cx="550" cy="545.0" r="22" fill="#1e1a13"/>
+<circle cx="550" cy="695.0" r="22" fill="white"/>
+<path d="M 497.6,437.4 L 602.4,437.4 L 613.9,397.0 L 486.1,397.0 Z" fill="#1e1a13"/>
+<path d="M 481.6,381.6 L 618.4,381.6 L 629.9,341.2 L 470.1,341.2 Z" fill="#1e1a13"/>
+<path d="M 465.7,325.9 L 634.3,325.9 L 645.9,285.5 L 454.1,285.5 Z" fill="#1e1a13"/>
+<path d="M 642.1,453.8 L 677.1,478.8 L 705.2,447.6 L 662.5,417.1 Z" fill="#1e1a13"/>
+<path d="M 691.2,492.9 L 716.2,527.9 L 752.9,507.5 L 722.4,464.8 Z" fill="#1e1a13"/>
+<path d="M 670.2,403.1 L 766.9,499.8 L 803.6,479.4 L 690.6,366.4 Z" fill="#1e1a13"/>
+<path d="M 698.4,352.4 L 817.6,471.6 L 854.4,451.3 L 718.7,315.6 Z" fill="#1e1a13"/>
+<path d="M 732.6,567.6 L 739.7,610.1 L 781.7,607.9 L 773.0,556.1 Z" fill="#1e1a13"/>
+<path d="M 739.7,629.9 L 732.6,672.4 L 773.0,683.9 L 781.7,632.1 Z" fill="#1e1a13"/>
+<path d="M 788.4,551.6 L 788.4,688.4 L 828.8,699.9 L 828.8,540.1 Z" fill="#1e1a13"/>
+<path d="M 844.1,535.7 L 855.6,604.0 L 897.5,601.8 L 884.5,524.1 Z" fill="#1e1a13"/>
+<path d="M 855.6,636.0 L 844.1,704.3 L 884.5,715.9 L 897.5,638.2 Z" fill="#1e1a13"/>
+<path d="M 716.2,712.1 L 691.2,747.1 L 722.4,775.2 L 752.9,732.5 Z" fill="#1e1a13"/>
+<path d="M 677.1,761.2 L 642.1,786.2 L 662.5,822.9 L 705.2,792.4 Z" fill="#1e1a13"/>
+<path d="M 766.9,740.2 L 734.3,785.9 L 765.5,814.0 L 803.6,760.6 Z" fill="#1e1a13"/>
+<path d="M 715.9,804.3 L 670.2,836.9 L 690.6,873.6 L 744.0,835.5 Z" fill="#1e1a13"/>
+<path d="M 817.6,768.4 L 698.4,887.6 L 718.7,924.4 L 854.4,788.7 Z" fill="#1e1a13"/>
+<path d="M 602.4,802.6 L 559.9,809.7 L 562.1,851.7 L 613.9,843.0 Z" fill="#1e1a13"/>
+<path d="M 540.1,809.7 L 497.6,802.6 L 486.1,843.0 L 537.9,851.7 Z" fill="#1e1a13"/>
+<path d="M 618.4,858.4 L 563.0,867.7 L 565.2,909.6 L 629.9,898.8 Z" fill="#1e1a13"/>
+<path d="M 537.0,867.7 L 481.6,858.4 L 470.1,898.8 L 534.8,909.6 Z" fill="#1e1a13"/>
+<path d="M 634.3,914.1 L 566.0,925.6 L 568.2,967.5 L 645.9,954.5 Z" fill="#1e1a13"/>
+<path d="M 534.0,925.6 L 465.7,914.1 L 454.1,954.5 L 531.8,967.5 Z" fill="#1e1a13"/>
+<path d="M 457.9,786.2 L 383.8,712.1 L 347.1,732.5 L 437.5,822.9 Z" fill="#1e1a13"/>
+<path d="M 429.8,836.9 L 384.1,804.3 L 356.0,835.5 L 409.4,873.6 Z" fill="#1e1a13"/>
+<path d="M 365.7,785.9 L 333.1,740.2 L 296.4,760.6 L 334.5,814.0 Z" fill="#1e1a13"/>
+<path d="M 401.6,887.6 L 345.2,847.4 L 317.1,878.6 L 381.3,924.4 Z" fill="#1e1a13"/>
+<path d="M 322.6,824.8 L 282.4,768.4 L 245.6,788.7 L 291.4,852.9 Z" fill="#1e1a13"/>
+<path d="M 367.4,672.4 L 367.4,567.6 L 327.0,556.1 L 327.0,683.9 Z" fill="#1e1a13"/>
+<path d="M 311.6,688.4 L 302.3,633.0 L 260.4,635.2 L 271.2,699.9 Z" fill="#1e1a13"/>
+<path d="M 302.3,607.0 L 311.6,551.6 L 271.2,540.1 L 260.4,604.8 Z" fill="#1e1a13"/>
+<path d="M 255.9,704.3 L 255.9,535.7 L 215.5,524.1 L 215.5,715.9 Z" fill="#1e1a13"/>
+<path d="M 383.8,527.9 L 457.9,453.8 L 437.5,417.1 L 347.1,507.5 Z" fill="#1e1a13"/>
+<path d="M 333.1,499.8 L 429.8,403.1 L 409.4,366.4 L 296.4,479.4 Z" fill="#1e1a13"/>
+<path d="M 282.4,471.6 L 322.6,415.2 L 291.4,387.1 L 245.6,451.3 Z" fill="#1e1a13"/>
+<path d="M 345.2,392.6 L 401.6,352.4 L 381.3,315.6 L 317.1,361.4 Z" fill="#1e1a13"/>
+<text x="550.0" y="208.0" text-anchor="middle" dominant-baseline="middle" font-size="40" font-weight="bold" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">乾</text>
+<text x="550.0" y="162.0" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">Heaven · 天</text>
+<text x="841.3" y="328.7" text-anchor="middle" dominant-baseline="middle" font-size="40" font-weight="bold" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">巽</text>
+<text x="873.9" y="296.1" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">Wind · 風</text>
+<text x="985.0" y="620.0" text-anchor="middle" dominant-baseline="middle" font-size="40" font-weight="bold" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">坎</text>
+<text x="985.0" y="668.0" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">Water · 水</text>
+<text x="841.3" y="911.3" text-anchor="middle" dominant-baseline="middle" font-size="40" font-weight="bold" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">艮</text>
+<text x="873.9" y="943.9" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">Mountain · 山</text>
+<text x="550.0" y="1032.0" text-anchor="middle" dominant-baseline="middle" font-size="40" font-weight="bold" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">坤</text>
+<text x="550.0" y="1078.0" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">Earth · 地</text>
+<text x="258.7" y="911.3" text-anchor="middle" dominant-baseline="middle" font-size="40" font-weight="bold" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">震</text>
+<text x="226.1" y="943.9" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">Thunder · 雷</text>
+<text x="115.0" y="620.0" text-anchor="middle" dominant-baseline="middle" font-size="40" font-weight="bold" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">離</text>
+<text x="115.0" y="668.0" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">Fire · 火</text>
+<text x="258.7" y="328.7" text-anchor="middle" dominant-baseline="middle" font-size="40" font-weight="bold" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">兌</text>
+<text x="226.1" y="296.1" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#1e1a13" font-family="Noto Serif CJK TC, serif">Lake · 澤</text>
+</svg>
