@@ -21,6 +21,15 @@
     document.body.classList.add('sanbao-approved');
     var g = document.getElementById('sanbaoGate');
     if (g) g.style.display = 'none';
+    /* 雲端卡片修改（管理員在卡片上按 ✎ 編輯儲存的內容）：規則發布後才讀得到，
+       讀不到就靜默跳過，本機修改不受影響。 */
+    if (db && window.SANBAO_applyEdits) {
+      db.collection('sanbao_cardEdits').get().then(function (snap) {
+        var edits = {};
+        snap.forEach(function (doc) { edits[doc.id] = doc.data(); });
+        window.SANBAO_applyEdits(edits);
+      }).catch(function () {});
+    }
   }
   var auth, db;
   try {
@@ -37,6 +46,7 @@
     }
     auth = window.firebase.auth();
     db = window.firebase.firestore();
+    window.SANBAO_DB = db;
   } catch (e) {
     setMsg('登入功能暫時無法使用，請重新整理頁面。');
     return;
@@ -150,6 +160,8 @@
     userBox.style.display = '';
     userBox.textContent = '已登入：' + (user.displayName || '') + '（' + (user.email || '') + '）';
     if (isAdmin(user)) {
+      document.body.classList.add('sanbao-admin');
+      window.SANBAO_IS_ADMIN = true;
       show(adminBox, true);
       loadRequests();
       openGate();
