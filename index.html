@@ -12,26 +12,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f6f1e7; --bg2:#efe7d7; --surface:#fffdf8; --surface2:#fbf6ec;
-  --ink:#26221b; --ink2:#5c5546; --muted:#8a8172;
-  --line:#ddd2bd; --line2:#e9e1cf;
+  --bg:#f4edde; --bg2:#efe7d7; --surface:#ffffff; --surface2:#fbf6ec;
+  --ink:#1e1a13; --ink2:#4a4436; --muted:#7d7466;
+  --line:#e0d3b6; --line2:#e9e1cf;
   --gold:#8a6d1f; --gold2:#b8933a; --goldsoft:#f3e9cd;
   --seal:#8c3b2e; --sealsoft:#f6e3dd;
   --teal:#2e5f57; --tealsoft:#ddebe6;
   --chip:#efe8d8;
-  --shadow:0 1px 2px rgba(60,45,10,.06),0 8px 24px rgba(60,45,10,.06);
+  --shadow:0 1px 2px rgba(60,45,10,.08),0 12px 30px rgba(60,45,10,.12);
   --radius:14px;
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --bg:#171410; --bg2:#1d1913; --surface:#221d16; --surface2:#282219;
-    --ink:#ede4d3; --ink2:#c9bda6; --muted:#9a8f7a;
-    --line:#3d362a; --line2:#332d23;
+    --bg:#171410; --bg2:#1d1913; --surface:#262019; --surface2:#2b241b;
+    --ink:#f2e9d8; --ink2:#d8cdb4; --muted:#a3967f;
+    --line:#4a4132; --line2:#38322a;
     --gold:#d9b45f; --gold2:#c9a24a; --goldsoft:#3a2f16;
     --seal:#e08a76; --sealsoft:#3d231c;
     --teal:#8fc4b8; --tealsoft:#1d322c;
     --chip:#2b251b;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
   }
 }
 *{box-sizing:border-box}
@@ -54,7 +54,7 @@ nav.mainnav a:hover{background:var(--chip);color:var(--ink)}
 /* ---------- hero ---------- */
 .hero{padding:52px 0 8px;text-align:left}
 .hero .rule{width:56px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:22px}
-.hero h1{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(34px,6vw,54px);line-height:1.25;margin:0 0 6px;letter-spacing:.04em}
+.hero h1{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(34px,6vw,54px);line-height:1.25;margin:0 0 6px;letter-spacing:.04em;text-wrap:balance}
 .hero .en-title{font-family:Georgia,"Times New Roman",serif;font-size:clamp(17px,2.6vw,22px);color:var(--ink2);line-height:1.5;margin:0 0 18px}
 .hero .slogan{font-family:Georgia,serif;font-style:italic;color:var(--gold);font-size:16px;line-height:1.7;max-width:640px;margin:0 0 26px}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
@@ -77,9 +77,9 @@ nav.mainnav a:hover{background:var(--chip);color:var(--ink)}
 
 /* ---------- sections ---------- */
 section.block{padding:44px 0 6px}
-.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
-.sec-head h2{font-family:"Noto Serif TC",serif;font-weight:900;font-size:27px;margin:0;letter-spacing:.03em}
-.sec-head .en{font-family:Georgia,serif;color:var(--muted);font-size:15px}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px;border-bottom:2px solid var(--goldsoft);padding-bottom:10px}
+.sec-head h2{font-family:"Noto Serif TC",serif;font-weight:900;font-size:30px;margin:0;letter-spacing:.03em;text-wrap:balance}
+.sec-head .en{font-family:Georgia,serif;color:var(--ink2);font-size:15px}
 .sec-sub{color:var(--ink2);font-size:15px;max-width:760px;margin:4px 0 20px}
 .small{font-size:13.5px;color:var(--muted)}
 .tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--ink2);white-space:nowrap}
@@ -111,7 +111,7 @@ section.block{padding:44px 0 6px}
 .toolbtn.playing{background:var(--seal);border-color:var(--seal);color:#fff}
 .count-note{font-size:13px;color:var(--muted)}
 
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px 14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px 16px;margin-bottom:14px;box-shadow:var(--shadow);overflow-wrap:break-word}
 .card.playing-now{border-color:var(--gold2);box-shadow:0 0 0 2px var(--goldsoft),var(--shadow)}
 .card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
 .sid{font-family:Georgia,serif;font-weight:700;font-size:13px;background:var(--ink);color:var(--bg);border-radius:6px;padding:2px 9px;letter-spacing:.04em}
@@ -120,16 +120,16 @@ section.block{padding:44px 0 6px}
 .abtn{border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:8px;padding:5px 11px;font-size:12.5px;font-weight:500}
 .abtn:hover{border-color:var(--gold2)}
 .abtn.stop{background:var(--seal);color:#fff;border-color:var(--seal)}
-.en-s{font-family:Georgia,"Times New Roman",serif;font-size:calc(18.5px * var(--fs,1));line-height:1.65;margin:2px 0 8px}
-.zh-s{font-size:calc(15.5px * var(--fs,1));color:var(--ink);line-height:1.8;margin:0 0 6px}
+.en-s{font-family:Georgia,"Times New Roman",serif;font-size:calc(18.5px * var(--fs,1));line-height:1.7;margin:2px 0 10px;color:var(--ink);text-rendering:optimizeLegibility}
+.zh-s{font-size:calc(15.5px * var(--fs,1));color:var(--ink);line-height:1.9;margin:0 0 6px;font-weight:500}
 .zh-s .lbl{color:var(--gold);font-weight:700;font-size:12.5px;letter-spacing:.06em;margin-right:6px}
-.detail{display:none;border-top:1px dashed var(--line);margin-top:10px;padding-top:12px}
+.detail{display:none;border-top:1px solid var(--line);margin-top:12px;padding-top:14px}
 .card.open .detail{display:block}
 .detail dl{margin:0;display:grid;grid-template-columns:86px 1fr;gap:7px 12px;font-size:14.5px}
 .detail dt{color:var(--gold);font-weight:700;font-size:13px;padding-top:2px;white-space:nowrap}
 .detail dd{margin:0;color:var(--ink2);line-height:1.75}
 .detail dd .ex-en{font-family:Georgia,serif;color:var(--ink)}
-.toggle-detail{margin-top:8px;border:none;background:none;color:var(--gold);font-size:13.5px;font-weight:700;padding:4px 0}
+.toggle-detail{margin-top:8px;border:none;background:none;color:var(--gold);font-size:14px;font-weight:700;padding:4px 0}
 .toggle-detail::after{content:" ▾"}
 .card.open .toggle-detail::after{content:" ▴"}
 .flag{border:1px solid var(--seal);background:var(--sealsoft);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px}
@@ -139,7 +139,7 @@ section.block{padding:44px 0 6px}
 .zhpara p{margin:0;font-size:15.5px;line-height:1.9}
 .notebox{background:var(--surface2);border:1px solid var(--line2);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
 .notebox h4{margin:0 0 8px;font-family:"Noto Serif TC",serif;font-size:16px}
-.notebox p,.notebox li{font-size:14.5px;color:var(--ink2)}
+.notebox p,.notebox li{font-size:14.5px;color:var(--ink);line-height:1.85}
 .notebox ul{margin:6px 0;padding-left:20px}
 
 /* ---------- overview table ---------- */
@@ -169,7 +169,10 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
 .edit-btn{display:none}
 body.sanbao-admin .edit-btn{display:inline-block}
 .card.editing .en-s,.card.editing .zh-s,.card.editing .expl-paste{outline:2px dashed #b8933a;outline-offset:2px;background:#fff8e1}
-.expl-paste{border:1px dashed var(--line);border-radius:var(--radius);padding:12px 14px;line-height:1.8;color:var(--ink);min-height:24px;font-size:calc(15.5px * var(--fs,1))}
+.expl-paste{border:1px solid var(--line);background:var(--surface2);border-radius:var(--radius);padding:16px 18px;line-height:1.9;color:var(--ink);min-height:24px;font-size:calc(15.5px * var(--fs,1))}
+.expl-paste p{margin:8px 0}
+.expl-paste h3,.expl-paste h4{color:var(--ink);margin:16px 0 6px;line-height:1.6}
+.expl-paste strong{color:var(--ink)}
 /* 貼上區跟著字級鍵放大（2026-10-26 Cheng 指出只放大到英文與中文大意）：容器字級用 --fs，
    子元素預設繼承所以跟著放大；只有貼進來的內容自帶 inline font-size 時才強制覆蓋。 */
 .expl-paste [style*="font-size"]{font-size:calc(15.5px * var(--fs,1)) !important}
