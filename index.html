@@ -190,7 +190,8 @@ body.sanbao-admin .edit-btn{display:inline-block}
 
 
 <audio id="sanbaoAudio" preload="none" style="display:none"></audio>
-<div id="sanbaoUtil" style="position:fixed;top:10px;right:12px;z-index:900;display:flex;gap:6px">
+<div id="sanbaoUtil" style="position:fixed;top:10px;right:12px;z-index:900;display:flex;gap:6px;align-items:center">
+<span id="sanbaoUtilUser" title="" style="display:none;width:30px;height:30px;border-radius:50%;overflow:hidden;align-items:center;justify-content:center;background:#26221b;color:#fff;font-size:.9rem;box-shadow:0 1px 6px rgba(60,45,10,.15);flex:none"></span>
 <button id="sanbaoUtilSignIn" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">登入</button>
 <button id="sanbaoUtilSignOut" type="button" style="display:none;cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">登出</button>
 <button id="sanbaoUtilRefresh" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#26221b;color:#fff;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">重新整理</button>
@@ -997,6 +998,6 @@ applyEdits(readLocalEdits());
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
-<script src="sanbao-gate.js"></script>
+<script src="sanbao-gate.js?v=20261026-03"></script>
 </body>
 </html>
