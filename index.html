@@ -192,18 +192,12 @@ body.sanbao-admin .edit-btn{display:inline-block}
 
 
 <audio id="sanbaoAudio" preload="none" style="display:none"></audio>
-<div class="topbar">
-  <div class="topbar-in">
-    <a class="brand" href="#top">三寶真義與修道<small>英文三寶線上讀書會</small></a>
-    <nav class="mainnav">
-      <a href="#toc">目錄</a>
-      <a href="#preface">Preface</a>
-      <a href="#foreword">Foreword</a>
-      <a href="#significance">求道的殊勝</a>
-      <a href="#schedule">共讀時間與進度</a>
-    </nav>
-  </div>
+<div id="sanbaoUtil" style="position:fixed;top:10px;right:12px;z-index:900;display:flex;gap:6px">
+<button id="sanbaoUtilSignIn" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">登入</button>
+<button id="sanbaoUtilSignOut" type="button" style="display:none;cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">登出</button>
+<button id="sanbaoUtilRefresh" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#26221b;color:#fff;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">重新整理</button>
 </div>
+
 
 <div class="wrap" id="top">
 
@@ -320,6 +314,8 @@ body.sanbao-admin .edit-btn{display:inline-block}
   </section>
 
   <footer>
+<nav style="margin:10px 0;text-align:center"><a href="#toc">目錄</a> · <a href="#preface">Preface</a> · <a href="#foreword">Foreword</a> · <a href="#significance">求道的殊勝</a> · <a href="#schedule">共讀時間與進度</a></nav>
+
     本站內文照原書重新排版轉錄，未使用掃描圖；英文句照書上文字（含原書寫法），中文大意與五層解釋為學習用 AI 草稿、待老師審定。F-16 為書頁 14 末行截斷句，待核對原書後再補，不臆測補寫。<br>
     《三寶真義與修道》The True Meanings of the Three Treasures and Cultivation of Tao · 英文三寶線上讀書會共讀用。
   </footer>
