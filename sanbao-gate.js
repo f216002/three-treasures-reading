@@ -192,15 +192,19 @@
       show(signInBtn, true); show(applyBtn, false); show(signOutBtn, false);
       show(adminBox, false); userBox.style.display = 'none';
       showUtil(false); setUtilUser(null);
+      document.querySelectorAll('.expl-paste').forEach(function (el) { el.contentEditable = 'false'; });
       return;
     }
     showUtil(true); setUtilUser(user);
+    /* 詳細解釋貼上區：只有管理員可貼，登入身分一變就同步切換。 */
+    document.querySelectorAll('.expl-paste').forEach(function (el) { el.contentEditable = 'false'; });
     show(signInBtn, false); show(signOutBtn, true);
     userBox.style.display = '';
     userBox.textContent = '已登入：' + (user.displayName || '') + '（' + (user.email || '') + '）';
     if (isAdmin(user)) {
       document.body.classList.add('sanbao-admin');
       window.SANBAO_IS_ADMIN = true;
+      document.querySelectorAll('.expl-paste').forEach(function (el) { el.contentEditable = 'true'; });
       show(adminBox, true);
       loadRequests();
       openGate();
