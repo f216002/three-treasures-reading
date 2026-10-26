@@ -8,6 +8,10 @@
 (function () {
   'use strict';
   var ADMIN = 'f216002@gmail.com';
+  /* 重新整理鍵不依賴 Firebase，必須在最前面先接好：
+     萬一 Firebase 初始化失敗導致後面提前 return，按鍵也不能跟著死掉。 */
+  var utilRefreshEarly = document.getElementById('sanbaoUtilRefresh');
+  if (utilRefreshEarly) utilRefreshEarly.onclick = function () { location.reload(); };
   var msg = document.getElementById('sanbaoGateMsg');
   var userBox = document.getElementById('sanbaoGateUser');
   var signInBtn = document.getElementById('sanbaoSignIn');
@@ -154,12 +158,29 @@
      否則登出完還看得到內文，登出等於沒登出。 */
   var utilSignIn = document.getElementById('sanbaoUtilSignIn');
   var utilSignOut = document.getElementById('sanbaoUtilSignOut');
-  var utilRefresh = document.getElementById('sanbaoUtilRefresh');
+  var utilUser = document.getElementById('sanbaoUtilUser');
   if (utilSignIn) utilSignIn.onclick = function () { if (signInBtn) signInBtn.click(); };
   if (utilSignOut) utilSignOut.onclick = function () { auth.signOut(); };
-  if (utilRefresh) utilRefresh.onclick = function () { location.reload(); };
   function showUtil(signedIn) {
     show(utilSignIn, !signedIn); show(utilSignOut, signedIn);
+  }
+  /* 已登入帳號符號（2026-10-26 Cheng 要求）：門檻藏起來後，帳號資訊也要在右上角看得到。
+     有 Google 大頭貼就顯示照片，沒有就顯示名字第一個字。 */
+  function setUtilUser(user) {
+    if (!utilUser) return;
+    if (!user) { utilUser.style.display = 'none'; utilUser.innerHTML = ''; return; }
+    var name = user.displayName || user.email || '';
+    utilUser.title = user.email || '';
+    if (user.photoURL) {
+      utilUser.innerHTML = '';
+      var img = document.createElement('img');
+      img.src = user.photoURL; img.alt = '';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
+      utilUser.appendChild(img);
+    } else {
+      utilUser.textContent = (name.charAt(0) || '?');
+    }
+    utilUser.style.display = 'flex';
   }
   auth.onAuthStateChanged(function (user) {
     if (!user) {
@@ -170,10 +191,10 @@
       setMsg('本教材不公開，僅供核准學員閱讀。請先用 Google 帳號登入。');
       show(signInBtn, true); show(applyBtn, false); show(signOutBtn, false);
       show(adminBox, false); userBox.style.display = 'none';
-      showUtil(false);
+      showUtil(false); setUtilUser(null);
       return;
     }
-    showUtil(true);
+    showUtil(true); setUtilUser(user);
     show(signInBtn, false); show(signOutBtn, true);
     userBox.style.display = '';
     userBox.textContent = '已登入：' + (user.displayName || '') + '（' + (user.email || '') + '）';
