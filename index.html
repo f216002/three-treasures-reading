@@ -268,6 +268,7 @@ body.sanbao-admin .expl-btns{display:flex}
 <div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap">
 <button type="button" data-admin-tab="requests" class="tabbtn active" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;padding:6px 16px;font:inherit;font-size:.9rem">待審核申請（<span id="sanbaoReqCount">0 筆</span>）</button>
 <button type="button" data-admin-tab="teachers" class="tabbtn" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;padding:6px 16px;font:inherit;font-size:.9rem">已核准學員（<span id="sanbaoTeacherCount">0 位</span>）</button>
+<button type="button" data-admin-tab="stats" class="tabbtn" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;padding:6px 16px;font:inherit;font-size:.9rem">使用統計</button>
 </div>
 <div id="tabAdminRequests">
 <div style="margin-top:16px"><button id="sanbaoApproveAll" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#8a6d1f;color:#fff;padding:8px 18px;font:inherit">批次核准全部待審核</button></div>
@@ -283,6 +284,27 @@ body.sanbao-admin .expl-btns{display:flex}
 <tbody id="sanbaoTeacherBody"></tbody></table>
 </div>
 <p id="sanbaoTeacherEmpty" style="color:#8a8172">目前沒有已核准學員。</p>
+</div>
+<div id="tabAdminStats" hidden>
+<div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap">
+<button type="button" id="statsModeToday" class="tabbtn active" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;padding:6px 16px;font:inherit;font-size:.9rem">今日</button>
+<button type="button" id="statsModeAll" class="tabbtn" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;padding:6px 16px;font:inherit;font-size:.9rem">累積</button>
+</div>
+<p style="font-size:.85rem;color:#8a8172">每位學員的登入次數與使用時長（登入放行起算）。點學員列看每次登入明細。學員姓名對照已核准名單（求道名），查不到才顯示 Google 名字。</p>
+<h4>帳號總覽</h4>
+<div style="margin-top:12px;background:#fffdf8;border:1px solid #d8cdb4;border-radius:12px;overflow-x:auto">
+<table><thead><tr><th>學員</th><th>登入次數</th><th id="statsDurationHead">今日時長</th><th>最後登入</th><th>操作</th></tr></thead>
+<tbody id="statsOverviewBody"></tbody></table>
+</div>
+<p id="statsOverviewEmpty" style="color:#8a8172">今日尚無使用記錄。</p>
+<div id="statsDetail" hidden>
+<h4 id="statsDetailTitle"></h4>
+<div style="margin-top:12px;background:#fffdf8;border:1px solid #d8cdb4;border-radius:12px;overflow-x:auto">
+<table><thead><tr><th>登入</th><th>登出</th><th>時長</th><th>頁面</th></tr></thead>
+<tbody id="statsDetailBody"></tbody></table>
+</div>
+<p><button id="statsDetailBack" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;padding:6px 14px;font:inherit;font-size:.85rem">← 回總覽</button></p>
+</div>
 </div>
 </div>
 <div id="sanbaoAdminToast" style="display:none;position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#26221b;color:#fff;padding:10px 18px;border-radius:20px;font-size:.9rem;z-index:960;max-width:90vw;text-align:center"></div>
@@ -1632,6 +1654,6 @@ applyEdits(readLocalEdits());
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
-<script src="sanbao-gate.js?v=20261026-07"></script>
+<script src="sanbao-gate.js?v=20261026-08"></script>
 </body>
 </html>
