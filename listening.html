@@ -116,6 +116,14 @@ body:not(.sanbao-approved) #listenApp{display:none}
 <button id="sanbaoSignIn" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#26221b;color:#fff;padding:10px 22px;font:inherit">Google 登入</button>
 <button id="sanbaoApply" type="button" style="display:none;cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#fff;color:#26221b;padding:10px 22px;font:inherit;margin-left:8px">申請加入讀書會</button>
 <button id="sanbaoSignOut" type="button" style="display:none;cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#fff;color:#26221b;padding:10px 22px;font:inherit;margin-left:8px">登出</button>
+<div id="sanbaoApplyForm" style="display:none;margin-top:16px">
+<label style="display:block;margin:10px 0">姓名<br><input id="sanbaoApplyName" type="text" placeholder="求道名" style="width:100%;box-sizing:border-box;border:1px solid #d8cdb4;border-radius:8px;padding:10px 12px;font:inherit"></label>
+<label style="display:block;margin:10px 0">單位<br><input id="sanbaoApplyUnit" type="text" placeholder="例：中和" style="width:100%;box-sizing:border-box;border:1px solid #d8cdb4;border-radius:8px;padding:10px 12px;font:inherit"></label>
+<label style="display:block;margin:10px 0">區別<br><input id="sanbaoApplyDistrict" type="text" placeholder="例：2區" style="width:100%;box-sizing:border-box;border:1px solid #d8cdb4;border-radius:8px;padding:10px 12px;font:inherit"></label>
+<button id="sanbaoApplySubmit" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#26221b;color:#fff;padding:10px 22px;font:inherit">送出申請</button>
+<button id="sanbaoApplyCancel" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#fff;color:#26221b;padding:10px 22px;font:inherit;margin-left:8px">取消</button>
+<p style="font-size:.85rem;color:#8a8172">姓名、單位、區別三格都是必填，管理員審核時用來確認你的身分。</p>
+</div>
 <div id="sanbaoAdmin" style="display:none;margin-top:22px;border-top:1px solid #e9e1cf;padding-top:16px">
 <h3 style="margin:0 0 8px">管理員審核（僅 f216002@gmail.com）</h3>
 <button id="sanbaoApproveAll" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#8a6d1f;color:#fff;padding:8px 18px;font:inherit">批次核准全部待審核</button>
@@ -265,7 +273,7 @@ body:not(.sanbao-approved) #listenApp{display:none}
   </div>
 </dialog>
 
-<script src="sanbao-gate.js?v=20261026-04"></script>
+<script src="sanbao-gate.js?v=20261026-08"></script>
 <script>
 /* 三寶聽力練習（2026-10-26 Cheng 確認）：
    版式與功能照抄學外語（language-learning），但三處刻意不同：
