@@ -805,9 +805,9 @@ function wireReader(section){
     if(act==='stop')stopPlay();
     else if(act==='playall')playAll(section,b);
     else if(act==='font'){
-      fs=fs>=1.25?0.9:+(fs+0.175).toFixed(3);
+      fs=fs>=1.7?0.9:+(fs+0.175).toFixed(3);
       host.style.setProperty('--fs',fs);
-      b.textContent=fs>1.05?'字級 A++':(fs<0.95?'字級 A−':'字級 A+');
+      b.textContent=fs<0.95?'字級 A−':fs<1.1?'字級 A+':fs<1.26?'字級 A++':fs<1.44?'字級 A+++':fs<1.61?'字級 A++++':'字級 A+++++';
     }
   });
 }
