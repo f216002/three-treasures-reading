@@ -38,7 +38,74 @@
         window.SANBAO_applyEdits(edits);
       }).catch(function () {});
     }
+    /* 使用統計：放行即開始記錄 session（writer 函式定義在後方「使用統計」區段，hoisted）。 */
+    analyticsStartSession(currentUser);
   }
+
+  /* ---------- 使用統計：session 記錄（2026-10-26 Cheng 要求，比照 V4） ----------
+     集合 sanbao_analytics_sessions；登入放行時建檔、心跳每 5 分鐘更新時長、
+     登出／關頁結算；上次未結算的 session 下次登入自動結算（orphanClosed）。
+     與 V4 不同的一點：孤兒結算只標 orphanClosed、不把登出時間寫成下次登入時間，
+     時長保留最後一次心跳的值，避免時長灌水；明細顯示「異常結束（下次登入時結算）」。
+     規則未發布前寫入會靜默失敗，不影響登入與閱讀。 */
+  var analytics = { sessionId: null, uid: '', loginAtMs: 0, heartbeatTimer: null };
+  function analyticsPageName() {
+    try {
+      return String(location.pathname || '').indexOf('listening') !== -1 ? '聽力練習' : '首頁';
+    } catch (_) { return '首頁'; }
+  }
+  function analyticsCloseOrphans(uid) {
+    if (!db) return;
+    try {
+      db.collection('sanbao_analytics_sessions').where('uid', '==', uid).get().then(function (snap) {
+        snap.forEach(function (doc) {
+          if (doc.id === analytics.sessionId) return;
+          var d = doc.data() || {};
+          if (d.logoutAt || d.orphanClosed) return;
+          doc.ref.update({ orphanClosed: true }).catch(function () {});
+        });
+      }).catch(function () {});
+    } catch (_) {}
+  }
+  function analyticsSaveProgress() {
+    if (!db || !analytics.sessionId) return;
+    var sec = Math.max(0, Math.round((Date.now() - analytics.loginAtMs) / 1000));
+    try {
+      db.collection('sanbao_analytics_sessions').doc(analytics.sessionId).update({ durationSec: sec }).catch(function () {});
+    } catch (_) {}
+  }
+  function analyticsStartSession(user) {
+    if (!db || !user || analytics.sessionId) return;
+    var uid = user.uid;
+    analyticsCloseOrphans(uid);
+    analytics.sessionId = uid + '_' + Date.now();
+    analytics.uid = uid;
+    analytics.loginAtMs = Date.now();
+    try {
+      db.collection('sanbao_analytics_sessions').doc(analytics.sessionId).set({
+        uid: uid, email: user.email || '', displayName: user.displayName || '',
+        page: analyticsPageName(),
+        loginAt: window.firebase.firestore.FieldValue.serverTimestamp(),
+        logoutAt: null, durationSec: 0, orphanClosed: false
+      }).catch(function () {});
+    } catch (_) {}
+    if (analytics.heartbeatTimer) clearInterval(analytics.heartbeatTimer);
+    analytics.heartbeatTimer = setInterval(analyticsSaveProgress, 5 * 60 * 1000);
+  }
+  function analyticsEndSession() {
+    if (!db || !analytics.sessionId) return;
+    var id = analytics.sessionId;
+    var sec = Math.max(0, Math.round((Date.now() - analytics.loginAtMs) / 1000));
+    analytics.sessionId = null;
+    if (analytics.heartbeatTimer) { clearInterval(analytics.heartbeatTimer); analytics.heartbeatTimer = null; }
+    try {
+      db.collection('sanbao_analytics_sessions').doc(id).update({
+        logoutAt: window.firebase.firestore.FieldValue.serverTimestamp(),
+        durationSec: sec
+      }).catch(function () {});
+    } catch (_) {}
+  }
+  window.addEventListener('pagehide', function () { analyticsEndSession(); });
   var auth, db;
   try {
     if (!window.firebase) throw new Error('Firebase SDK 載入失敗');
@@ -173,6 +240,119 @@
       adminTeacherEmpty.textContent = '讀取核准名單失敗：' + (err.code || err.message);
     });
   }
+
+  /* ---------- 使用統計：後台讀取（比照 V4「使用統計」分頁） ----------
+     延遲載入：第一次切到此分頁才查詢；今日／累積切換只在前端篩選，不再重查。
+     學員姓名對照已核准名單（求道名），查不到才顯示登入時的 Google 名字。
+     各節停留不做（2026-10-26 Cheng 選 (a)：只要登入次數＋時長）。 */
+  var statsLoaded = false;
+  var statsSessions = [];
+  var statsMode = 'today';
+  var statsApprovedNames = {};
+  var statsModeToday = document.getElementById('statsModeToday');
+  var statsModeAll = document.getElementById('statsModeAll');
+  var statsDurationHead = document.getElementById('statsDurationHead');
+  var statsOverviewBody = document.getElementById('statsOverviewBody');
+  var statsOverviewEmpty = document.getElementById('statsOverviewEmpty');
+  var statsDetail = document.getElementById('statsDetail');
+  var statsDetailTitle = document.getElementById('statsDetailTitle');
+  var statsDetailBody = document.getElementById('statsDetailBody');
+  var statsDetailBack = document.getElementById('statsDetailBack');
+  function statsLoginMillis(s) {
+    if (!s || !s.loginAt) return 0;
+    if (s.loginAt.toMillis) return s.loginAt.toMillis();
+    var t = new Date(s.loginAt).getTime();
+    return isNaN(t) ? 0 : t;
+  }
+  function statsIsToday(ms) {
+    if (!ms) return false;
+    var d = new Date(ms), now = new Date();
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+  }
+  function statsScopedSessions() {
+    if (statsMode !== 'today') return statsSessions;
+    return statsSessions.filter(function (s) { return statsIsToday(statsLoginMillis(s)); });
+  }
+  function statsFmtDuration(sec) {
+    sec = Math.max(0, Math.round(sec || 0));
+    var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60);
+    if (h > 0) return h + '小時' + m + '分';
+    if (m > 0) return m + '分' + (sec % 60) + '秒';
+    return sec + '秒';
+  }
+  function statsDisplayName(s) {
+    if (s && s.uid && statsApprovedNames[s.uid]) return statsApprovedNames[s.uid];
+    return (s && s.displayName) || (s && s.email) || (s && s.uid) || '未具名';
+  }
+  function renderStatsOverview() {
+    var byUid = {};
+    statsScopedSessions().forEach(function (s) {
+      var u = byUid[s.uid] || (byUid[s.uid] = { uid: s.uid, name: '', email: '', count: 0, totalSec: 0, lastLogin: 0 });
+      u.count += 1;
+      u.totalSec += (s.durationSec || 0);
+      if (!u.name) u.name = statsDisplayName(s);
+      if (!u.email && s.email) u.email = s.email;
+      var lt = statsLoginMillis(s);
+      if (lt > u.lastLogin) u.lastLogin = lt;
+    });
+    var list = Object.keys(byUid).map(function (k) { return byUid[k]; });
+    list.sort(function (a, b) { return b.lastLogin - a.lastLogin; });
+    if (statsOverviewBody) {
+      statsOverviewBody.innerHTML = list.map(function (u) {
+        return '<tr><td><span class="cell-main">' + escAdmin(u.name || '(未具名)') +
+          '</span><div class="cell-sub">' + escAdmin(u.email) + '</div></td>' +
+          '<td>' + u.count + '</td><td>' + statsFmtDuration(u.totalSec) + '</td>' +
+          '<td>' + (u.lastLogin ? new Date(u.lastLogin).toLocaleString('zh-TW', { hour12: false }) : '—') + '</td>' +
+          '<td class="actions"><button type="button" data-stats-detail="' + escAdmin(u.uid) + '">明細</button></td></tr>';
+      }).join('');
+    }
+    if (statsDurationHead) statsDurationHead.textContent = statsMode === 'today' ? '今日時長' : '累計時長';
+    if (statsOverviewEmpty) {
+      statsOverviewEmpty.textContent = statsMode === 'today' ? '今日尚無使用記錄。' : '尚無使用記錄（學員登入後才會產生）。';
+      statsOverviewEmpty.style.display = list.length ? 'none' : '';
+    }
+    if (statsDetail) statsDetail.hidden = true;
+  }
+  function renderStatsDetail(uid) {
+    var rows = statsScopedSessions().filter(function (s) { return s.uid === uid; });
+    var first = rows[0] || {};
+    if (statsDetailTitle) statsDetailTitle.textContent = '登入明細（' + (statsMode === 'today' ? '今日' : '累積') + '）：' + statsDisplayName(first);
+    if (statsDetailBody) {
+      statsDetailBody.innerHTML = rows.map(function (s) {
+        var logoutText = s.logoutAt ? fmtAdminDate(s.logoutAt) : (s.orphanClosed ? '異常結束（下次登入時結算）' : '使用中');
+        return '<tr><td>' + escAdmin(fmtAdminDate(s.loginAt)) + '</td>' +
+          '<td>' + escAdmin(logoutText) + '</td>' +
+          '<td>' + statsFmtDuration(s.durationSec) + '</td>' +
+          '<td>' + escAdmin(s.page || '首頁') + '</td></tr>';
+      }).join('');
+    }
+    if (statsDetail) statsDetail.hidden = false;
+  }
+  function setStatsMode(mode) {
+    statsMode = mode === 'all' ? 'all' : 'today';
+    if (statsModeToday) statsModeToday.classList.toggle('active', statsMode === 'today');
+    if (statsModeAll) statsModeAll.classList.toggle('active', statsMode === 'all');
+    renderStatsOverview();
+  }
+  function loadUsageStats() {
+    if (statsLoaded) return;
+    statsLoaded = true;
+    var jobs = [];
+    jobs.push(db.collection('sanbao_analytics_sessions').orderBy('loginAt', 'desc').limit(500).get().then(function (snap) {
+      statsSessions = [];
+      snap.forEach(function (doc) { var d = doc.data() || {}; d._id = doc.id; statsSessions.push(d); });
+    }));
+    jobs.push(db.collection('sanbao_approvedUsers').get().then(function (snap) {
+      snap.forEach(function (doc) { var d = doc.data() || {}; if (d.name) statsApprovedNames[doc.id] = d.name; });
+    }).catch(function () {}));
+    Promise.all(jobs).then(function () { renderStatsOverview(); }).catch(function (err) {
+      adminToastShow('讀取使用統計失敗（可能是 Firestore 規則尚未更新）。', true);
+    });
+  }
+  if (statsModeToday) statsModeToday.onclick = function () { setStatsMode('today'); };
+  if (statsModeAll) statsModeAll.onclick = function () { setStatsMode('all'); };
+  if (statsDetailBack) statsDetailBack.onclick = function () { if (statsDetail) statsDetail.hidden = true; };
+  bindAdminAction(statsOverviewBody, 'data-stats-detail', function (uid) { renderStatsDetail(uid); return Promise.resolve(); });
   function showAdminTab(name) {
     adminTab = name;
     document.querySelectorAll('[data-admin-tab]').forEach(function (b) {
@@ -180,6 +360,8 @@
     });
     document.getElementById('tabAdminRequests').hidden = name !== 'requests';
     document.getElementById('tabAdminTeachers').hidden = name !== 'teachers';
+    var tabStats = document.getElementById('tabAdminStats');
+    if (tabStats) tabStats.hidden = name !== 'stats';
   }
   function openAdminPanel() {
     if (!adminPanel) return;
@@ -195,6 +377,7 @@
     document.body.style.overflow = 'hidden';
     showAdminTab(adminTab);
     loadAdminLists();
+    if (adminTab === 'stats') loadUsageStats();
   }
   function closeAdminPanel() {
     if (adminPanel) adminPanel.style.display = 'none';
@@ -277,7 +460,11 @@
   bindAdminAction(adminTeacherBody, 'data-admin-restore', function (id) { return adminSetTeacher(id, true); });
   bindAdminAction(adminTeacherBody, 'data-admin-del-teacher', adminDeleteTeacher);
   document.querySelectorAll('[data-admin-tab]').forEach(function (b) {
-    b.addEventListener('click', function () { showAdminTab(b.getAttribute('data-admin-tab')); });
+    b.addEventListener('click', function () {
+      var tabName = b.getAttribute('data-admin-tab');
+      showAdminTab(tabName);
+      if (tabName === 'stats') loadUsageStats();
+    });
   });
   var adminApproveAllBtn = document.getElementById('sanbaoApproveAll');
   if (adminApproveAllBtn) adminApproveAllBtn.addEventListener('click', function () {
@@ -338,7 +525,8 @@
     show(applyForm, false); show(applyBtn, true);
   };
   if (applySubmit) applySubmit.onclick = submitApplication;
-  signOutBtn.onclick = function () { auth.signOut(); };
+  function signOutNow() { analyticsEndSession(); auth.signOut(); }
+  signOutBtn.onclick = signOutNow;
   /* 右上角常駐鍵：登入／登出／重新整理（2026-10-26 Cheng 要求）。
      登出後必須把門檻恢復原狀：藏起內文、重新顯示登入門檻、收回管理員身分，
      否則登出完還看得到內文，登出等於沒登出。 */
@@ -347,7 +535,7 @@
   var utilUser = document.getElementById('sanbaoUtilUser');
   var utilAdmin = document.getElementById('sanbaoUtilAdmin');
   if (utilSignIn) utilSignIn.onclick = function () { if (signInBtn) signInBtn.click(); };
-  if (utilSignOut) utilSignOut.onclick = function () { auth.signOut(); };
+  if (utilSignOut) utilSignOut.onclick = signOutNow;
   if (utilAdmin) utilAdmin.onclick = function () { openAdminPanel(); };
   function showUtil(signedIn) {
     show(utilSignIn, !signedIn); show(utilSignOut, signedIn);
@@ -379,6 +567,7 @@
       if (g) g.style.display = '';
       setMsg('本教材不公開，僅供核准學員閱讀。請先用 Google 帳號登入。');
       show(signInBtn, true); show(applyBtn, false); show(signOutBtn, false); show(applyForm, false);
+      analyticsEndSession();
       show(utilAdmin, false); closeAdminPanel(); userBox.style.display = 'none';
       showUtil(false); setUtilUser(null);
       document.querySelectorAll('.expl-paste').forEach(function (el) { el.contentEditable = 'false'; });
