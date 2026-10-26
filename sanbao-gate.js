@@ -149,13 +149,31 @@
     });
   };
   signOutBtn.onclick = function () { auth.signOut(); };
+  /* 右上角常駐鍵：登入／登出／重新整理（2026-10-26 Cheng 要求）。
+     登出後必須把門檻恢復原狀：藏起內文、重新顯示登入門檻、收回管理員身分，
+     否則登出完還看得到內文，登出等於沒登出。 */
+  var utilSignIn = document.getElementById('sanbaoUtilSignIn');
+  var utilSignOut = document.getElementById('sanbaoUtilSignOut');
+  var utilRefresh = document.getElementById('sanbaoUtilRefresh');
+  if (utilSignIn) utilSignIn.onclick = function () { if (signInBtn) signInBtn.click(); };
+  if (utilSignOut) utilSignOut.onclick = function () { auth.signOut(); };
+  if (utilRefresh) utilRefresh.onclick = function () { location.reload(); };
+  function showUtil(signedIn) {
+    show(utilSignIn, !signedIn); show(utilSignOut, signedIn);
+  }
   auth.onAuthStateChanged(function (user) {
     if (!user) {
+      document.body.classList.remove('sanbao-approved', 'sanbao-admin');
+      window.SANBAO_IS_ADMIN = false;
+      var g = document.getElementById('sanbaoGate');
+      if (g) g.style.display = '';
       setMsg('本教材不公開，僅供核准學員閱讀。請先用 Google 帳號登入。');
       show(signInBtn, true); show(applyBtn, false); show(signOutBtn, false);
       show(adminBox, false); userBox.style.display = 'none';
+      showUtil(false);
       return;
     }
+    showUtil(true);
     show(signInBtn, false); show(signOutBtn, true);
     userBox.style.display = '';
     userBox.textContent = '已登入：' + (user.displayName || '') + '（' + (user.email || '') + '）';
