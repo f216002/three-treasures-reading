@@ -703,7 +703,6 @@ function makeCard(s,pageLabel){
   bEdit.setAttribute('aria-label','編輯這張卡的全部欄位');
   bEdit.addEventListener('click',function(){toggleEdit(card,bEdit);});
   acts.appendChild(bEdit);
-  card._f={en:en,zhText:zhText,dds:fieldDds};
   top.appendChild(sid);top.appendChild(pg);top.appendChild(rep);top.appendChild(acts);
   var en=document.createElement('p');en.className='en-s';en.textContent=s.en;
   var zh=document.createElement('p');zh.className='zh-s';
@@ -728,6 +727,10 @@ function makeCard(s,pageLabel){
     tg.textContent=open?'收合詳細解釋':'詳細解釋（剝洋蔥五層）';
   });
   card.appendChild(top);card.appendChild(en);card.appendChild(zh);card.appendChild(tg);card.appendChild(det);
+  /* _f 必須在 en／zhText／fieldDds 建立完成後才指派（2026-10-26 修正：
+     先前寫在前面，var 提升讓三者全是 undefined，toggleEdit 一設 contentEditable 就出錯，
+     只剩虛線框樣式、欄位根本無法編輯）。 */
+  card._f={en:en,zhText:zhText,dds:fieldDds};
   return card;
 }
 
@@ -759,6 +762,8 @@ function applyEdits(edits){
 }
 window.SANBAO_applyEdits=applyEdits;
 function toggleEdit(card,btn){
+  /* 只有管理員可編輯：非管理員就算把按鍵叫出來也直接拒絕（雲端規則同樣只放行管理員寫入）。 */
+  if(!document.body.classList.contains('sanbao-admin')){return;}
   var editing=card.classList.contains('editing');
   var f=card._f;
   if(!editing){
