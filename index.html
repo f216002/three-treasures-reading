@@ -162,6 +162,22 @@ section.block{padding:44px 0 6px}
 .two-col h3{font-family:"Noto Serif TC",serif;font-size:18px;margin:0 0 10px}
 
 footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color:var(--muted);font-size:13.5px;line-height:1.8}
+/* ---------- 首頁三段播放＋下載（2026-10-26） ---------- */
+.hrow{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.hrow .htext{flex:1;min-width:220px}
+.hrow .slogan{margin-bottom:6px}
+.slogan-zh{font-family:"Noto Sans TC",sans-serif;font-size:16px;color:var(--ink2);margin:0 0 26px}
+.hbtns{flex:none;display:flex;gap:6px;align-items:center}
+.hbtns .toolbtn{white-space:nowrap}
+.reminder-head{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.reminder-zh{font-family:"Noto Sans TC",sans-serif !important}
+/* ---------- 勾選／播放勾選／循環（2026-10-26，學外語句子庫模式） ---------- */
+.sel-row{display:inline-flex;gap:8px;align-items:center;font-size:13.5px}
+.sel-row input[type=checkbox]{width:20px;height:20px;accent-color:#8a6d1f}
+.loop-check{display:inline-flex;gap:6px;align-items:center;font-size:13.5px;border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:9px 13px}
+.loop-check input{width:20px;height:20px;accent-color:#8a6d1f}
+.toolbtn:disabled{opacity:.45}
+.card-check{width:20px;height:20px;flex:none;accent-color:#8a6d1f}
 .empty-note{border:1px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center;color:var(--muted);font-size:14.5px;display:none}
 </style>
 <style id="sanbaoGateCss">body:not(.sanbao-approved) .wrap{display:none!important}</style>
@@ -270,18 +286,43 @@ body.sanbao-admin .expl-btns{display:flex}
   <!-- ================= HERO ================= -->
   <div class="hero">
     <div class="rule"></div>
-    <h1>三寶真義與修道</h1>
-    <p class="en-title">The True Meanings of the Three Treasures<br>and Cultivation of Tao</p>
-    <p class="slogan">Receive the Tao Transmission to Initiate the Revival of One's Innate Nature &amp; Transcend the Six Pathways of Reincarnation</p>
+    <div class="hrow">
+      <div class="htext">
+        <h1>三寶真義與修道</h1>
+        <p class="en-title">The True Meanings of the Three Treasures<br>and Cultivation of Tao</p>
+      </div>
+      <div class="hbtns">
+        <button class="toolbtn hero-play" type="button" data-hero="title" data-label="▶ 播放">▶ 播放</button>
+        <button class="toolbtn hero-dl" type="button" data-hero="title" aria-label="下載標題音檔">⬇ 下載</button>
+      </div>
+    </div>
+    <div class="hrow">
+      <div class="htext">
+        <p class="slogan">Receive the Tao Transmission to Initiate the Revival of One's Innate Nature &amp; Transcend the Six Pathways of Reincarnation</p>
+        <p class="slogan-zh">得道以恢復本性自然，並超越六道輪迴</p>
+      </div>
+      <div class="hbtns">
+        <button class="toolbtn hero-play" type="button" data-hero="slogan" data-label="▶ 播放">▶ 播放</button>
+        <button class="toolbtn hero-dl" type="button" data-hero="slogan" aria-label="下載副標音檔">⬇ 下載</button>
+      </div>
+    </div>
     <div class="hero-cta">
       <a class="btn primary" href="#preface">開始共讀 Preface</a>
       <a class="btn" href="#toc">看全書目錄</a>
       <a class="btn" href="#schedule">共讀時間</a>
     </div>
     <div class="reminder">
-      <b>Kind Reminder · 溫馨提醒</b>（書頁 3，書上原文只有英文）
+      <div class="reminder-head">
+        <div><b>Kind Reminder · 溫馨提醒</b>（書頁 3，書上原文只有英文；中文為本站翻譯）</div>
+        <div class="hbtns">
+          <button class="toolbtn hero-play" type="button" data-hero="reminder" data-label="▶ 播放">▶ 播放</button>
+          <button class="toolbtn hero-dl" type="button" data-hero="reminder" aria-label="下載溫馨提醒音檔">⬇ 下載</button>
+        </div>
+      </div>
       <p>This book is meant to promote greater inter-faith understanding and <i>not meant specifically for Muslim consumption</i>.</p>
       <p>Please be aware of local publication laws before bringing into your country of residence.</p>
+      <p class="reminder-zh">本書旨在促進不同信仰之間的相互理解，並非專為穆斯林讀者而作。</p>
+      <p class="reminder-zh">將本書帶入您的居住國之前，請先留意當地的出版法規。</p>
       <p class="small">書頁 1 是與封面相同的黑白圖檔頁、書頁 2 是空白頁，這三頁書上都沒有印頁碼；本站依原書順序補記，不放掃描圖，內文一律重新排版。</p>
     </div>
   </div>
@@ -304,7 +345,10 @@ body.sanbao-admin .expl-btns{display:flex}
     <div class="sec-head"><h2>Preface</h2><span class="en">書頁 8–11 · 全文轉錄</span></div>
     <div class="reader-tools" data-reader="preface">
       <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋 Preface 句子">
-      <button class="toolbtn" data-act="playall">▶ 連播本節（中文 1 遍＋英文 3 遍）</button>
+      <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
+      <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
+      <button class="toolbtn" data-act="pause" disabled>⏸ 暫停</button>
+      <label class="loop-check"><input type="checkbox" data-act="loop"> 🔁 循環</label>
       <button class="toolbtn" data-act="stop">■ 停止</button>
       <button class="toolbtn" data-act="font">字級 A+</button>
       <span class="count-note"></span>
@@ -319,7 +363,10 @@ body.sanbao-admin .expl-btns{display:flex}
     <p class="sec-sub">書上中文段與英文句是分開刊登的，本站照原樣分開列：先中文段、再英文句（F-01 – F-15），不宣稱逐句對譯。書頁 13、14 的註 1、註 2 與五倫、八德細目收在本節後段。書頁 14 末行在書上截斷，已標為 F-16 待核對，本站不自行補寫。</p>
     <div class="reader-tools" data-reader="foreword">
       <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋 Foreword 句子">
-      <button class="toolbtn" data-act="playall">▶ 連播本節（中文 1 遍＋英文 3 遍）</button>
+      <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
+      <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
+      <button class="toolbtn" data-act="pause" disabled>⏸ 暫停</button>
+      <label class="loop-check"><input type="checkbox" data-act="loop"> 🔁 循環</label>
       <button class="toolbtn" data-act="stop">■ 停止</button>
       <button class="toolbtn" data-act="font">字級 A+</button>
       <span class="count-note"></span>
@@ -336,7 +383,10 @@ body.sanbao-admin .expl-btns{display:flex}
     <p class="sec-sub">共 88 句（B-01 – B-88），照書上英文原樣轉錄；跨頁句 B-34、B-39、B-49、B-56、B-63、B-68／B-69、B-88 皆以完整形收錄。這 13 頁的中英文不是逐行對照，句子卡維持「以英文句為主、中文作學習解釋」：書上的中文段（書頁 15、20、22、24）照原樣穿插在相應位置，書頁 16 的可蘭經中文註、書頁 17 的龍天表註、註 3（書頁 19–20 完整版）與註 4（收圓，書頁 23 全文）收在本節後段。中文大意與五層解釋是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。朗讀用 Azure 錄音：每張卡一個播放鍵，依序播中文大意 1 遍、英文 3 遍（美式女聲 en-US-JennyNeural、中文女聲 zh-TW-HsiaoChenNeural，兩段合併為一個音檔全站共用；尚未上線的句子先以裝置語音代替）。</p>
     <div class="reader-tools" data-reader="signif">
       <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋求道的殊勝句子">
-      <button class="toolbtn" data-act="playall">▶ 連播本節（中文 1 遍＋英文 3 遍）</button>
+      <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
+      <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
+      <button class="toolbtn" data-act="pause" disabled>⏸ 暫停</button>
+      <label class="loop-check"><input type="checkbox" data-act="loop"> 🔁 循環</label>
       <button class="toolbtn" data-act="stop">■ 停止</button>
       <button class="toolbtn" data-act="font">字級 A+</button>
       <span class="count-note"></span>
@@ -356,7 +406,10 @@ body.sanbao-admin .expl-btns{display:flex}
     <p class="sec-sub">共 219 句（C1-01 – C1-219），照書上英文原樣轉錄；跨頁句 C1-07、C1-35、C1-51、C1-58、C1-79、C1-83、C1-92、C1-141、C1-154、C1-215 皆以完整形收錄。這 26 頁的中英文不是逐行對照，句子卡維持「以英文句為主、中文作學習解釋」：書上中文段 17 段（書頁 28、31、33、34–35、36、37、38、40、41、42、43、44、45、46、48、49）照原樣穿插在相應位置，註 5–11 與圖一至圖五對照表收在本節後段。中文大意是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。</p>
     <div class="reader-tools" data-reader="chapter1">
       <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋壹、什麼是道句子">
-      <button class="toolbtn" data-act="playall">▶ 連播本節（中文 1 遍＋英文 3 遍）</button>
+      <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
+      <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
+      <button class="toolbtn" data-act="pause" disabled>⏸ 暫停</button>
+      <label class="loop-check"><input type="checkbox" data-act="loop"> 🔁 循環</label>
       <button class="toolbtn" data-act="stop">■ 停止</button>
       <button class="toolbtn" data-act="font">字級 A+</button>
       <span class="count-note"></span>
@@ -399,7 +452,7 @@ body.sanbao-admin .expl-btns{display:flex}
         <h3>共讀方式</h3>
         <ul class="plist">
           <li><span class="dot"></span><span>逐句編號共讀<small>句子卡以英文句為主、逐句編號，點名或搜尋都能直接找到</small></span></li>
-          <li><span class="dot"></span><span>朗讀跟讀<small>每張卡一個播放鍵，依序朗讀中文大意 1 遍、英文 3 遍（Azure 錄音，未上線的句子先以裝置語音代替）；整節連播也是同樣的順序</small></span></li>
+          <li><span class="dot"></span><span>朗讀跟讀<small>每張卡一個播放鍵，依序朗讀中文大意 1 遍、英文 3 遍（Azure 錄音，未上線的句子先以裝置語音代替）；每節可用全選＋播放勾選連播已選句子，勾選循環可重複播放</small></span></li>
           <li><span class="dot"></span><span>剝洋蔥五層解釋<small>收在每張卡的「詳細解釋」裡，預設不展開，共讀時逐層打開</small></span></li>
           <li><span class="dot"></span><span>專有名詞原則<small>三寶等專有名詞沿用音譯為主、意譯為輔的審定原則，如 Ming Ming Shang Di、Lao Mu、Dian Chuan Shi</small></span></li>
           <li class="todo"><span class="dot"></span><span>待辦<small>中文 1 遍＋英文 3 遍的 Azure 錄音正在陸續合成上線，未上線的句子先以裝置語音代替</small></span></li>
@@ -576,7 +629,7 @@ var SIGNIF=[
 
 /* ================= 朗讀引擎（裝置內建語音） ================= */
 var synth=('speechSynthesis' in window)?window.speechSynthesis:null;
-var playToken=0, currentBtn=null, currentCard=null;
+var playToken=0, currentBtn=null, currentCard=null, isPaused=false;
 function pickVoice(lang){
   if(!synth)return null;
   var vs=synth.getVoices();if(!vs.length)return null;
@@ -599,7 +652,6 @@ function speakOnce(text,lang,rate){
     synth.speak(u);
   });
 }
-var PLAYALL_LABEL='▶ 連播本節（中文 1 遍＋英文 3 遍）';
 function setRep(card,txt){
   var n=card.querySelector('.rep-note');
   if(n)n.textContent=txt||'';
@@ -611,10 +663,13 @@ function resetBtn(btn){
 var AZ_AUDIO=document.getElementById('sanbaoAudio');
 function stopPlay(){
   playToken++;
+  isPaused=false;
   if(AZ_AUDIO){try{AZ_AUDIO.pause();AZ_AUDIO.removeAttribute('src');AZ_AUDIO.load();}catch(e){}}
   if(synth)synth.cancel();
   if(currentBtn){resetBtn(currentBtn);currentBtn=null;}
-  document.querySelectorAll('.toolbtn[data-act="playall"]').forEach(function(b){b.classList.remove('playing');b.textContent=PLAYALL_LABEL;});
+  document.querySelectorAll('.reader-tools [data-act="playselected"]').forEach(function(b){b.classList.remove('playing');b.textContent='▶ 播放勾選';});
+  document.querySelectorAll('.reader-tools [data-act="pause"]').forEach(function(b){b.disabled=true;b.textContent='⏸ 暫停';});
+  document.querySelectorAll('.hero-play').forEach(function(b){b.classList.remove('playing','stop');if(b.dataset.label&&!b.disabled)b.textContent=b.dataset.label;});
   if(currentCard){currentCard.classList.remove('playing-now');setRep(currentCard,'');currentCard=null;}
 }
 function repGap(){return new Promise(function(r){setTimeout(r,450);});}
@@ -714,8 +769,15 @@ function playAudioUrl(url,tk){
     AZ_AUDIO.onended=function(){done(true);};
     AZ_AUDIO.onerror=function(){done(false);};
     AZ_AUDIO.src=url;
-    var pr=AZ_AUDIO.play();
-    if(pr&&pr.catch)pr.catch(function(){done(false);});
+    (function start(){
+      if(finished)return;
+      if(isPaused){
+        if(tk!==playToken){done(false);return;}
+        setTimeout(start,150);return;
+      }
+      var pr=AZ_AUDIO.play();
+      if(pr&&pr.catch)pr.catch(function(){done(false);});
+    })();
   });
 }
 async function playCardOnDemand(card,tk){
@@ -750,43 +812,179 @@ async function playCard(card,btn){
   stopPlay();
   var tk=playToken;
   currentBtn=btn;btn.classList.add('playing','stop');btn.textContent='■ 停止';
+  setPauseEnabled(true);
   currentCard=card;card.classList.add('playing-now');
   var ok=await playCardSeq(card,tk);
-  if(ok&&tk===playToken){
+  if(tk===playToken){
     setRep(card,'');
     resetBtn(btn);
     currentBtn=null;
+    setPauseEnabled(false);
     card.classList.remove('playing-now');
     currentCard=null;
   }
 }
-async function playAll(section,btn){
+/* ================= 勾選統計（學外語句子庫模式：只算該節目前顯示的卡） ================= */
+function updateSel(section){
+  var host=document.getElementById(section+'Cards');if(!host)return;
+  var tools=document.querySelector('.reader-tools[data-reader="'+section+'"]');if(!tools)return;
+  var boxes=[],checked=0;
+  host.querySelectorAll('.card').forEach(function(c){
+    if(c.style.display==='none')return;
+    var cb=c.querySelector('.card-check');if(!cb)return;
+    boxes.push(cb);if(cb.checked)checked++;
+  });
+  var all=tools.querySelector('[data-act="selectall"]');
+  if(all)all.checked=boxes.length>0&&checked===boxes.length;
+  var sc=tools.querySelector('.sel-count');
+  if(sc)sc.textContent=checked?'已選 '+checked+' 句':'';
+}
+function updateSelForCard(card){
+  var host=card.parentElement;if(!host||!host.id)return;
+  updateSel(host.id.replace(/Cards$/,''));
+}
+
+/* ================= 暫停／繼續（共用播放器：Azure 音檔＋裝置語音皆適用） ================= */
+function setPauseEnabled(on){
+  document.querySelectorAll('.reader-tools [data-act="pause"]').forEach(function(b){
+    b.disabled=!on;if(!on)b.textContent='⏸ 暫停';
+  });
+  if(!on)isPaused=false;
+}
+function togglePause(){
+  if(!isPaused){
+    isPaused=true;
+    if(AZ_AUDIO){try{AZ_AUDIO.pause();}catch(e){}}
+    if(synth){try{synth.pause();}catch(e){}}
+    document.querySelectorAll('.reader-tools [data-act="pause"]').forEach(function(b){b.textContent='▶ 繼續';});
+  }else{
+    isPaused=false;
+    if(AZ_AUDIO){try{var pr=AZ_AUDIO.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}}
+    if(synth){try{synth.resume();}catch(e){}}
+    document.querySelectorAll('.reader-tools [data-act="pause"]').forEach(function(b){b.textContent='⏸ 暫停';});
+  }
+}
+
+/* ================= 播放勾選（學外語句子庫模式：只播已勾選且目前顯示的卡） ================= */
+async function playSelected(section,btn){
+  if(!synth)return;
+  var host=document.getElementById(section+'Cards');
+  var cards=[].slice.call(host.querySelectorAll('.card')).filter(function(c){
+    if(c.style.display==='none')return false;
+    var cb=c.querySelector('.card-check');return cb&&cb.checked;
+  });
+  if(!cards.length){alert('請先勾選句子。');return;}
+  if(currentBtn===btn){stopPlay();return;}
+  stopPlay();
+  var loopBox=document.querySelector('.reader-tools[data-reader="'+section+'"] [data-act="loop"]');
+  var loop=loopBox&&loopBox.checked;
+  var tk=playToken;
+  currentBtn=btn;btn.classList.add('playing');btn.textContent='⏹ 停止';
+  setPauseEnabled(true);
+  do{
+    for(var i=0;i<cards.length;i++){
+      if(tk!==playToken)break;
+      var c=cards[i];
+      if(currentCard){currentCard.classList.remove('playing-now');setRep(currentCard,'');}
+      currentCard=c;c.classList.add('playing-now');
+      c.scrollIntoView({block:'center',behavior:'smooth'});
+      await new Promise(function(r){setTimeout(r,350);});
+      if(tk!==playToken)break;
+      var ok=await playCardSeq(c,tk);
+      if(!ok||tk!==playToken)break;
+      setRep(c,'');
+    }
+  }while(loop&&tk===playToken);
+  if(tk===playToken){
+    btn.classList.remove('playing');btn.textContent='▶ 播放勾選';currentBtn=null;setPauseEnabled(false);
+    if(currentCard){currentCard.classList.remove('playing-now');currentCard=null;}
+  }
+}
+
+/* ================= 首頁三段音檔（中文 1 遍＋英文 3 遍，比照句子卡規格） ================= */
+var HERO_AUDIO={
+  title:{zh:'三寶真義與修道',en:'The True Meanings of the Three Treasures and Cultivation of Tao',file:'三寶真義與修道.mp3'},
+  slogan:{zh:'得道以恢復本性自然，並超越六道輪迴',en:"Receive the Tao Transmission to Initiate the Revival of One's Innate Nature & Transcend the Six Pathways of Reincarnation",file:'得道以恢復本性自然並超越六道輪迴.mp3'},
+  reminder:{zh:'本書旨在促進不同信仰之間的相互理解，並非專為穆斯林讀者而作。將本書帶入您的居住國之前，請先留意當地的出版法規。',en:'This book is meant to promote greater inter-faith understanding and not meant specifically for Muslim consumption. Please be aware of local publication laws before bringing into your country of residence.',file:'溫馨提醒.mp3'}
+};
+async function playHeaderSeq(key,btn){
   if(!synth)return;
   if(currentBtn===btn){stopPlay();return;}
   stopPlay();
   var tk=playToken;
-  currentBtn=btn;btn.dataset.label=PLAYALL_LABEL;btn.classList.add('playing');btn.textContent='■ 停止連播';
-  var cards=[].slice.call(document.querySelectorAll('#'+section+'Cards .card')).filter(function(c){return c.style.display!=='none';});
-  for(var i=0;i<cards.length;i++){
+  currentBtn=btn;btn.classList.add('playing','stop');btn.textContent='■ 停止';
+  setPauseEnabled(true);
+  var d=HERO_AUDIO[key];
+  try{
+    var zhUrl=await getAzureSegment('zh-TW',d.zh);
     if(tk!==playToken)return;
-    var c=cards[i];
-    if(currentCard){currentCard.classList.remove('playing-now');setRep(currentCard,'');}
-    currentCard=c;c.classList.add('playing-now');
-    c.scrollIntoView({block:'center',behavior:'smooth'});
-    await new Promise(function(r){setTimeout(r,350);});
-    if(tk!==playToken)return;
-    var ok=await playCardSeq(c,tk);
-    if(!ok||tk!==playToken)return;
-    setRep(c,'');
+    if(!(await playAudioUrl(zhUrl,tk)))throw new Error('azure-fail');
+    var enUrl=await getAzureSegment('en-US',d.en);
+    for(var i=0;i<3;i++){
+      if(tk!==playToken)return;
+      await repGap();
+      if(tk!==playToken)return;
+      if(!(await playAudioUrl(enUrl,tk)))throw new Error('azure-fail');
+    }
+  }catch(e){
+    if(tk===playToken){
+      await speakOnce(d.zh,'zh-TW',0.95);
+      for(var j=0;j<3;j++){
+        if(tk!==playToken)break;
+        await repGap();
+        if(tk!==playToken)break;
+        await speakOnce(d.en,'en-US',0.9);
+      }
+    }
   }
-  if(tk===playToken){btn.classList.remove('playing');btn.textContent=PLAYALL_LABEL;currentBtn=null;if(currentCard){currentCard.classList.remove('playing-now');currentCard=null;}}
+  if(tk===playToken){
+    btn.classList.remove('playing','stop');btn.textContent=btn.dataset.label||'▶ 播放';currentBtn=null;setPauseEnabled(false);
+  }
 }
+document.querySelectorAll('.hero-play').forEach(function(b){
+  b.addEventListener('click',function(){playHeaderSeq(b.dataset.hero,b);});
+});
+if(!synth){
+  document.querySelectorAll('.hero-play').forEach(function(b){b.disabled=true;b.textContent='此裝置無語音';});
+}
+
+/* ================= 下載：合併版 mp3（中文 1 遍＋英文 3 遍直接串接） ================= */
+function dataUrlToBytes(url){
+  return fetch(url).then(function(r){return r.arrayBuffer();});
+}
+async function downloadMerged(zh,en,filename,btn){
+  var old=btn.textContent;btn.disabled=true;btn.textContent='合成中…';
+  try{
+    var zhUrl=await getAzureSegment('zh-TW',zh);
+    var enUrl=await getAzureSegment('en-US',en);
+    var zhBuf=await dataUrlToBytes(zhUrl);
+    var enBuf=await dataUrlToBytes(enUrl);
+    var out=new Uint8Array(zhBuf.byteLength+enBuf.byteLength*3);var off=0;
+    function put(buf){out.set(new Uint8Array(buf),off);off+=buf.byteLength;}
+    put(zhBuf);put(enBuf);put(enBuf);put(enBuf);
+    var blob=new Blob([out],{type:'audio/mpeg'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(a.href);},5000);
+  }catch(e){
+    alert('下載失敗：目前無法合成音檔。請確認已登入核准，或稍後再試。');
+  }finally{btn.disabled=false;btn.textContent=old;}
+}
+function downloadCard(card,btn){
+  var s=card._s;downloadMerged(s.zh,s.en,s.id+'.mp3',btn);
+}
+function downloadText(d,btn){downloadMerged(d.zh,d.en,d.file,btn);}
+document.querySelectorAll('.hero-dl').forEach(function(b){
+  b.addEventListener('click',function(){downloadText(HERO_AUDIO[b.dataset.hero],b);});
+});
 
 /* ================= 句子卡渲染 ================= */
 function esc(s){return s;}
 function makeCard(s,pageLabel){
   var card=document.createElement('article');card.className='card';card._s=s;
   var top=document.createElement('div');top.className='card-top';
+  var chk=document.createElement('input');chk.type='checkbox';chk.className='card-check';chk.setAttribute('aria-label','勾選此句');
+  chk.addEventListener('change',function(){updateSelForCard(card);});
   var sid=document.createElement('span');sid.className='sid';sid.textContent=s.id;
   var pg=document.createElement('span');pg.className='pgno';pg.textContent=pageLabel;
   var rep=document.createElement('span');rep.className='rep-note small';
@@ -796,11 +994,15 @@ function makeCard(s,pageLabel){
   if(!synth){b1.disabled=true;b1.textContent='此裝置無語音';}
   b1.addEventListener('click',function(){playCard(card,b1);});
   acts.appendChild(b1);
+  var bDl=document.createElement('button');bDl.className='abtn';bDl.textContent='⬇ 下載';
+  bDl.setAttribute('aria-label','下載音檔：中文 1 遍，英文 3 遍合併版');
+  bDl.addEventListener('click',function(){downloadCard(card,bDl);});
+  acts.appendChild(bDl);
   var bEdit=document.createElement('button');bEdit.className='abtn edit-btn';bEdit.textContent='✎ 編輯';
   bEdit.setAttribute('aria-label','編輯這張卡的全部欄位');
   bEdit.addEventListener('click',function(){toggleEdit(card,bEdit);});
   acts.appendChild(bEdit);
-  top.appendChild(sid);top.appendChild(pg);top.appendChild(rep);top.appendChild(acts);
+  top.appendChild(chk);top.appendChild(sid);top.appendChild(pg);top.appendChild(rep);top.appendChild(acts);
   var en=document.createElement('p');en.className='en-s';en.textContent=s.en;
   var zh=document.createElement('p');zh.className='zh-s';
   var lbl=document.createElement('span');lbl.className='lbl';lbl.textContent='大意';
@@ -957,17 +1159,29 @@ function wireReader(section){
     });
     note.textContent=n+' 句';
     empty.style.display=n?'none':'block';
+    updateSel(section);
   }
   input.addEventListener('input',update);update();
   tools.addEventListener('click',function(e){
     var b=e.target.closest('button');if(!b)return;
     var act=b.dataset.act;
     if(act==='stop')stopPlay();
-    else if(act==='playall')playAll(section,b);
+    else if(act==='playselected')playSelected(section,b);
+    else if(act==='pause'){if(!b.disabled)togglePause();}
     else if(act==='font'){
       fs=fs>=1.7?0.9:+(fs+0.175).toFixed(3);
       host.style.setProperty('--fs',fs);
       b.textContent=fs<0.95?'字級 A−':fs<1.1?'字級 A+':fs<1.26?'字級 A++':fs<1.44?'字級 A+++':fs<1.61?'字級 A++++':'字級 A+++++';
+    }
+  });
+  tools.addEventListener('change',function(e){
+    var t=e.target;
+    if(t.dataset.act==='selectall'){
+      host.querySelectorAll('.card').forEach(function(c){
+        if(c.style.display==='none')return;
+        var cb=c.querySelector('.card-check');if(cb)cb.checked=t.checked;
+      });
+      updateSel(section);
     }
   });
 }
