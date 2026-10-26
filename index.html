@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
+<title>三寶真義與修道讀書會網站</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1e7; --bg2:#efe7d7; --surface:#fffdf8; --surface2:#fbf6ec;
+  --ink:#26221b; --ink2:#5c5546; --muted:#8a8172;
+  --line:#ddd2bd; --line2:#e9e1cf;
+  --gold:#8a6d1f; --gold2:#b8933a; --goldsoft:#f3e9cd;
+  --seal:#8c3b2e; --sealsoft:#f6e3dd;
+  --teal:#2e5f57; --tealsoft:#ddebe6;
+  --chip:#efe8d8;
+  --shadow:0 1px 2px rgba(60,45,10,.06),0 8px 24px rgba(60,45,10,.06);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#171410; --bg2:#1d1913; --surface:#221d16; --surface2:#282219;
+    --ink:#ede4d3; --ink2:#c9bda6; --muted:#9a8f7a;
+    --line:#3d362a; --line2:#332d23;
+    --gold:#d9b45f; --gold2:#c9a24a; --goldsoft:#3a2f16;
+    --seal:#e08a76; --sealsoft:#3d231c;
+    --teal:#8fc4b8; --tealsoft:#1d322c;
+    --chip:#2b251b;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+.serif{font-family:"Noto Serif TC",serif}
+a{color:var(--gold)}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+
+/* ---------- top nav ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1080px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-family:"Noto Serif TC",serif;font-weight:900;font-size:17px;letter-spacing:.06em;color:var(--ink);text-decoration:none;white-space:nowrap}
+.brand small{display:block;font-family:"Noto Sans TC",sans-serif;font-weight:400;font-size:11px;color:var(--muted);letter-spacing:.02em}
+nav.mainnav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.mainnav a{color:var(--ink2);text-decoration:none;font-size:14px;padding:6px 11px;border-radius:999px}
+nav.mainnav a:hover{background:var(--chip);color:var(--ink)}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px 90px}
+
+/* ---------- hero ---------- */
+.hero{padding:52px 0 8px;text-align:left}
+.hero .rule{width:56px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:22px}
+.hero h1{font-family:"Noto Serif TC",serif;font-weight:900;font-size:clamp(34px,6vw,54px);line-height:1.25;margin:0 0 6px;letter-spacing:.04em}
+.hero .en-title{font-family:Georgia,"Times New Roman",serif;font-size:clamp(17px,2.6vw,22px);color:var(--ink2);line-height:1.5;margin:0 0 18px}
+.hero .slogan{font-family:Georgia,serif;font-style:italic;color:var(--gold);font-size:16px;line-height:1.7;max-width:640px;margin:0 0 26px}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
+.btn{display:inline-block;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:11px 20px;font-size:15px;text-decoration:none;font-weight:500}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:hover{border-color:var(--gold2)}
+.btn.primary:hover{background:var(--gold);border-color:var(--gold);color:#fff}
+
+.factgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 10px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+.fact .k{font-size:12.5px;color:var(--muted);letter-spacing:.08em;margin-bottom:6px}
+.fact .v{font-family:"Noto Serif TC",serif;font-weight:700;font-size:19px;line-height:1.5}
+.fact .v small{display:block;font-family:"Noto Sans TC",sans-serif;font-weight:400;font-size:13.5px;color:var(--ink2);margin-top:4px;line-height:1.65}
+@media(max-width:760px){.factgrid{grid-template-columns:1fr}}
+
+.reminder{margin-top:14px;border:1px solid var(--line);border-left:4px solid var(--gold2);background:var(--surface2);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px}
+.reminder b{font-family:"Noto Serif TC",serif}
+.reminder p{margin:6px 0;font-family:Georgia,serif;font-size:15.5px}
+.reminder .small{font-family:"Noto Sans TC",sans-serif}
+
+/* ---------- sections ---------- */
+section.block{padding:44px 0 6px}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.sec-head h2{font-family:"Noto Serif TC",serif;font-weight:900;font-size:27px;margin:0;letter-spacing:.03em}
+.sec-head .en{font-family:Georgia,serif;color:var(--muted);font-size:15px}
+.sec-sub{color:var(--ink2);font-size:15px;max-width:760px;margin:4px 0 20px}
+.small{font-size:13.5px;color:var(--muted)}
+.tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--chip);color:var(--ink2);white-space:nowrap}
+.tag.done{background:var(--tealsoft);color:var(--teal)}
+.tag.overview{background:var(--goldsoft);color:var(--gold)}
+.tag.wait{background:var(--sealsoft);color:var(--seal)}
+
+/* ---------- TOC ---------- */
+.toc-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.toc-tools button{border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:999px;padding:7px 15px;font-size:13.5px}
+.toc-tools button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.toc-group{margin-bottom:8px}
+.toc-group h3{font-family:"Noto Serif TC",serif;font-size:17px;margin:20px 0 8px;color:var(--ink)}
+.toc-group h3 .pg{color:var(--muted);font-family:"Noto Sans TC",sans-serif;font-size:13px;font-weight:400;margin-left:8px}
+.toc-row{display:flex;gap:12px;align-items:baseline;background:var(--surface);border:1px solid var(--line2);border-radius:10px;padding:10px 14px;margin-bottom:6px}
+.toc-row .pg{flex:0 0 40px;text-align:right;color:var(--muted);font-size:13.5px;font-variant-numeric:tabular-nums}
+.toc-row .tt{flex:1;min-width:0}
+.toc-row .en{font-family:Georgia,serif;font-size:15.5px;line-height:1.45}
+.toc-row .zh{font-size:14px;color:var(--ink2)}
+.toc-row.part{background:var(--surface2);border-color:var(--line)}
+.toc-row.part .en{font-weight:700}
+@media(max-width:560px){.toc-row{flex-wrap:wrap}.toc-row .pg{flex-basis:auto}}
+
+/* ---------- reader ---------- */
+.reader-tools{position:sticky;top:64px;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.reader-tools input[type=search]{flex:1;min-width:150px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:9px 12px;font-size:14.5px;font-family:inherit}
+.toolbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:9px 13px;font-size:13.5px;font-weight:500}
+.toolbtn:hover{border-color:var(--gold2)}
+.toolbtn.playing{background:var(--seal);border-color:var(--seal);color:#fff}
+.count-note{font-size:13px;color:var(--muted)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px 14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card.playing-now{border-color:var(--gold2);box-shadow:0 0 0 2px var(--goldsoft),var(--shadow)}
+.card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.sid{font-family:Georgia,serif;font-weight:700;font-size:13px;background:var(--ink);color:var(--bg);border-radius:6px;padding:2px 9px;letter-spacing:.04em}
+.card-top .pgno{font-size:12.5px;color:var(--muted)}
+.card-actions{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.abtn{border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:8px;padding:5px 11px;font-size:12.5px;font-weight:500}
+.abtn:hover{border-color:var(--gold2)}
+.abtn.stop{background:var(--seal);color:#fff;border-color:var(--seal)}
+.en-s{font-family:Georgia,"Times New Roman",serif;font-size:calc(18.5px * var(--fs,1));line-height:1.65;margin:2px 0 8px}
+.zh-s{font-size:calc(15.5px * var(--fs,1));color:var(--ink);line-height:1.8;margin:0 0 6px}
+.zh-s .lbl{color:var(--gold);font-weight:700;font-size:12.5px;letter-spacing:.06em;margin-right:6px}
+.detail{display:none;border-top:1px dashed var(--line);margin-top:10px;padding-top:12px}
+.card.open .detail{display:block}
+.detail dl{margin:0;display:grid;grid-template-columns:86px 1fr;gap:7px 12px;font-size:14.5px}
+.detail dt{color:var(--gold);font-weight:700;font-size:13px;padding-top:2px;white-space:nowrap}
+.detail dd{margin:0;color:var(--ink2);line-height:1.75}
+.detail dd .ex-en{font-family:Georgia,serif;color:var(--ink)}
+.toggle-detail{margin-top:8px;border:none;background:none;color:var(--gold);font-size:13.5px;font-weight:700;padding:4px 0}
+.toggle-detail::after{content:" ▾"}
+.card.open .toggle-detail::after{content:" ▴"}
+.flag{border:1px solid var(--seal);background:var(--sealsoft);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px}
+.flag b{color:var(--seal)}
+.zhpara{background:var(--surface2);border:1px solid var(--line2);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px}
+.zhpara h4{margin:0 0 6px;font-family:"Noto Serif TC",serif;font-size:15.5px}
+.zhpara p{margin:0;font-size:15.5px;line-height:1.9}
+.notebox{background:var(--surface2);border:1px solid var(--line2);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.notebox h4{margin:0 0 8px;font-family:"Noto Serif TC",serif;font-size:16px}
+.notebox p,.notebox li{font-size:14.5px;color:var(--ink2)}
+.notebox ul{margin:6px 0;padding-left:20px}
+
+/* ---------- overview table ---------- */
+.ovtable{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.ovtable th,.ovtable td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line2);font-size:14.5px;vertical-align:top}
+.ovtable th{background:var(--surface2);font-family:"Noto Serif TC",serif;font-size:14px}
+.ovtable td.pg{width:64px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ovtable tr:last-child td{border-bottom:none}
+@media(max-width:560px){.ovtable td.pg{width:48px}}
+
+/* ---------- lists / progress ---------- */
+.plist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.plist li{background:var(--surface);border:1px solid var(--line2);border-radius:10px;padding:12px 16px;font-size:15px;display:flex;gap:12px;align-items:baseline}
+.plist li .dot{flex:0 0 auto;width:9px;height:9px;border-radius:50%;background:var(--teal);margin-top:6px}
+.plist li.todo .dot{background:var(--gold2)}
+.plist li.wait .dot{background:var(--seal)}
+.plist li small{display:block;color:var(--muted);font-size:13px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+.two-col h3{font-family:"Noto Serif TC",serif;font-size:18px;margin:0 0 10px}
+
+footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color:var(--muted);font-size:13.5px;line-height:1.8}
+.empty-note{border:1px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center;color:var(--muted);font-size:14.5px;display:none}
+</style>
+<style id="sanbaoGateCss">body:not(.sanbao-approved) .wrap{display:none!important}</style>
+</head>
+<body>
+<div id="sanbaoGate" style="max-width:560px;margin:8vh auto;padding:28px;background:#fffdf8;border:1px solid #ddd2bd;border-radius:16px;font-family:'Noto Sans TC',sans-serif;line-height:1.8;color:#26221b">
+<h2 style="margin-top:0">三寶真義與修道讀書會</h2>
+<p id="sanbaoGateMsg">本教材不公開，僅供核准學員閱讀。請先用 Google 帳號登入。V4 語橋學院已核准的老師可直接進入，不用再申請。</p>
+<div id="sanbaoGateUser" style="display:none;margin:10px 0"></div>
+<button id="sanbaoSignIn" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#26221b;color:#fff;padding:10px 22px;font:inherit">Google 登入</button>
+<button id="sanbaoApply" type="button" style="display:none;cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#fff;color:#26221b;padding:10px 22px;font:inherit;margin-left:8px">申請加入讀書會</button>
+<button id="sanbaoSignOut" type="button" style="display:none;cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#fff;color:#26221b;padding:10px 22px;font:inherit;margin-left:8px">登出</button>
+<div id="sanbaoAdmin" style="display:none;margin-top:22px;border-top:1px solid #e9e1cf;padding-top:16px">
+<h3 style="margin:0 0 8px">管理員審核（僅 f216002@gmail.com）</h3>
+<button id="sanbaoApproveAll" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#8a6d1f;color:#fff;padding:8px 18px;font:inherit">批次核准全部待審核</button>
+<div id="sanbaoReqList" style="margin-top:12px"></div>
+</div>
+<p style="font-size:.85rem;color:#8a8172">請用 Safari 或 Chrome 直接開啟本頁再登入；LINE 等 App 內建瀏覽器無法完成 Google 登入。</p>
+</div>
+
+
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#top">三寶真義與修道<small>英文三寶線上讀書會</small></a>
+    <nav class="mainnav">
+      <a href="#toc">目錄</a>
+      <a href="#preface">Preface</a>
+      <a href="#foreword">Foreword</a>
+      <a href="#significance">求道的殊勝</a>
+      <a href="#schedule">共讀時間與進度</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap" id="top">
+
+  <!-- ================= HERO ================= -->
+  <div class="hero">
+    <div class="rule"></div>
+    <h1>三寶真義與修道</h1>
+    <p class="en-title">The True Meanings of the Three Treasures<br>and Cultivation of Tao</p>
+    <p class="slogan">Receive the Tao Transmission to Initiate the Revival of One's Innate Nature &amp; Transcend the Six Pathways of Reincarnation</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#preface">開始共讀 Preface</a>
+      <a class="btn" href="#toc">看全書目錄</a>
+      <a class="btn" href="#schedule">共讀時間</a>
+    </div>
+    <div class="factgrid">
+      <div class="fact">
+        <div class="k">共讀時間 · 台灣</div>
+        <div class="v">21:30 – 22:30<small>每週 5–6 天，Zoom 線上會議室</small></div>
+      </div>
+      <div class="fact">
+        <div class="k">共讀時間 · 印度</div>
+        <div class="v">19:00 – 20:00<small>與台灣時間同步換算（慢 2.5 小時）</small></div>
+      </div>
+      <div class="fact">
+        <div class="k">目前進度</div>
+        <div class="v">封面＋書頁 1–27<small>Preface、Foreword、求道的殊勝已全文轉錄；下一缺口是書頁 28「壹、什麼是道」</small></div>
+      </div>
+    </div>
+    <div class="reminder">
+      <b>Kind Reminder · 溫馨提醒</b>（書頁 3，書上原文只有英文）
+      <p>This book is meant to promote greater inter-faith understanding and <i>not meant specifically for Muslim consumption</i>.</p>
+      <p>Please be aware of local publication laws before bringing into your country of residence.</p>
+      <p class="small">書頁 1 是與封面相同的黑白圖檔頁、書頁 2 是空白頁，這三頁書上都沒有印頁碼；本站依原書順序補記，不放掃描圖，內文一律重新排版。</p>
+    </div>
+  </div>
+
+  <!-- ================= TOC ================= -->
+  <section class="block" id="toc">
+    <div class="sec-head"><h2>全書目錄</h2><span class="en">Table of Contents · 書頁 4–7</span></div>
+    <p class="sec-sub">全書 40 個條目，頁碼是書上印的頁碼。狀態分三種：<span class="tag done">已全文轉錄</span> 句子卡可直接共讀；<span class="tag overview">已有每頁總覽</span> 逐句轉錄進行中；<span class="tag wait">待拍攝</span> 等下一批書頁照片。</p>
+    <div class="toc-tools" id="tocTools">
+      <button class="on" data-f="all">全部</button>
+      <button data-f="done">已全文轉錄</button>
+      <button data-f="overview">已有總覽</button>
+      <button data-f="wait">待拍攝</button>
+    </div>
+    <div id="tocList"></div>
+  </section>
+
+  <!-- ================= PREFACE ================= -->
+  <section class="block" id="preface">
+    <div class="sec-head"><h2>Preface</h2><span class="en">書頁 8–11 · 全文轉錄</span></div>
+    <p class="sec-sub">共 32 句（P-01 – P-32）加編者的話 5 句（E-01 – E-05），照書上文字轉錄，書上原寫法（如 ones、not deviated）不擅自改。每張卡附中文大意與「剝洋蔥五層」詳細解釋（預設收合）；中文大意與解釋是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。朗讀用裝置內建語音：每張卡一個播放鍵，依序播中文大意 1 遍、英文 3 遍。</p>
+    <div class="reader-tools" data-reader="preface">
+      <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋 Preface 句子">
+      <button class="toolbtn" data-act="playall">▶ 連播本節（中文 1 遍＋英文 3 遍）</button>
+      <button class="toolbtn" data-act="stop">■ 停止</button>
+      <button class="toolbtn" data-act="font">字級 A+</button>
+      <span class="count-note"></span>
+    </div>
+    <div id="prefaceCards"></div>
+    <div class="empty-note" data-empty="preface">沒有符合的句子，換個關鍵字試試。</div>
+  </section>
+
+  <!-- ================= FOREWORD ================= -->
+  <section class="block" id="foreword">
+    <div class="sec-head"><h2>Foreword · 前言</h2><span class="en">書頁 12–14 · 一、恭喜的意義</span></div>
+    <p class="sec-sub">書上中文段與英文句是分開刊登的，本站照原樣分開列：先中文段、再英文句（F-01 – F-15），不宣稱逐句對譯。書頁 13、14 的註 1、註 2 與五倫、八德細目收在本節後段。書頁 14 末行在書上截斷，已標為 F-16 待核對，本站不自行補寫。</p>
+    <div class="reader-tools" data-reader="foreword">
+      <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋 Foreword 句子">
+      <button class="toolbtn" data-act="playall">▶ 連播本節（中文 1 遍＋英文 3 遍）</button>
+      <button class="toolbtn" data-act="stop">■ 停止</button>
+      <button class="toolbtn" data-act="font">字級 A+</button>
+      <span class="count-note"></span>
+    </div>
+    <div id="forewordZh"></div>
+    <div id="forewordCards"></div>
+    <div class="empty-note" data-empty="foreword">沒有符合的句子，換個關鍵字試試。</div>
+    <div id="forewordNotes"></div>
+  </section>
+
+  <!-- ================= SIGNIFICANCE ================= -->
+  <section class="block" id="significance">
+    <div class="sec-head"><h2>二、求道的殊勝</h2><span class="en">B. The Extraordinary and Sacred Significance of Receiving Tao · 書頁 15–27 · 全文轉錄</span></div>
+    <p class="sec-sub">共 88 句（B-01 – B-88），照書上英文原樣轉錄；跨頁句 B-34、B-39、B-49、B-56、B-63、B-68／B-69、B-88 皆以完整形收錄。這 13 頁的中英文不是逐行對照，句子卡維持「以英文句為主、中文作學習解釋」：書上的中文段（書頁 15、20、22、24）照原樣穿插在相應位置，書頁 16 的可蘭經中文註、書頁 17 的龍天表註、註 3（書頁 19–20 完整版）與註 4（收圓，書頁 23 全文）收在本節後段。中文大意與五層解釋是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。朗讀用裝置內建語音：每張卡一個播放鍵，依序播中文大意 1 遍、英文 3 遍。</p>
+    <div class="reader-tools" data-reader="signif">
+      <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋求道的殊勝句子">
+      <button class="toolbtn" data-act="playall">▶ 連播本節（中文 1 遍＋英文 3 遍）</button>
+      <button class="toolbtn" data-act="stop">■ 停止</button>
+      <button class="toolbtn" data-act="font">字級 A+</button>
+      <span class="count-note"></span>
+    </div>
+    <div id="signifZh"></div>
+    <div id="signifCards"></div>
+    <div class="empty-note" data-empty="signif">沒有符合的句子，換個關鍵字試試。</div>
+    <div class="notebox"><h4>書頁 16 頁末中文註 · 可蘭經 38:72（照書錄入）</h4><p>可蘭經38:72：「當我把他造出來，並將我的精神（靈性）吹入他的體內的時候」（註：原文阿拉伯語 'ruh' 正式翻譯是 'spirit'，而不是一般翻譯的 'soul'。）</p></div>
+    <div class="notebox"><h4>Note · Long Tian Form（書頁 17，照書錄入）</h4><p style="font-family:Georgia,serif">The Long Tian Form is called the Heavenly Dragon Form because the "dragon" refers to the Heavenly dragon safeguarding the form to be delivered to Heaven for registering into the Book of Life.</p><p>大意：龍天表之所以稱為「天龍表」，是因為「龍」指的是護送表文上天、登記進生命冊的天龍。</p></div>
+    <div class="notebox"><h4>註 3 · Filial Piety 孝道（書頁 19–20，完整版，照書錄入）</h4><p style="font-family:Georgia,serif">Filial Piety（孝道）: The phrase Filial Piety is a special term created by earlier translators of Asian cultures to explain the Confucian emphasis on the meaning and requirements of a child's love, duty and respect towards their parents. 'Filial' is descended from Latin filius, meaning "son" and filia, meaning "daughter". In English (where it has been used since at least the 14th century) the same word has always applied to cover both daughters and sons. The word 'filial' has long carried the dutiful sense "owed to a parent by a child", as found in such phrases as "filial respect". These days it can also be used more generally for any emotion or behaviour of a child to a parent, e.g. "filial love". Piety（虔誠）refers to a quality or state of being pious or reverent, e.g. religious piety. Thus the combined phrase "filial piety" covers the "fidelity to natural obligations to parents", to a state equating to a "religious devoutness". It is much more than a mere "honour thy parents" in Western culture. In Confucian values, filial piety is an innate virtue demonstrated through venerable respect towards one's parents, elders, and ancestors. The confucian belief has always been among all goodness one can perform, filial piety ranks first before all others. Thus when one can successfully practise filial piety, one will then also be able to achieve all other innate virtues, such as: sibling love（悌， ti), loyalty（忠， zhong), honesty and trustworthiness（信， xin), propriety（禮， li), righteousness（義， yi), integrity（廉， lian), shame（恥， chi). It is because if a child disobeys these Innate Virtues, he/she will disappoint and cause worry and shame to their parents. In addition, filial piety goes much beyond mere obedience to one's parents. It goes to the extent of trying one's absolute best to listen to their parents' advice, obey their instructions, accept their recommendations, satisfy their aspirations and needs, etc., within the sound limits of laws and morality so as to bring honourable reputation to one's parents and ancestors through one's presence in the society. This timeless tradition of maintaining harmonious parent-child relationships is very important because one's filial piety will bring peace and harmony in one's family, a harmonious family will bring stability to the society, and a stabilised society will bring prosperity to the country. Thus it is not a surprise that filial piety also forms the basic core requirement of being a responsible person.</p><p>大意：本註解釋 Filial Piety（孝道）這個譯詞的由來與分量：filial 源自拉丁文 filius（子）、filia（女），piety 是虔誠；合起來指子女對父母如宗教般虔誠的天然義務。儒家以孝為眾善之首——能行孝，悌、忠、信、禮、義、廉、恥諸德也都能隨之成就；孝也不止於順從，還要在法律與道德的合理範圍內，盡力聽從、滿足父母，讓父母與祖先因自己在社會上的表現而得榮耀。家和則社會安定、國家繁榮，所以孝也是做一個負責任的人的核心要求。（中文大意為 AI 草稿，待審定。）</p></div>
+    <div class="notebox"><h4>註 4 · 收圓（書頁 23 全文，照書錄入）</h4><p style="font-family:Georgia,serif">Full and Complete Restoration of Spirits (Shou Yuan 收圓) is the completion of the widespread Final Salvation among the Three Realms so that all religions can restore to their original root of the Heavenly Truth and all God-derived spirits could be saved by each working on restoring their True Innate Nature, having achieved their Holy Achievements and return to Heaven. This is achieved when both the restoration is completed on a personal level as well as an overarching level.</p><p>大意：收圓，就是三曹廣行末後普渡的圓滿完成：各宗教同歸天道的本源，一切源自上帝的靈性各自努力恢復真本性、成就聖果、回到天庭；當個人的恢復與整體的恢復都完成時，收圓才算成就。（中文大意為 AI 草稿，待審定。）</p></div>
+  </section>
+
+  <!-- ================= SCHEDULE ================= -->
+  <section class="block" id="schedule">
+    <div class="sec-head"><h2>共讀時間與進度</h2><span class="en">Reading Group</span></div>
+    <p class="sec-sub">讀書會在 Zoom 線上進行，台灣時間每週 5–6 天晚上 21:30–22:30（印度時間 19:00–20:00），學員人數不限。讀法是逐句共讀：每句先讀英文，再開「詳細解釋」剝洋蔥五層——大意、句型、單字片語、道義內涵、記憶＋仿造句，解釋一律繁體中文。</p>
+    <div class="two-col">
+      <div>
+        <h3>整理進度</h3>
+        <ul class="plist">
+          <li><span class="dot"></span><span>封面＋書頁 1–7<b> 已整理</b><small>封面、黑白圖檔頁（補記）、空白頁（補記）、溫馨提醒、目錄書頁 4–7 全文</small></span></li>
+          <li><span class="dot"></span><span>Preface 書頁 8–11<b> 已全文轉錄</b><small>P-01 – P-32 ＋編者的話 E-01 – E-05，句子卡已上線</small></span></li>
+          <li><span class="dot"></span><span>Foreword 書頁 12–14<b> 已全文轉錄</b><small>F-01 – F-15、中文段 2 段、註 1／註 2、五倫八德細目；F-16 截斷句待核對</small></span></li>
+          <li><span class="dot"></span><span>求道的殊勝 書頁 15–27<b> 已全文轉錄</b><small>B-01 – B-88 句子卡已上線，含書頁 15、20、22、24 中文段與註 3、註 4；第 27 頁有濟公活佛插圖（未放掃描圖）</small></span></li>
+          <li class="wait"><span class="dot"></span><span>書頁 28 起<b> 待拍攝</b><small>第一章「壹、什麼是道」，等下一批照片後接續轉錄</small></span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>共讀方式</h3>
+        <ul class="plist">
+          <li><span class="dot"></span><span>逐句編號共讀<small>句子卡以英文句為主、逐句編號，點名或搜尋都能直接找到</small></span></li>
+          <li><span class="dot"></span><span>朗讀跟讀<small>每張卡一個播放鍵，依序朗讀中文大意 1 遍、英文 3 遍（裝置內建語音）；整節連播也是同樣的順序</small></span></li>
+          <li><span class="dot"></span><span>剝洋蔥五層解釋<small>收在每張卡的「詳細解釋」裡，預設不展開，共讀時逐層打開</small></span></li>
+          <li><span class="dot"></span><span>專有名詞原則<small>三寶等專有名詞沿用音譯為主、意譯為輔的審定原則，如 Ming Ming Shang Di、Lao Mu、Dian Chuan Shi</small></span></li>
+          <li class="todo"><span class="dot"></span><span>待辦<small>中文 1 遍＋英文 3 遍的美式女聲音檔（Azure TTS 全站共用快取）尚未合成，先以裝置語音代替</small></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    本站內文照原書重新排版轉錄，未使用掃描圖；英文句照書上文字（含原書寫法），中文大意與五層解釋為學習用 AI 草稿、待老師審定。F-16 為書頁 14 末行截斷句，待核對原書後再補，不臆測補寫。<br>
+    《三寶真義與修道》The True Meanings of the Three Treasures and Cultivation of Tao · 英文三寶線上讀書會共讀用。
+  </footer>
+</div>
+
+<script>
+/* ================= 資料：目錄 ================= */
+var TOC_GROUPS=[
+ {part:false,items:[
+  [8,"Preface","","done"],
+  [12,"Foreword","前言","done"],
+  [12,"A. Why Do We Congratulate You When You Receive Tao?","一、恭喜的意義","done"],
+  [15,"B. The Extraordinary and Sacred Significance of Receiving Tao","二、求道的殊勝","done"]
+ ]},
+ {part:true,page:28,en:"1. What is Tao?",zh:"壹、什麼是道",items:[
+  [28,"A. Tao is One's True Self","一、道是真主人、自性佛、靈性","wait"],
+  [34,"B. Tao is the Pathway to Heaven","二、道是通天的正路","wait"],
+  [40,"C. Tao is the Root, the Axis, and the Master of All Things Formed and Formless","三、道是諸形萬物的總根源、總樞紐、總主宰","wait"],
+  [42,"D. Tao is the Truth and Principles Behind the Laws of Nature in the Universe","四、道是宇宙天地自然界運行的理則","wait"]
+ ]},
+ {part:true,page:54,en:"2. The True Meanings of Receiving the Tao",zh:"貳、求道的真義",items:[
+  [54,"A. To Recognise One's True Self","一、找到真主人","wait"],
+  [55,"B. To Allow the Spirit Within to Emancipate From Reincarnation","二、超脫輪迴","wait"],
+  [56,"C. To Enable One to Initiate the Revival of One's Innate Nature","三、回復自性本源","wait"],
+  [60,"D. Validation of The Holy Spirit, Holy Ghost, Comforter, or the Spirit of Truth from Christian Scriptures","四、聖靈之耶教印證","wait"],
+  [70,"E. Holy Messages from Buddhas and Celestials","五、仙佛聖訓","wait"],
+  [70,"I. Holy Messages from Ji-Gong Living Buddha and Jiao-Hua Bodhisattva","（一）活佛師尊、教化菩薩聖訓","wait"],
+  [73,"II. Holy Message from Nan-Ji Heavenly Elder","（二）南極老仙翁慈訓","wait"],
+  [73,"III. Holy Message from Ji-Gong Enlightened Teacher","（三）活佛老師慈訓","wait"],
+  [76,"F. The Enlightened Teacher's Pointer is the Tao","六、明師一指就是道","wait"],
+  [82,"G. Tao Descends Because of Calamities, and Calamities Occur Because of Human Minds and Conducts","七、道因劫降、劫因心召","wait"],
+  [85,"H. Transcend from the Cycle of Birth and Death, and Benefiting One's Ancestors and Descendants","八、超生了死、玄祖沾恩","wait"]
+ ]},
+ {part:true,page:89,en:"3. The True Meanings of The Three Treasures and Cultivation of Tao",zh:"參、三寶真義與修道",items:[
+  [89,"A. The Essence of the Three Treasures","一、白陽三寶的底蘊","wait"],
+  [92,"B. The True Meanings of the Three Treasures","二、三寶真義","wait"],
+  [92,"I. Heavenly Portal — The Genuine Pathway to Heaven (Spirits' Home)","（一）「關」者，玄關竅——是通天正路","wait"],
+  [139,"II. Heavenly Mantra — the “Divine Mantra Connecting to Heaven” or the “Five-Word Mantra”","（二）「訣」者，口訣，即五字真言、通天神咒","wait"],
+  [150,"III. Heavenly Seal — the “Divine Seal Connecting to Heaven”, or the “Seal that Unifies and Aligns with One's Innate Nature”","（三）「印」者，合同——是通天神印","wait"]
+ ]},
+ {part:true,page:159,en:"4. Conclusions",zh:"肆、結語",items:[
+  [159,"A. Understand the Relationship between Tao and Religions","一、認清道與教的關係","wait"],
+  [166,"B. Seize the Opportunity of the Final Salvation to Perform Meritorious Deeds and Fulfil Heavenly Vows","二、把握末後一著、行功了愿","wait"]
+ ]},
+ {part:true,page:179,en:"Appendix 1",zh:"附錄一",items:[
+  [179,"A. Things to Remember after Receiving the Tao Transmission","一、求道後須注意事項","wait"],
+  [210,"B. Cultivation Through the Kneel-and-Bowing Ritual","二、叩首修持","wait"],
+  [220,"C. An Explanation of The Token of Merit as Part of The Tao Transmission Ceremony","三、求道功德費意義","wait"]
+ ]},
+ {part:true,page:224,en:"Appendix 2",zh:"附錄二",items:[
+  [224,"The Tenets of Tao","道之宗旨","wait"]
+ ]},
+ {part:true,page:229,en:"Appendix 3",zh:"附錄三",items:[
+  [229,"The Chapter of Propriety and Rites Towards Great Harmony and Unity","禮運大同篇","wait"]
+ ]},
+ {part:true,page:231,en:"Appendix 4",zh:"附錄四",items:[
+  [231,"Tao Terminology Glossary","","wait"]
+ ]}
+];
+var STATUS_TXT={done:"已全文轉錄",overview:"已有總覽",wait:"待拍攝"};
+function renderTOC(filter){
+  var host=document.getElementById('tocList');host.innerHTML='';
+  TOC_GROUPS.forEach(function(g){
+    var div=document.createElement('div');div.className='toc-group';
+    if(g.part){
+      var showPart=(filter==='all'||filter==='wait');
+      if(showPart){
+        var h=document.createElement('h3');
+        h.innerHTML='';h.textContent=g.en;
+        var s=document.createElement('span');s.className='pg';s.textContent=g.zh+' · 書頁 '+g.page;
+        h.appendChild(s);div.appendChild(h);
+        var pr=document.createElement('div');pr.className='toc-row part';
+        pr.innerHTML='<span class="pg">'+g.page+'</span><span class="tt"><span class="en"></span> <span class="zh"></span></span>';
+        pr.querySelector('.en').textContent=g.en;pr.querySelector('.zh').textContent=g.zh;
+        var t=document.createElement('span');t.className='tag wait';t.textContent=STATUS_TXT.wait;pr.appendChild(t);
+        div.appendChild(pr);
+      }
+    }
+    g.items.forEach(function(it){
+      if(filter!=='all'&&it[3]!==filter)return;
+      var r=document.createElement('div');r.className='toc-row';
+      var pg=document.createElement('span');pg.className='pg';pg.textContent=it[0];
+      var tt=document.createElement('span');tt.className='tt';
+      var en=document.createElement('span');en.className='en';en.textContent=it[1];
+      tt.appendChild(en);
+      if(it[2]){tt.appendChild(document.createElement('br'));var zh=document.createElement('span');zh.className='zh';zh.textContent=it[2];tt.appendChild(zh);}
+      var tag=document.createElement('span');tag.className='tag '+it[3];tag.textContent=STATUS_TXT[it[3]];
+      r.appendChild(pg);r.appendChild(tt);r.appendChild(tag);div.appendChild(r);
+    });
+    if(div.children.length)host.appendChild(div);
+  });
+  if(!host.children.length){host.innerHTML='<div class="empty-note" style="display:block">這個分類目前沒有條目。</div>';}
+}
+document.getElementById('tocTools').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  this.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on');renderTOC(b.dataset.f);
+});
+renderTOC('all');
+
+/* ================= 求道的殊勝：書頁 15 書上中文段（照原書錄入） ================= */
+(function(){
+  var host=document.getElementById('signifZh');
+  var d=document.createElement('div');d.className='zhpara';
+  var h=document.createElement('h4');h.textContent='二、求道的殊勝 · 書上中文段（書頁 15）';
+  d.appendChild(h);
+  ["須知「明師一指」，就是道。告訴我們每個人生來就具有這個「道」，這道本來就在我們自身中，稱為靈性、佛性、性理、靈氣或良知良能等。這一口靈氣在，則千般用，不在則萬事休矣。所以說「性在人在，性去人亡」；可見道是多麼重要，是片刻不可離身的。",
+   "再說求道時「龍天表」升天，是「天榜掛號，地府除名」，我們的名字已在三官大帝那裡註冊，脫離閻君之掌管，這就是受明師一指的殊勝。以後只要存好心、說好話、做好事，不反道敗德，做個有德行的人；將來我們的靈性是直接走正門，超氣入理回到無極理天，永證品蓮，不再受六道輪回之苦。而且這色身呈現「冬不挺屍，夏不腐臭」身軟如綿的垂筋瑞象，是證道歸真的見證。此期求道只要誠心行功培德，我們的九玄七祖亦能同沾天恩，聽聞佛法與我們共修；亦可經由陽世的子孫迴向功德而超拔回理天，脫離地獄受苦，以行大大孝。"
+  ].forEach(function(t,i){
+    var p=document.createElement('p');p.textContent=t;if(i)p.style.marginTop='10px';d.appendChild(p);
+  });
+  host.appendChild(d);
+})();
+
+/* ================= 資料：求道的殊勝 句子卡 上半（書頁 16–21，照書轉錄） ================= */
+var SIGNIF=[
+{id:"B-01",pg:16,en:"Over 2,500 years ago, Shakyamuni Buddha achieved spiritual realisation whilst sitting under the Bodhi tree.",zh:"兩千五百多年前，釋迦牟尼佛坐在菩提樹下，成就了靈性的覺悟。",vocab:"realisation 覺悟、體證（英式拼法）；whilst 在……之時（=while，英式）；Bodhi tree 菩提樹；achieve 成就",pat:"Over ... years ago — ……多年前（時間狀語放在句首）。",dao:"佛陀在菩提樹下證悟，是「人人本具佛性」的起點。",ex:"Over two thousand years ago, the teacher sat under a tree and understood the truth."},
+{id:"B-02",pg:16,en:"He was astonished there and then by the realisation that all sentient beings actually possess the same Innate Virtues as Buddhas themselves.",zh:"他當下驚嘆地體悟到：一切眾生其實都具足與佛相同的本具德性。",vocab:"astonished 驚嘆的；there and then 當下、就在那時那地；possess 具足、擁有；Innate Virtues 本具德性；sentient beings 眾生",pat:"the realisation that ... — 體悟到……（that 引導同位語子句，說明 realisation 的內容）。",dao:"眾生與佛同具本性——這是求道能喚醒真我的根本依據。",ex:"He was astonished by the realisation that everyone has a kind heart."},
+{id:"B-03",pg:16,en:"The main obstacle that stands in the way of sentient beings achieving the same spiritual realisation are the layers of desires and attachments accumulated over many lifetimes.",zh:"眾生無法達到同樣靈性覺悟的主要障礙，是多生多世累積下來、層層疊疊的欲望與執著。（書上主詞 obstacle 為單數、動詞作 are，照原書錄入。）",vocab:"obstacle 障礙；stand in the way 擋路、阻礙；layer 層；desire 欲望；attachment 執著；accumulate 累積；lifetime 一生、一世",pat:"The main obstacle ... are the layers of ... — 主要障礙是層層的……。",dao:"障礙不在外境，在累世累積的欲望與執著——修道就是一層層放下。",ex:"The main obstacle is the layers of bad habits."},
+{id:"B-04",pg:16,en:"Therefore, as mentioned previously, receiving Tao awakens the True Self and enables one's spiritual realisation that everyone possesses the same endowed spirit from God.",zh:"因此，如前所述，求道能喚醒真我，使人在靈性上體悟到：每個人都具足同一份由上帝賦予的靈性。",vocab:"therefore 因此；as mentioned previously 如前所述；awaken 喚醒；enable 使能夠；endowed 被賦予的",pat:"enables one's realisation that ... — 使人體悟到……。",dao:"求道的作用：喚醒真我、認回同源同根的靈性。",ex:"Practice awakens the mind and enables real change."},
+{id:"B-05",pg:16,en:"Hence, receiving Tao is essential to the beginning on a journey of reviving this True Self to its fullest spiritual potential via just one lifetime of Tao cultivation and propagation.",zh:"所以，求道是踏上旅程不可或缺的起點——只用一生的修道與辦道，把真我恢復到它靈性潛能的極致。",vocab:"hence 所以、因此；essential 不可或缺的；revive 恢復、復甦；fullest 最充分的；potential 潛能；via 藉由",pat:"be essential to the beginning on a journey of ...-ing — 是踏上……旅程不可或缺的起點。",dao:"一世修、一世成：白陽期修辦的殊勝正在於此。",ex:"A good start is essential to the journey of learning."},
+{id:"B-06",pg:16,en:"To further emphasise, this Tao entity is the spirit, the Buddha Self, spiritual essence（靈氣）, Innate Conscience, etc.",zh:"進一步強調：這個「道」的本體，就是靈性、佛性、靈氣、本心良知等。（名稱照書上並列。）",vocab:"emphasise 強調（英式拼法）；entity 本體、實體；essence 本質、精華；conscience 良知",pat:"this ... entity is A, B, C, etc. — 這個本體就是 A、B、C 等（同物異名並列）。",dao:"名相雖多，所指同一個道體——靈性、佛性、良知，都是它。",ex:"This quality is kindness, patience, honesty, etc."},
+{id:"B-07",pg:16,en:"As long as the spirit still resides in the body, a person is in fact alive and capable of all physical functions, thoughts and actions.",zh:"只要靈性還住在身體裡，人就實際上活著，能有身體的一切功能、思想與行為。",vocab:"as long as 只要；reside 居住、存住；in fact 實際上；capable of 能夠……；function 功能",pat:"As long as ..., a person is ... — 只要……，人就……。",dao:"性在人在：靈性是生命一切活動的主宰。",ex:"As long as the light is on, the room is bright."},
+{id:"B-08",pg:16,en:"Conversely, from the moment the spirit departs from the body, the latter becomes nothing but a lifeless corpse.",zh:"反過來說，從靈性離開身體的那一刻起，身體就只剩一具沒有生命的屍體。",vocab:"conversely 反過來說；from the moment 從……的那一刻起；depart 離開；the latter 後者；nothing but 只是、不過是；corpse 屍體",pat:"the latter becomes nothing but ... — 後者就只剩……。",dao:"性去人亡：身體的價值在於靈性是否在住。",ex:"From the moment the music stops, the hall becomes quiet."},
+{id:"B-09",pg:16,en:"This exemplifies a common Chinese phrase: \"When the spirit is present within, one is alive. When the spirit has departed, one is dead.\"",zh:"這正說明了中國一句常見的話：「性在人在，性去人亡。」（引號內為書上的英譯。）",vocab:"exemplify 說明、例證；common 常見的；phrase 俗語、成語；be present 存在、在場",pat:"This exemplifies a phrase: \"...\" — 這正說明了一句話：「……」",dao:"以中國俗語印證前句：性在人在、性去人亡。",ex:"This exemplifies a common saying: \"Practice makes perfect.\""},
+{id:"B-10",pg:16,en:"This phrase corroborates the importance of one's spirit - the Tao.",zh:"這句話印證了人的靈性——也就是道——有多麼重要。",vocab:"corroborate 印證、證實；importance 重要性",pat:"corroborate the importance of ... — 印證……的重要性。",dao:"靈性就是道，是片刻不可離身的命根。",ex:"The result corroborates the importance of daily review."},
+{id:"B-11",pg:16,en:"It cannot leave the body, even for the slightest moment, until it is time to depart when life concludes with death.",zh:"它（靈性）連最短的一刻都不能離開身體，直到生命以死亡結束、到了該離開的時候。",vocab:"slightest 最微小的；conclude 結束；depart 離開",pat:"cannot ..., even for the slightest moment, until ... — 連……都不能……，直到……。",dao:"道是片刻不可離身的，離了便不是生命了。",ex:"The guard cannot leave, even for the slightest moment."},
+{id:"B-12",pg:16,en:"In the noble Quran 38:72, it mentions, \"So when I have proportioned him and breathed into him of My soul (Spirit, Arabic: ruh)\".",zh:"高貴的《可蘭經》38:72 提到：「當我把他（人）造成形體，並把我的靈（Spirit，阿語 ruh）吹入他體內之時。」（書頁 16 頁末的中文註收在本節後段。）",vocab:"noble 高貴的；Quran 可蘭經；proportion 造成形體、使成形；breathe into 吹入；soul / ruh 靈",pat:"it mentions, \"...\" — 經中提到：「……」（直接引文）。",dao:"伊斯蘭經典同證：人的靈性來自上帝所吹入的一口靈氣。",ex:"The book mentions, \"Be kind to one another.\""},
+{id:"B-13",pg:17,en:"The Tao Transmission Ceremony requires the 'Long Tian Form' (meaning Heavenly Dragon Form) be used to record the Tao recipient's birth name and is burnt during the Tao transmission ceremony.",zh:"求道（傳道）儀式規定要用「龍天表」（意即天龍表）記錄求道人的本名，並在傳道儀式中焚化。",vocab:"require 規定、需要；record 記錄；birth name 本名；burn 焚燒、焚化",pat:"requires X be used to ... and is burnt — 規定用 X 來……，並予以焚化。",dao:"龍天表升天，是天榜掛號的第一步。",ex:"The ceremony requires the form be signed and kept."},
+{id:"B-14",pg:17,en:"This allows one's birth name to be registered in Heaven's books (aka Book of Life), whilst allowing removal of one's birth name from the register in Hell.",zh:"這使人的本名能登記在天上的冊子（又稱生命冊）裡，同時把本名從地府的名冊上除去。",vocab:"allow 使能夠；register 登記；aka 又稱為（also known as）；removal 除去、移除；register 名冊",pat:"allows ... to be registered in ..., whilst allowing removal of ... — 使……登記於……，同時除去……。",dao:"「天榜掛號，地府除名」——這就是龍天表的意義。",ex:"This allows names to be added, whilst allowing errors to be removed."},
+{id:"B-15",pg:17,en:"This means that once the Tao transmission ceremony is complete, one would have successfully registered their names into Heaven with the Three Governing Lords, whilst at the same time having their names removed from the jurisdiction of the Ten Chief Ministers of Hell (Yama).",zh:"這表示傳道儀式一完成，求道人的名字就已成功在三官大帝那裡向天註冊，同時也從十殿閻君的管轄中除名。",vocab:"once 一旦、當……之後；complete 完成；successfully 成功地；Three Governing Lords 三官大帝；jurisdiction 管轄；Yama 閻君",pat:"once ... is complete, one would have ... — 儀式一完成，人就已經……。",dao:"受明師一指的殊勝：註冊在天、脫離閻君掌管。",ex:"Once the class is complete, students will have finished the course."},
+{id:"B-16",pg:17,en:"The proceedings of these events exemplifies the significance and sacredness of receiving an Enlightened Teacher's Tao transmission pointer.",zh:"這些儀節的進行，正彰顯了接受明師傳道一指的意義與神聖。（書上主詞 proceedings 為複數、動詞作 exemplifies，照原書錄入。）",vocab:"proceeding 儀節、程序；exemplify 彰顯、例證；significance 意義；sacredness 神聖；pointer 一指、指點",pat:"The proceedings ... exemplifies the significance of ... — 這些過程彰顯了……的意義。",dao:"儀式不是徒具形式：每個環節都在彰顯明師一指的神聖。",ex:"The ceremony exemplifies the significance of gratitude."},
+{id:"B-17",pg:17,en:"To highlight the significance of the Long Tian form used in the Tao transmitting ceremony, a Tao recipient's name must be clearly written down and double checked for correctness prior to burning it in the 'Ba-Gua' incense burner.",zh:"為凸顯龍天表在傳道儀式中的重要，求道人的姓名必須清楚寫下，並在放入八卦爐焚化之前，再三核對正確無誤。",vocab:"highlight 凸顯、強調；double check 再三核對；correctness 正確；prior to 在……之前；incense burner 香爐",pat:"must be clearly written down and double checked prior to ...-ing — 必須清楚寫下，並在……之前核對。",dao:"表文寫名、核名如此慎重，因為這是向天註冊的名字。",ex:"Names must be double checked prior to printing."},
+{id:"B-18",pg:17,en:"The Tao transmitting master will call out the names of Tao recipients as written on the Form to verify the names again.",zh:"點傳師會照著表文所寫，唱出求道人的姓名，再次確認無誤。",vocab:"call out 唱出、喊出；as written 照所寫的；verify 核實、確認",pat:"call out the names ... to verify ... again — 唱名，以再次核實。",dao:"唱名核對，是龍天表慎重程序的一環。",ex:"The teacher will call out the names to verify attendance."},
+{id:"B-19",pg:17,en:"The bible alluded to this sacred process of enlisting a recipient's name into Heaven's books and removing it from the register in Hell.",zh:"《聖經》也曾提及這個神聖的過程：把接受者的名字列入天上的冊子，並從地府的名冊中除去。",vocab:"allude to 暗指、提及；enlist 列入、登記；process 過程；register 名冊",pat:"allude to this process of ...-ing — 提及這個……的過程。",dao:"聖經的「生命冊」記載，與龍天表互為印證。",ex:"The poem alluded to this process of healing."},
+{id:"B-20",pg:17,en:"In Bible Revelation 20:15 when Jesus said: \"Anyone whose name wasn't written in the Book of Life was thrown into the lake of fire\".",zh:"《聖經·啟示錄》20:15，耶穌說：「凡名字沒有寫在生命冊上的人，就被扔進火湖裡。」（引文照書上文字錄入。）",vocab:"Revelation 啟示錄；Book of Life 生命冊；be thrown into 被扔進；lake of fire 火湖",pat:"Anyone whose name wasn't ... was ... — 凡名字沒有……的人，就被……。",dao:"名字在不在生命冊上關係重大——正顯天榜掛號的殊勝。",ex:"Anyone whose name wasn't on the list was asked to wait."},
+{id:"B-21",pg:17,en:"So in actual fact, at the Tao transmission ceremony, Tao recipients have just participated and witnessed the same sacred process that Jesus once conducted.",zh:"所以實際上，在傳道儀式中，求道人剛剛親自參與並見證了耶穌曾經進行過的同一個神聖過程。",vocab:"in actual fact 實際上；participate 參與；witness 見證；conduct 進行、主持",pat:"have just participated and witnessed the same process that ... — 剛剛參與並見證了與……相同的過程。",dao:"求道不是旁觀：求道人親身參與這神聖的註冊過程。",ex:"We have just witnessed the same kindness our teacher once showed."},
+{id:"B-22",pg:18,en:"After receiving the Tao Transmission, as long as one can harbour good thoughts, speak good words, do good deeds, not betraying morality nor deviate from Tao, to genuinely become a virtuous person, then in the future when one's spirit departs from the body permanently it will exit through the main door (Heavenly Portal) to surpass the Spiritual World (Celestial Pathway) and return directly to the Heaven of Ultimate Truth.",zh:"受了道之傳授以後，只要能存好心、說好話、做好事，不違背道德、不偏離道，真正做一個有德行的人，將來靈性永遠離開身體時，就會從正門（玄關）而出，越過氣界（靈性通路），直接回到無極理天。",vocab:"harbour 懷著、存心；betray 違背；morality 道德；deviate from 偏離；genuinely 真正地；virtuous 有德行的；permanently 永遠地；exit through 從……出去；main door 正門；surpass 越過、超越；Heaven of Ultimate Truth 理天",pat:"as long as one can ..., then ... it will ... — 只要能……，將來……就會……。",dao:"求道後的工夫很平實：三好、不背德、不偏道，歸天時走正門。",ex:"As long as one can keep good thoughts, the future will be bright."},
+{id:"B-23",pg:18,en:"This is the ultimate way for one's True Self to attain the Holy Achievement and thus not having to suffer any more from the pains of reincarnating in the Six Pathways of Reincarnation ever again.",zh:"這是真我成就聖果的究竟之路，從此不必再受六道輪迴之苦。",vocab:"ultimate 究竟的、最終的；attain 成就、達到；thus 從而；suffer 受苦；reincarnate 輪迴轉世；Six Pathways 六道",pat:"the ultimate way for ... to attain ... — ……成就……的究竟之路。",dao:"超氣入理、永證品蓮，不再受六道輪迴之苦。",ex:"This is the surest way to attain real peace."},
+{id:"B-24",pg:18,en:"A sign that someone has received the genuine Tao transmission and returned to Heaven is that when they pass away, their bodies will appear to be soft and flexible（身軟如綿）, distinctly unlike most ordinary deceased bodies.",zh:"一個人確實受了真傳道、已經回到天上的一個徵象是：當他過世時，遺體會呈現柔軟而有彈性的樣子（身軟如綿），與一般逝者的遺體明顯不同。",vocab:"sign 徵象；genuine 真正的；pass away 過世；appear to be 呈現為；flexible 柔軟有彈性的；distinctly 明顯地；deceased 逝者",pat:"A sign that ... is that ... — ……的一個徵象是……。",dao:"身軟如綿，是證道歸真的見證之一。",ex:"A sign that he is healthy is that he sleeps well."},
+{id:"B-25",pg:18,en:"Further, instead of having the decay smell of rotting flesh, there will be a hint of floral or sandalwood-like scent.",zh:"而且，遺體不但沒有腐爛的臭味，反而會有一絲花香或檀香般的香氣。",vocab:"further 而且、再者；instead of 而不是；decay 腐爛；rot 腐爛；hint 一絲；floral 花香的；sandalwood 檀香；scent 香氣",pat:"instead of ...-ing, there will be ... — 不是……，反而會有……。",dao:"遺體生香，與柔軟同為歸真的瑞象。",ex:"Instead of noise, there will be a hint of music."},
+{id:"B-26",pg:18,en:"This is evidence and testimony to validate the sacredness and preciousness of receiving the genuine Tao transmission.",zh:"這就是證據與見證，證明受真傳道的神聖與珍貴。",vocab:"evidence 證據；testimony 見證；validate 證明、證實；sacredness 神聖；preciousness 珍貴",pat:"evidence and testimony to validate ... — 用以證明……的證據與見證。",dao:"瑞象不是求來的，是道真、天命真的自然印證。",ex:"His life is testimony to validate the value of kindness."},
+{id:"B-27",pg:18,en:"The softness and fragrant scent exhibited by the deceased uniquely proves that their spirit has returned to Heaven.",zh:"逝者遺體所呈現的柔軟與芳香，獨一無二地證明他的靈性已經回到天上。",vocab:"softness 柔軟；fragrant 芬芳的；exhibit 呈現；uniquely 獨特地；prove 證明",pat:"The A and B exhibited by ... prove that ... — ……所呈現的 A 與 B 證明了……。",dao:"身軟、生香，證明靈性走正門回理天。",ex:"Her calm face uniquely proves that she is at peace."},
+{id:"B-28",pg:18,en:"Furthermore, it is evident that the deceased body will not lose its softness despite being placed in the winter cold, nor will it decay when placed in the summer temperatures.",zh:"而且很明顯，遺體即使放在冬天的寒冷中也不會失去柔軟，放在夏天的溫度裡也不會腐壞。",vocab:"furthermore 而且；evident 明顯的；despite 儘管；decay 腐壞",pat:"will not lose ..., despite ..., nor will it ... — 儘管……也不失……，也不會……。",dao:"正是書頁 15 中文段所說「冬不挺屍，夏不腐臭」的瑞象。",ex:"The flower will not lose its colour despite the cold."},
+{id:"B-29",pg:18,en:"Furthermore, the deceased body will look as if it is still alive.",zh:"而且，遺體看起來就像還活著一樣。",vocab:"look as if 看起來好像；still alive 仍然活著",pat:"look as if it is still ... — 看起來好像仍然……。",dao:"容顏如生，是瑞象中最容易看見的一項。",ex:"The doll will look as if it is still smiling."},
+{id:"B-30",pg:18,en:"When we have received the Tao during this White Yang Era's widespread propagation, as long as we can sincerely accumulate good deeds and revive our Innate Nature, our descendants and our ancestors (nine generations of descendants and seven previous ancestral generations) can all benefit in tandem with us from the Heaven's grace and attend at the Buddhas' teachings in the realm that they are in to continue their own cultivation.",zh:"在這白陽期普渡中求了道，只要我們誠心行功積德、恢復本性，我們的子孫與祖先（九代子孫與七代祖先）都能與我們一同沾受天恩，在他們所在的境界聽聞佛法，繼續他們自己的修行。",vocab:"widespread 廣泛的；propagation 普渡、傳播；sincerely 誠心地；accumulate 累積；descendant 子孫；ancestor 祖先；generation 代；in tandem 一同、同時；attend 聽聞、參加；realm 境界",pat:"as long as we can ..., A and B can all benefit in tandem with us — 只要我們能……，A 與 B 都能與我們一同受益。",dao:"一子求道，九玄七祖同沾天恩——這是大孝的根源。",ex:"As long as we practise together, the whole family can benefit in tandem."},
+{id:"B-31",pg:19,en:"As Tao recipients, we can assist our ancestors transcend back to Heaven and help them become free if they are suffering in Hell.",zh:"身為求道人，我們能幫助祖先超脫、回到天上；若他們在地獄受苦，也能幫助他們得到解脫。",vocab:"assist 幫助；transcend 超脫、超越；become free 得到解脫；suffer 受苦",pat:"assist sb. (to) transcend back to ... — 幫助某人超脫回到……。",dao:"陽世子孫行功迴向，可以超拔祖先。",ex:"We can assist our friends return to the right path."},
+{id:"B-32",pg:19,en:"This is only made possible because the deeds and virtues we accumulate can be transferred to our ancestors to help lift them out from the clutches of Hell.",zh:"這之所以可能，是因為我們所累積的功德可以轉給祖先，幫助他們脫離地獄的掌握。",vocab:"be made possible 變得可能；deed 功績、行為；virtue 德；transfer 轉移、迴向；lift out 救拔出來；clutches 掌握、魔掌",pat:"This is only made possible because ... can be transferred to ... — 這只有因為……能轉給……才可能。",dao:"功德迴向不是空話：這是超拔祖先的實際憑藉。",ex:"This is only made possible because help can be shared."},
+{id:"B-33",pg:19,en:"Therefore, only the virtuous can achieve such privileges.",zh:"因此，只有有德行的人，才能得到這樣的殊榮。",vocab:"therefore 因此；virtuous 有德行的；achieve 得到、成就；privilege 殊榮、特權",pat:"only the virtuous can ... — 只有有德者才能……。",dao:"超拔祖先的資格來自自己的德行，不是錢財。",ex:"Only the patient can achieve such results."},
+{id:"B-34",pg:"19–20",en:"Of all the virtuous deeds, the greatest is Filial Piety³ (the power of unparalleled love and respect from child towards parents. This is also a state of 'pure love'. It is such purity that makes this kind of love be felt by Heaven and Earth).",zh:"在一切德行中，最大的就是孝道³——那是子女對父母無可比擬的愛與敬，也是一種「純愛」的狀態；正是這份純粹，讓這種愛能感動天地。（本句跨書頁 19–20，照書完整形錄入；註 3 全文收在本節後段。）",vocab:"of all 在一切……之中；unparalleled 無可比擬的；purity 純粹；be felt by 被……感受到",pat:"Of all ..., the greatest is ... — 在一切……中，最大的是……。",dao:"百善孝為先：孝是眾德之首，能行孝，眾德皆能隨之成就。",ex:"Of all the virtues, the greatest is honesty."},
+{id:"B-35",pg:20,en:"Since ancient times, Tao was only transmitted to single individuals.",zh:"自古以來，道只單傳給一個人（單傳獨授）。",vocab:"since ancient times 自古以來；transmit 傳授；single individual 單一個人",pat:"Since ancient times, ... was only ... — 自古以來，……只……。",dao:"昔時道是單傳獨授，千人之中難得一人。",ex:"Since ancient times, this craft was only taught to one student."},
+{id:"B-36",pg:20,en:"Hence this precious transmission was critically sought after by countless cultivators in the past in order to be truly emancipated from reincarnation and attain spiritual enlightenment.",zh:"因此，過去無數修行人極力尋求這珍貴的傳授，為的是真正脫離輪迴、成就靈性的覺悟。",vocab:"critically 極其、迫切地；seek after 尋求；countless 無數的；emancipate 解脫、解放；attain 達到；enlightenment 覺悟",pat:"was sought after by ... in order to ... — 被……所尋求，為的是……。",dao:"古人苦求一指而不得，正反襯今日得道的容易與珍貴。",ex:"The book was sought after by countless readers."},
+{id:"B-37",pg:20,en:"However, it was extremely difficult in the past for cultivators to receive this Tao transmission because the Tao was not widely available as it is today with respect to Heaven's timing.",zh:"然而，過去修行人要得到這個傳道極其困難，因為就天時而言，道不像今天這樣廣為開普。",vocab:"extremely 極其；widely 廣泛地；available 可得的；with respect to 就……而言",pat:"it was extremely difficult for sb. to ... because ... — 對某人來說……極其困難，因為……。",dao:"得道難易不在人，在天時——時候未到，求也求不到。",ex:"It was extremely difficult for students to travel in the past."},
+{id:"B-38",pg:20,en:"Then it was strictly destined only to very few cultivators who are spiritually near enlightenment, and both morally and virtuously ready through their cultivation and propagation practices over countless reincarnation journeys.",zh:"當時，道嚴格地只注定給極少數修行人——他們靈性上已接近覺悟，並且經過無數次輪迴中的修道與辦道，在道德與德行上都已準備好。",vocab:"strictly 嚴格地；be destined 注定；morally 道德上；virtuously 德行上；countless 無數的",pat:"be destined only to very few ... who are ... — 只注定給極少數已經……的人。",dao:"古代得道者的門檻：靈性近悟、道德德行兼備、累世修辦而來。",ex:"The honour was destined only to very few who are ready."},
+{id:"B-39",pg:"20–21",en:"If the same spiritual criteria are applied to us today, most of us would not likely meet the prerequisites of receiving Tao transmission.",zh:"如果把同樣的靈性標準用在今天的我們身上，我們大多數人恐怕都不符合受傳道的先決條件。（本句跨書頁 20–21，照書完整形錄入。）",vocab:"criteria 標準（criterion 的複數）；apply to 適用於；be likely to 可能；meet 符合；prerequisite 先決條件",pat:"If the same criteria are applied to ..., most ... would not likely ... — 若把同樣標準用在……，大多數……恐怕不會……。",dao:"以古律今，人人當自知不足、更知感恩。",ex:"If the same rules are applied to us, most would not pass."},
+{id:"B-40",pg:21,en:"In the past, sentient beings that were not ready will need to carry on with their respective cultivation journeys in the Six Pathways of Reincarnation until they are spiritually ready.",zh:"過去，還沒準備好的眾生，必須在六道輪迴中繼續各自的修行旅程，直到靈性上準備好為止。",vocab:"carry on 繼續；respective 各自的；until 直到……為止",pat:"carry on with ... until ... — 繼續……，直到……。",dao:"未到成熟之時，只能在輪迴中繼續修、繼續等。",ex:"They will need to carry on with practice until they are ready."},
+{id:"B-41",pg:21,en:"Even if those cultivators are spiritually ready when reincarnated in human form, but there is still no guarantee that the Tao is available to them during that lifetime.",zh:"即使那些修行人投生為人時靈性上已準備好，也仍然不保證在那一生當中，道對他們是可得的。（書上 Even if 之後接 but，照原書錄入。）",vocab:"even if 即使；in human form 以人的形體；guarantee 保證、擔保；available 可得的；lifetime 一生",pat:"Even if ..., there is still no guarantee that ... — 即使……，也仍不保證……。",dao:"人身難得、道更難逢：準備好，也未必遇得上。",ex:"Even if you are ready, there is no guarantee that the chance will come."},
+{id:"B-42",pg:21,en:"It was only until the modern time of the White Yang Era (since 1905), the time of widespread salvation, that one can now get to hear about and receive the Tao with relative ease.",zh:"一直要到白陽期的現代（自 1905 年起）——這個普渡的時期——人才能像現在這樣，相對容易地聽聞並求得道。",vocab:"only until 直到……才；modern 現代的；relative 相對的；ease 容易",pat:"It was only until ... that one can ... — 直到……，人才……（強調句型）。",dao:"白陽應運（1905 年起）普渡大開，是生在今世之人的福氣。",ex:"It was only until this year that one can join with ease."},
+{id:"B-43",pg:21,en:"This is all because of the Heaven's grace and the Enlightened Teachers' virtues (天恩師德).",zh:"這一切，都是因為天恩與師德（天恩師德）。",vocab:"grace 恩典；virtue 德",pat:"This is all because of ... — 這一切都是因為……。",dao:"能求道是沾了天恩師德，不是自己的本事。",ex:"This is all because of the teacher's kindness."},
+{id:"B-44",pg:21,en:"Heaven's grace can be attributed to the Heavenly Timing -- the arrival of the White Yang Era.",zh:"天恩，可以歸因於天時——白陽期的到來。",vocab:"be attributed to 歸因於；arrival 到來",pat:"can be attributed to ... — 可以歸因於……。",dao:"天恩首先在天時：白陽期到了，道才大開普渡。",ex:"Success can be attributed to good timing."}
+];
+
+/* ================= 朗讀引擎（裝置內建語音） ================= */
+var synth=('speechSynthesis' in window)?window.speechSynthesis:null;
+var playToken=0, currentBtn=null, currentCard=null;
+function pickVoice(lang){
+  if(!synth)return null;
+  var vs=synth.getVoices();if(!vs.length)return null;
+  var want=lang.toLowerCase();
+  var exact=vs.filter(function(v){return v.lang&&v.lang.toLowerCase()===want;});
+  if(exact.length)return exact[0];
+  var pre=vs.filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf(want.split('-')[0])===0;});
+  return pre.length?pre[0]:null;
+}
+if(synth&&synth.onvoiceschanged!==undefined){synth.onvoiceschanged=function(){};}
+function speakOnce(text,lang,rate){
+  return new Promise(function(res){
+    if(!synth){res();return;}
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang=lang;u.rate=rate||0.92;
+    var v=pickVoice(lang);if(v)u.voice=v;
+    var done=false;function fin(){if(!done){done=true;res();}}
+    u.onend=fin;u.onerror=fin;
+    setTimeout(fin,Math.max(4000,text.length*420));
+    synth.speak(u);
+  });
+}
+var PLAYALL_LABEL='▶ 連播本節（中文 1 遍＋英文 3 遍）';
+function setRep(card,txt){
+  var n=card.querySelector('.rep-note');
+  if(n)n.textContent=txt||'';
+}
+function resetBtn(btn){
+  btn.classList.remove('playing','stop');
+  if(btn.dataset.label)btn.textContent=btn.dataset.label;
+}
+function stopPlay(){
+  playToken++;
+  if(synth)synth.cancel();
+  if(currentBtn){resetBtn(currentBtn);currentBtn=null;}
+  document.querySelectorAll('.toolbtn[data-act="playall"]').forEach(function(b){b.classList.remove('playing');b.textContent=PLAYALL_LABEL;});
+  if(currentCard){currentCard.classList.remove('playing-now');setRep(currentCard,'');currentCard=null;}
+}
+function repGap(){return new Promise(function(r){setTimeout(r,450);});}
+/* 一張卡的朗讀順序（比照多語言學習網頁 playSentence）：中文大意 1 遍（zh-TW）→ 英文原文 3 遍（en-US），遍與遍之間留短空檔 */
+async function speakCardSeq(card,tk){
+  var s=card._s;
+  setRep(card,'中文大意 1 / 1 遍');
+  await speakOnce(s.zh,'zh-TW',0.95);
+  for(var i=0;i<3;i++){
+    if(tk!==playToken)return false;
+    await repGap();
+    if(tk!==playToken)return false;
+    setRep(card,'英文第 '+(i+1)+' / 3 遍');
+    await speakOnce(s.en,'en-US',0.9);
+  }
+  return tk===playToken;
+}
+async function playCard(card,btn){
+  if(!synth)return;
+  if(currentBtn===btn){stopPlay();return;}
+  stopPlay();
+  var tk=playToken;
+  currentBtn=btn;btn.classList.add('playing','stop');btn.textContent='■ 停止';
+  currentCard=card;card.classList.add('playing-now');
+  var ok=await speakCardSeq(card,tk);
+  if(ok&&tk===playToken){
+    setRep(card,'');
+    resetBtn(btn);
+    currentBtn=null;
+    card.classList.remove('playing-now');
+    currentCard=null;
+  }
+}
+async function playAll(section,btn){
+  if(!synth)return;
+  if(currentBtn===btn){stopPlay();return;}
+  stopPlay();
+  var tk=playToken;
+  currentBtn=btn;btn.dataset.label=PLAYALL_LABEL;btn.classList.add('playing');btn.textContent='■ 停止連播';
+  var cards=[].slice.call(document.querySelectorAll('#'+section+'Cards .card')).filter(function(c){return c.style.display!=='none';});
+  for(var i=0;i<cards.length;i++){
+    if(tk!==playToken)return;
+    var c=cards[i];
+    if(currentCard){currentCard.classList.remove('playing-now');setRep(currentCard,'');}
+    currentCard=c;c.classList.add('playing-now');
+    c.scrollIntoView({block:'center',behavior:'smooth'});
+    await new Promise(function(r){setTimeout(r,350);});
+    if(tk!==playToken)return;
+    var ok=await speakCardSeq(c,tk);
+    if(!ok||tk!==playToken)return;
+    setRep(c,'');
+  }
+  if(tk===playToken){btn.classList.remove('playing');btn.textContent=PLAYALL_LABEL;currentBtn=null;if(currentCard){currentCard.classList.remove('playing-now');currentCard=null;}}
+}
+
+/* ================= 句子卡渲染 ================= */
+function esc(s){return s;}
+function makeCard(s,pageLabel){
+  var card=document.createElement('article');card.className='card';card._s=s;
+  var top=document.createElement('div');top.className='card-top';
+  var sid=document.createElement('span');sid.className='sid';sid.textContent=s.id;
+  var pg=document.createElement('span');pg.className='pgno';pg.textContent=pageLabel;
+  var rep=document.createElement('span');rep.className='rep-note small';
+  var acts=document.createElement('div');acts.className='card-actions';
+  var b1=document.createElement('button');b1.className='abtn';b1.dataset.label='▶ 播放';b1.textContent='▶ 播放';
+  b1.setAttribute('aria-label','播放：中文大意 1 遍，英文 3 遍');
+  if(!synth){b1.disabled=true;b1.textContent='此裝置無語音';}
+  b1.addEventListener('click',function(){playCard(card,b1);});
+  acts.appendChild(b1);
+  top.appendChild(sid);top.appendChild(pg);top.appendChild(rep);top.appendChild(acts);
+  var en=document.createElement('p');en.className='en-s';en.textContent=s.en;
+  var zh=document.createElement('p');zh.className='zh-s';
+  var lbl=document.createElement('span');lbl.className='lbl';lbl.textContent='大意';
+  zh.appendChild(lbl);zh.appendChild(document.createTextNode(s.zh));
+  var tg=document.createElement('button');tg.className='toggle-detail';tg.textContent='詳細解釋（剝洋蔥五層）';
+  var det=document.createElement('div');det.className='detail';
+  var dl=document.createElement('dl');
+  [['句型',s.pat],['單字片語',s.vocab],['道義內涵',s.dao],['記憶＋仿造',s.ex]].forEach(function(row){
+    if(!row[1])return;
+    var dt=document.createElement('dt');dt.textContent=row[0];
+    var dd=document.createElement('dd');
+    if(row[0]==='記憶＋仿造'){var sp=document.createElement('span');sp.className='ex-en';sp.textContent=row[1];dd.appendChild(sp);}
+    else dd.textContent=row[1];
+    dl.appendChild(dt);dl.appendChild(dd);
+  });
+  det.appendChild(dl);
+  tg.addEventListener('click',function(){
+    var open=card.classList.toggle('open');
+    tg.textContent=open?'收合詳細解釋':'詳細解釋（剝洋蔥五層）';
+  });
+  card.appendChild(top);card.appendChild(en);card.appendChild(zh);card.appendChild(tg);card.appendChild(det);
+  return card;
+}
+function renderCards(list,hostId,pageOf){
+  var host=document.getElementById(hostId);
+  list.forEach(function(s){host.appendChild(makeCard(s,pageOf(s)));});
+}
+function wireReader(section){
+  var tools=document.querySelector('.reader-tools[data-reader="'+section+'"]');
+  var input=tools.querySelector('input[type=search]');
+  var note=tools.querySelector('.count-note');
+  var host=document.getElementById(section+'Cards');
+  var empty=document.querySelector('[data-empty="'+section+'"]');
+  var fs=1;
+  function update(){
+    var q=input.value.trim().toLowerCase();var n=0;
+    host.querySelectorAll('.card').forEach(function(c){
+      var s=c._s;
+      var hit=!q||s.id.toLowerCase().indexOf(q)>=0||s.en.toLowerCase().indexOf(q)>=0||s.zh.indexOf(q)>=0;
+      c.style.display=hit?'':'none';if(hit)n++;
+    });
+    note.textContent=n+' 句';
+    empty.style.display=n?'none':'block';
+  }
+  input.addEventListener('input',update);update();
+  tools.addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    var act=b.dataset.act;
+    if(act==='stop')stopPlay();
+    else if(act==='playall')playAll(section,b);
+    else if(act==='font'){
+      fs=fs>=1.25?0.9:+(fs+0.175).toFixed(3);
+      host.style.setProperty('--fs',fs);
+      b.textContent=fs>1.05?'字級 A++':(fs<0.95?'字級 A−':'字級 A+');
+    }
+  });
+}
+</script>
+
+<script>
+/* ================= 資料：Preface 句子卡（書頁 8–11，照書轉錄） ================= */
+var PREFACE=[
+{id:"P-01",pg:8,en:"This book serves as an aid to those who have just received Tao.",zh:"本書是為剛求道的人所準備的輔助讀物。",vocab:"serve as 作為、充當；aid 幫助、輔助；receive Tao 求道",pat:"serve as an aid to sb. — 作為某人的輔助。",dao:"本書的定位：幫助新求道人明白所求之道的真義。",ex:"This guide serves as an aid to new students."},
+{id:"P-02",pg:8,en:"Tao is also known as the Creator, God, Almighty, Laws of Nature, our True Self, our spirit.",zh:"道也稱為造物主、上帝、全能者、自然法則、我們的真我、我們的靈性。",vocab:"Creator 造物主；Almighty 全能者；Laws of Nature 自然法則；True Self 真我",pat:"be also known as — 也被稱為……。",dao:"名稱雖多，指的都是同一本源——道。",ex:"She is also known as a great teacher."},
+{id:"P-03",pg:8,en:"The aim of this book is to provide insights into true spiritual cultivation.",zh:"本書旨在提供對真正精神修持（修道）的洞見。",vocab:"aim 目標、旨在；provide 提供；insight 洞見；spiritual cultivation 精神修持、修道",pat:"The aim of ... is to provide ... — ……的目的是提供……。",dao:"先明宗旨：修道要先明白什麼是真正的修持。",ex:"The aim of this class is to provide daily practice."},
+{id:"P-04",pg:8,en:"The goal of true spiritual cultivation is to restore ones Innate Nature (Innate Conscience) and let our True Self within be the true master of our lives at all times.",zh:"真正修持的目標，是恢復本性（天良、本心），讓內在的真我時時作我們生命真正的主人。（書上 ones 為原書寫法。）",vocab:"restore 恢復；Innate Nature 本性；conscience 良心；master 主人；at all times 時時、始終",pat:"let sb. be the master — 讓……作主人。",dao:"修道的核心：讓自性作主，不讓習氣、脾氣作主。",ex:"Let your conscience be the master of your choices."},
+{id:"P-05",pg:8,en:"It takes place during each thought, action and life lessons throughout every moment of our lives.",zh:"修持就發生在我們生活每一刻的每個念頭、行為與人生功課之中。",vocab:"take place 發生；thought 念頭；life lesson 人生功課；throughout 貫穿、遍及",pat:"take place during ... — 在……期間發生。",dao:"修道不在遠處，就在日常的起心動念之間。",ex:"Learning takes place during every honest conversation."},
+{id:"P-06",pg:8,en:"The Tao, the genuine Truth, is within everyone.",zh:"道——真正的真理——就在每個人之內。",vocab:"genuine 真正的；Truth 真理；within 在……之內",pat:"be within everyone — 存在於每個人之內。",dao:"道不外求：真主人人本具、本有。",ex:"Kindness is within everyone."},
+{id:"P-07",pg:8,en:"It is not found within verbal teachings and scriptures as these are only external methods used by previous Heavenly-decreed Enlightened Teachers.",zh:"真理不是在言語教導與經典裡找得到的，因為那些只是歷代奉天命的明師所用的外在方法。",vocab:"verbal 口頭的、言語的；scripture 經典；external 外在的；method 方法；Heavenly-decreed 奉天命的；Enlightened Teacher 明師",pat:"not found within ...; these are only ... — 不在……裡面；這些只是……。",dao:"文字與經典是工具、是指月的手指，真理要靠自性體證。",ex:"True skill is not found within books alone."},
+{id:"P-08",pg:8,en:"They were sent to different parts of the world throughout history with the same Holy mission of pointing out the spiritual path (Tao) and guiding people towards restoring their Innate Nature.",zh:"明師們在歷史中被差遣到世界各地，肩負同一個神聖使命：指出靈性之路（道），引導人們恢復本性。",vocab:"be sent 被差遣；throughout history 縱貫歷史；Holy mission 神聖使命；point out 指出；guide 引導；towards 朝向",pat:"be sent to ... with the mission of ...-ing — 被派往……，使命是……。",dao:"歷代明師奉命而來、使命一致：指引眾生回到本源之路。",ex:"They were sent with the mission of helping the villages."},
+{id:"P-09",pg:8,en:"This genuine Truth is indeed the true dharma as taught by Gautama Buddha, the true meaning of carrying one's own Cross as taught by Jesus, and the way to achieve the World of Great Harmony and Unity as envisioned by the ancient Chinese Enlightened Teacher Confucius.",zh:"這真正的真理，正是釋迦牟尼佛所教的真法、耶穌所說背起自己十字架的真義，也是古代中國明師孔子所嚮往的大同世界的道路。",vocab:"indeed 確實；dharma 法、佛法；carry one's Cross 背起十字架；achieve 實現；Great Harmony and Unity 大同；envision 嚮往、構想",pat:"the way to achieve ... — 實現……的道路。",dao:"五教同源：各教聖人所指，都是同一條真理之路。",ex:"This is the way to achieve real peace."},
+{id:"P-10",pg:9,en:"As we now know, the spirit is the actual master of our life; not our physical body living a life of reacting to the material world through our sensory functions.",zh:"如今我們知道，靈性才是我們生命真正的主人；不是這具靠感官功能對物質世界作反應的身體。",vocab:"spirit 靈性；actual 真正的；physical body 肉身；react 反應；material world 物質世界；sensory 感官的",pat:"the actual master is A, not B — 真正的主人是 A，不是 B。",dao:"認清主人是靈性，不是肉體與感官——這是修道的起點。",ex:"Patience is the actual master of good teamwork."},
+{id:"P-11",pg:9,en:"However, it often occurs that our spirit is muddled by the physical and sensory functions to a point we ignore our spirit's will.",zh:"然而，我們的靈性常被身體與感官功能蒙蔽，到了忽略靈性意願的地步。",vocab:"occur 發生；muddle 使混亂、蒙蔽；ignore 忽略；will 意願、意志",pat:"to a point where ... — 到以致於……的程度（本句書上省去 where）。",dao:"後天習氣蒙蔽自性，正是修道要對治的問題。",ex:"He was tired to a point where he ignored the warning."},
+{id:"P-12",pg:9,en:"Since our spirit is from Tao (God) and thus is pure to begin with, it has all the wisdom and all the clarity in its pure state.",zh:"因為我們的靈性來自道（上帝），本來就是純淨的，所以在純淨狀態中，它具足一切智慧與一切清明。",vocab:"since 因為；thus 因此；pure 純淨的；to begin with 本來；wisdom 智慧；clarity 清明；state 狀態",pat:"Since ..., it has ... — 因為……，它具足……。",dao:"自性本來清淨、具足智慧，修道是恢復而非外加。",ex:"Water is clear in its pure state."},
+{id:"P-13",pg:8,en:"When we continue to restore our Innate Nature, we will be able to live a fulfilled life led by our True Self (Tao) and fully manifest the spirit to its full potential.",zh:"當我們持續恢復本性，就能過著由真我（道）引導的圓滿人生，並把靈性發揮到完全的潛能。（本句在書頁 8 末，接書頁 9 開頭。）",vocab:"continue to 持續；fulfilled 圓滿的、充實的；be led by 由……引導；manifest 彰顯、發揮；potential 潛能",pat:"When we continue to ..., we will be able to ... — 當我們持續……，就能……。",dao:"恢復本性是持續的工夫，果效是圓滿的人生。",ex:"When we practise daily, we will be able to speak fluently."},
+{id:"P-14",pg:9,en:"Without living life guided by our True Self, this becomes the cause of endless sufferings and reincarnation.",zh:"若生活沒有真我的引導，這就成了無盡痛苦與輪迴的原因。",vocab:"guided by 由……引導；cause 原因；endless 無盡的；suffering 苦；reincarnation 輪迴",pat:"Without ...-ing, this becomes the cause of ... — 若沒有……，這就成了……的原因。",dao:"沒有真我作主，便在苦與輪迴中打轉，不得出離。",ex:"Without guidance, practice becomes the cause of frustration."},
+{id:"P-15",pg:9,en:"Thus by receiving the Tao transmission, it marks the beginning of the journey in rediscovering our True Self.",zh:"因此，得受道之傳授，標誌著重新找回真我之旅的開始。",vocab:"thus 因此；transmission 傳授；mark 標誌著；journey 旅程；rediscover 重新發現",pat:"mark the beginning of the journey — 標誌著旅程的開始。",dao:"求道是起點，不是終點——找回真我的路從這裡開始。",ex:"This day marks the beginning of the journey home."},
+{id:"P-16",pg:9,en:"Continued spiritual cultivation and Tao propagation not deviated from the Three Treasures are necessary to break the cycles of reincarnation.",zh:"持續的修道與辦道、且不偏離三寶，是打破輪迴循環所必需的。（書上 not deviated 為原書寫法。）",vocab:"continued 持續的；propagation 傳播、辦道；deviate 偏離；necessary 必需的；cycle 循環",pat:"not deviated from ... — 不偏離……。",dao:"修辦不離三寶，才是跳出輪迴的正路。",ex:"The team succeeded, not deviated from the plan."},
+{id:"P-17",pg:9,en:"With God's unconditional love for all sentient beings, humans have the opportunity to reconnect to Tao according to the readiness of different demographic groups' collective affinities with Tao.",zh:"因著上帝對一切眾生無條件的愛，人們能依不同族群與道集體因緣的成熟程度，有機會重新與道連結。",vocab:"unconditional 無條件的；sentient beings 眾生；opportunity 機會；reconnect 重新連結；readiness 準備成熟的程度；demographic group 族群；collective 集體的；affinity 因緣、親和",pat:"according to the readiness of ... — 依照……成熟的程度。",dao:"普渡依因緣成熟而開展，是天恩依時依地的安排。",ex:"Help is given according to the readiness of each student."},
+{id:"P-18",pg:9,en:"Where some locations have stronger affinities with Tao, the duration of those Heavenly-decreed Enlightened Teachers' lineage in guiding the people there may continue over longer periods of time.",zh:"在某些與道因緣較深的地方，奉天命明師的法脈在當地引導眾生的時間，可能延續得更久。",vocab:"location 地方；stronger 較強的；duration 持續期間；lineage 法脈、傳承；period of time 一段時間",pat:"may continue over longer periods — 可能延續更久。",dao:"因緣深厚之處，法脈流傳更久、根基更深。",ex:"The tradition may continue over longer periods in this town."},
+{id:"P-19",pg:9,en:"However over the centuries, human interpretations of the Holy message may have deviated from the genuine Truth and hence those Holy teachings such as \"having faith in 'Me' or 'I', God is in me (you)\" as taught by Jesus, may have lost their true intended meaning.",zh:"然而數世紀以來，人對聖者訊息的詮釋可能已偏離真正的真理，於是像耶穌所教「信『我』、上帝在我（你）裡面」這類聖教，可能已失去了真正的原意。",vocab:"century 世紀；interpretation 詮釋；deviate from 偏離；hence 因此；intended meaning 原意、本意",pat:"may have deviated from — 可能已經偏離（對過去的推測）。",dao:"教義流傳久了容易失其真義，所以需要明師指授、直指本源。",ex:"The message may have deviated from its original meaning."},
+{id:"P-20",pg:9,en:"As time went on, when the genuine spiritual transmission (Tao transmission) could no longer be spoken or conducted in those demographics, those Enlightened Teachers' teachings would gradually become the major religions of today so that their followers could still have belief and faith in God and learn about the Holy teachings that survived in religious scriptures.",zh:"隨著時間過去，當真正的靈性傳承（傳道）在那些族群中無法再公開講述或進行時，明師們的教導便逐漸成為今日的主要宗教，好讓信徒仍能信仰上帝，並學習保存在宗教經典中的聖教。",vocab:"as time went on 隨著時間過去；conduct 進行；gradually 逐漸地；major 主要的；follower 信徒；faith 信仰；survive 保存下來、留存",pat:"so that ... could still ... — 好讓……仍然能……。",dao:"宗教是真理傳承中斷後保存教法的方式，仍指向同一位上帝。",ex:"Notes were kept so that students could still review the lesson."},
+{id:"P-21",pg:10,en:"In fact, many Enlightened Teachers in human history have all left behind prophecies of the upcoming significant changes to the way humans progress on this world, prior to the arrival of a New World, the World of Great Harmony and Unity.",zh:"事實上，人類歷史上許多明師都留下預言，指出在新世界——大同世界——來臨之前，人類在這個世界上的進程將有重大轉變。",vocab:"in fact 事實上；leave behind 留下；prophecy 預言；upcoming 即將到來的；significant 重大的；progress 進程；prior to 在……之前；arrival 來臨",pat:"prior to the arrival of ... — 在……來臨之前。",dao:"各教預言共同指向大同來臨前的轉變時期。",ex:"Many changes happened prior to the arrival of the new system."},
+{id:"P-22",pg:10,en:"Terms such as the Apocalypse, Judgement Day, the Final Salvation, etc. were often used to describe this turning point in history.",zh:"像末日、審判日、末後普渡等詞，常用來描述這個歷史的轉捩點。",vocab:"term 用詞、術語；Apocalypse 末日、啟示；Judgement Day 審判日；Final Salvation 末後普渡；describe 描述；turning point 轉捩點",pat:"be used to describe ... — 被用來描述……。",dao:"不同宗教的用語不同，描述的是同一個歷史轉捩。",ex:"This term was often used to describe the festival."},
+{id:"P-23",pg:10,en:"As part of the grand scheme in this current time-cycle.",zh:"這是當前這一大時間周期宏大安排的一部分。（書上此句獨立成句，語意承接前後文。）",vocab:"grand scheme 宏大安排、整體計畫；current 現在的；time-cycle 時間周期",pat:"As part of ... — 作為……的一部分（片段句，承接上下文）。",dao:"普渡不是偶然，是整體天時安排中的一環。",ex:"As part of the grand scheme of the project, we start small."},
+{id:"P-24",pg:10,en:"The Heavenly Mater (God, Almighty, Allah, Creator, Tao) had already planned the sequence of sending ten Buddhas to this world to guide sentient beings spiritually.",zh:"天母（上帝、全能者、阿拉、造物主、道）早已安排好次序，要差遣十位佛到這個世界，在靈性上引導眾生。（書上 Heavenly Mater 為原書寫法；專有名詞沿用音譯為主原則，課堂上會再說明 Lao Mu 等審定譯名。）",vocab:"Heavenly Mater 天母（原書寫法）；sequence 次序、序列；send 差遣；spiritually 在靈性上",pat:"had already planned the sequence of ...-ing — 早已安排好……的次序。",dao:"十佛次第是天母早定的救渡安排，非人為設計。",ex:"The teacher had already planned the sequence of lessons."},
+{id:"P-25",pg:10,en:"Similarly, in Hinduism, there are also the Ten Avatars of Vishnu that correspond to the Ten Buddhas with the same roles in guiding the world.",zh:"同樣地，在印度教中，也有毗濕奴的十個化身，與十佛相應，擔負同樣引導世界的角色。",vocab:"similarly 同樣地；Hinduism 印度教；Avatar 化身；Vishnu 毗濕奴；correspond to 與……相應；role 角色",pat:"correspond to — 與……相應、對應。",dao:"東西方聖教互相印證同一個救渡次第。",ex:"These symbols correspond to the seasons."},
+{id:"P-26",pg:10,en:"This consists of seven Buddhas to administer the material world's advancement stages, followed by three Buddhas to lead the last three eras of the time-cycle for salvation.",zh:"這十佛由七位佛主持物質世界的各個進展階段，其後三位佛帶領時間周期最後三個時代的普渡。",vocab:"consist of 由……組成；administer 主持、管理；advancement 進展；stage 階段；be followed by 其後接著；era 時代；salvation 普渡、救渡",pat:"consist of A, followed by B — 由 A 組成，其後是 B。",dao:"七佛治世、三佛普渡，次第分明、各司其期。",ex:"The talk was followed by a discussion."},
+{id:"P-27",pg:10,en:"The tenth Buddha in the sequence is Maitreya (Mi-Le Buddha), orchestrating what is known as the Final Salvation—the collective effort of all Buddhas and celestials to conduct the widespread propagation of Tao to the world.",zh:"序列中的第十位佛是彌勒（彌勒佛），主持所謂的末後普渡——那是所有佛與仙佛共同努力、把道廣傳於天下的集體行動。",vocab:"tenth 第十；Maitreya 彌勒；orchestrate 主持、策劃；collective effort 集體努力；celestial 仙佛；widespread 廣泛的；propagation 傳播",pat:"what is known as ... — 所謂的……。",dao:"彌勒主持末後普渡，諸佛仙佛共同成全這件大事。",ex:"The campaign is known as the city's largest cleanup."},
+{id:"P-28",pg:10,en:"The time of Final Salvation has actually begun since the early 20th century, first marked by the propagation of the Tao in China by the First Patriarch of the White Yang Era (which started from early 20th century), the ordained Jin-Gong Patriarch, who is an incarnation of Mi-Le Buddha.",zh:"末後普渡的時期其實自二十世紀初已經開始，最初的標誌是白陽期第一代祖師——受命的金公祖師、彌勒佛的化身——在中國傳道；白陽期也自二十世紀初開始。",vocab:"actually 其實；propagation 傳播；Patriarch 祖師；White Yang Era 白陽期；ordained 受命的、受封的；incarnation 化身",pat:"first marked by ... — 最初以……為標誌。",dao:"白陽期自金公祖師傳道揭開序幕，我們正身處普渡時期。",ex:"The era was first marked by a new invention."},
+{id:"P-29",pg:10,en:"Since then the Tao propagation movement is known by the Chinese term 'I-Kuan Tao' which was first used by Confucius, literally meaning 'The Oneness of Tao'.",zh:"自此，這場傳道運動以中文詞「一貫道」為人所知；這個詞最早由孔子使用，字面意思是「道的貫通如一」。",vocab:"movement 運動；term 用詞；literally 字面上；oneness 貫通如一、合一",pat:"be known by the term ...; literally meaning ... — 以……之名為人所知，字面意思是……。",dao:"「一貫」出自孔子，意謂真理貫通、始終如一。",ex:"The method is known by the term “the direct way.”"},
+{id:"P-30",pg:10,en:"In particular, 'I-Kuan Tao' is not a new religion or a new spiritual cultivation group, it continues the same genuine Tao lineage from generations of Heavenly-decreed Enlightened Teachers spanning across different religions starting from the ancient Chinese saintly emperor Fu-Xi (伏羲) more than 5,000 years ago.",zh:"特別要說明，「一貫道」不是一個新宗教，也不是新的修持團體；它延續的是同一條真正的道脈，源自五千多年前中國古代聖帝伏羲，歷代奉天命明師跨越不同宗教一脈相傳。",vocab:"in particular 特別是；lineage 道脈、傳承；generation 世代；span 橫跨、跨越；saintly 聖德的；emperor 皇帝、聖帝",pat:"spanning across ... — 橫跨……。",dao:"一貫道承繼的是五千年不斷的真道脈，不是新創的宗教。",ex:"The tradition spans across many cultures."},
+{id:"P-31",pg:10,en:"Today, I-Kuan Tao has been propagated to more than 90 countries worldwide with millions of Tao cultivators in all sectors of society.",zh:"今天，一貫道已傳播到全球九十多個國家，社會各行各業都有數以百萬計的道修行者。",vocab:"worldwide 全球；million 百萬；cultivator 修行者；sector （社會）各界、各行各業",pat:"has been propagated to ... — 已被傳播到……。",dao:"道傳萬國，修道人就在各行各業中行道、修道。",ex:"The idea has been propagated to many schools."},
+{id:"P-32",pg:11,en:"From reading this book, it is intended that readers can begin to appreciate the profound grace of God and the importance of the Tao transmission, towards understanding how humans can best cultivate in our daily lives in order to reconnect to our spiritual Homeland.",zh:"希望讀者透過閱讀本書，能開始體會上帝深厚的恩典與傳道的重要，進而明白人如何在日常生活中最好地修持，以便重新與我們靈性的故鄉連結。",vocab:"it is intended that 希望、旨在；appreciate 體會、感激；profound 深厚的；grace 恩典；importance 重要性；cultivate 修持；Homeland 故鄉",pat:"it is intended that ...; in order to ... — 旨在讓……；為了……。",dao:"讀本書的目的：知恩、明義，並在日常生活中修回靈性的故鄉。",ex:"It is intended that readers can begin to help others."},
+{id:"E-01",pg:11,en:"'The True Meanings of the Three Treasures and Cultivation of Tao' is the third English publication produced by the Chang-Sheng Cultural Publishing Company.",zh:"《三寶真義與修道》是長生文化出版公司出版的第三本英文出版品。",vocab:"publication 出版品；produce 出版、製作；publishing company 出版公司",pat:"the third ... produced by ... — 由……出版的第三本……。",dao:"出版資訊：長生文化第三本英文書，為普渡而編譯。",ex:"The booklet is produced by our school."},
+{id:"E-02",pg:11,en:"Over the past years, the editorial team has received great encouragement, guidance and direction from many celestial sources including from Ji-Gong Living Buddha and other celestials through channelling and revelations.",zh:"過去這些年來，編輯團隊從許多仙佛來源得到很大的鼓勵、指導與方向，包括濟公活佛與其他仙佛透過扶鸞傳訊與聖示所給的指引。",vocab:"editorial team 編輯團隊；encouragement 鼓勵；guidance 指導；direction 方向；source 來源；channelling 扶鸞傳訊；revelation 啟示、聖示",pat:"including from ... through ... — 包括從……透過……而來的。",dao:"編輯工作得自仙佛慈悲指引，非個人之功。",ex:"Guidance came through many kind mentors."},
+{id:"E-03",pg:11,en:"The members of this editorial team felt greatly humbled and extremely honoured to participate in this important voluntary assignment.",zh:"這個編輯團隊的成員，能參與這項重要的志願任務，深感謙卑，也感到極大的榮幸。",vocab:"member 成員；greatly 非常；humbled 謙卑的；extremely 極其；honoured 榮幸的；participate 參與；voluntary 志願的；assignment 任務",pat:"feel humbled and honoured to ... — 能……深感謙卑與榮幸。",dao:"承辦天事存謙卑、知榮幸，是辦道人的本分。",ex:"We felt honoured to join this volunteer work."},
+{id:"E-04",pg:11,en:"We also felt the tremendous responsibility in translating the key Holy teachings and messages of Buddhas, saints and sages into English both in a timely and comprehensible manner in order to assist in efficient Tao propagation during this Final Salvation period.",zh:"我們也深感責任重大，要把佛、聖人與賢哲的重要聖教與訊息，及時而易懂地譯成英文，以協助在末後普渡期間有效地傳道。",vocab:"tremendous 巨大的；responsibility 責任；key 關鍵的；saint 聖人；sage 賢哲；timely 及時的；comprehensible 易懂的；manner 方式；efficient 有效的",pat:"both in a ... and ... manner — 以既……又……的方式。",dao:"翻譯求及時、求易懂，一切為了普渡的效率與眾生的受益。",ex:"Explain it in a simple and comprehensible manner."},
+{id:"E-05",pg:11,en:"Lastly, we would like to take this opportunity to extend a warm invitation to encourage Tao relatives from around the world with fluent Western language backgrounds and dedicated Tao propagation aspirations to contact us to join our growing list of translation projects.",zh:"最後，我們想藉這個機會誠摯邀請全球各地精通西方語言、並懷有傳道宏願的道親與我們聯絡，加入我們日益成長的翻譯計畫名單。",vocab:"lastly 最後；take this opportunity 藉此機會；extend a warm invitation 誠摯邀請；Tao relatives 道親；fluent 流利的；dedicated 專志的；aspiration 宏願、志向；growing 日益成長的",pat:"take this opportunity to ... — 藉此機會……。",dao:"廣邀同道同參翻譯、共同成全普渡大業。",ex:"We take this opportunity to invite more helpers."}
+];
+renderCards(PREFACE,'prefaceCards',function(s){return '書頁 '+s.pg;});
+wireReader('preface');
+</script>
+
+<script>
+/* ================= Foreword：書上中文段（照原書錄入） ================= */
+(function(){
+  var host=document.getElementById('forewordZh');
+  var blocks=[
+   ["前言 · 一、恭喜的意義（書頁 12，書上中文段）","恭喜大家求道，這是大家的福氣。那為什麼會跟大家恭喜？要知道今天大家所求的大道，是自古不輕傳不易得的無上乘法，是讓我們靈性超生了死的究竟解脫法；與三世諸佛菩薩，例如釋迦牟尼佛、觀世音菩薩及五教聖人所求的道是一樣的。"],
+   ["書頁 13，書上中文段","只要大家求道後從改毛病去脾氣做起，另做新人、做個好人，也就是修道欲成佛先做好人。現今白陽期的修持法門，是修天道從人道做起，在家修道，齊家修道，辦道渡人，可以一世修一世成。不用像幾千年前青陽期、紅陽期的修持法門，要拋家捨業，出家到深山古洞苦修苦行。"]
+  ];
+  blocks.forEach(function(b){
+    var d=document.createElement('div');d.className='zhpara';
+    var h=document.createElement('h4');h.textContent=b[0];
+    var p=document.createElement('p');p.textContent=b[1];
+    d.appendChild(h);d.appendChild(p);host.appendChild(d);
+  });
+})();
+
+/* ================= 資料：Foreword 句子卡（書頁 12–14，照書轉錄） ================= */
+var FOREWORD=[
+{id:"F-01",pg:12,en:"The Chinese word Tao was first used by the ancient Enlightened Teacher Lao Zi to name the profound and mysterious forces of Nature, also known as God; which is what drives everything in the universe.",zh:"中文的「道」這個字，最早由古代明師老子用來命名那深奧而神秘的自然力量——也就是上帝——它推動著宇宙中的一切。",vocab:"ancient 古代的；profound 深奧的；mysterious 神秘的；force 力量；drive 推動；universe 宇宙",pat:"be first used by sb. to name ... — 最早由某人用來命名……。",dao:"「道」之名由老子所立，指向推動宇宙的本源力量。",ex:"The word was first used to name the new method."},
+{id:"F-02",pg:12,en:"The True Self within everyone is also Tao, as the spirit is derived from and part of Tao.",zh:"每個人內在的真我也是道，因為靈性源自於道、是道的一部分。",vocab:"within 在……之內；be derived from 源自於；part of ……的一部分",pat:"be derived from and part of ... — 源自於……、是……的一部分。",dao:"靈性出於道：人人內在都有道種、都有真我。",ex:"This custom is derived from an old tradition."},
+{id:"F-03",pg:12,en:"One may wonder why we congratulate new Tao recipients?",zh:"有人或許會想問：為什麼我們要向新求道的人道恭喜呢？",vocab:"wonder 想知道、納悶；congratulate 道賀、恭喜；recipient 接受者、求道人",pat:"One may wonder why ... — 人們或許會問為什麼……。",dao:"先設一問，引出「恭喜」背後的深義。",ex:"One may wonder why we celebrate this day."},
+{id:"F-04",pg:12,en:"We sincerely congratulate you because the Tao you have received today is the Ultimate-Vessel Dharma (described in Buddhist scriptures), which was not easily transmitted even to true spiritual cultivators since ancient times.",zh:"我們誠心恭喜你，因為你今天所求得的道，是佛教經典所描述的無上乘法；自古以來，即使對真正的修行人，也不是輕易傳授的。",vocab:"sincerely 誠心地；Ultimate-Vessel Dharma 無上乘法；Buddhist scriptures 佛教經典；transmit 傳授；cultivator 修行人",pat:"which was not easily transmitted even to ... — 即使對……也不輕易傳授的（關係子句補充說明）。",dao:"大道自古不輕傳、不易得，今日得之，當知珍惜。",ex:"This skill was not easily taught even to experts."},
+{id:"F-05",pg:12,en:"This genuine spiritual transmission reawakens one's Innate Nature (True Self), providing the opportunity to embark on a cultivation journey towards transcending the endless cycles of reincarnation and ultimately achieve spiritual liberation.",zh:"這真正的靈性傳授能喚醒人的本性（真我），讓人有機會踏上修行之旅，超越無盡的輪迴循環，最終成就靈性的解脫。",vocab:"reawaken 重新喚醒；provide 提供；embark on 踏上、開始；journey 旅程；transcend 超越；endless 無盡的；ultimately 最終；liberation 解脫",pat:"..., providing the opportunity to ... — ……，（從而）提供……的機會（分詞構句補充結果）。",dao:"傳道喚醒本性，是超生了死、脫離輪迴的門戶。",ex:"The course reawakens interest, providing the opportunity to start again."},
+{id:"F-06",pg:12,en:"More importantly, the Tao transmission received today is indeed the same transmission received by all Enlightened Teachers in the past, such as Shakyamuni Buddha, Goddess of Mercy (Guan-Yin), Jesus, Confucius, Lao-Zi and Prophet Muhammad, etc.",zh:"更重要的是，今天所受的這個傳道，確實就是過去所有明師所受的同一個傳承，例如釋迦牟尼佛、觀世音菩薩（觀音）、耶穌、孔子、老子與先知穆罕默德等。",vocab:"more importantly 更重要的是；indeed 確實；same 同一個的；such as 例如；Prophet 先知",pat:"indeed the same ... received by ... — 確實是……所受的同一個……。",dao:"今日所求與古聖昔賢所求同出一源，所以要向求道人道恭喜。",ex:"This is indeed the same path taken by our teachers."},
+{id:"F-07",pg:13,en:"After receiving Tao, one possesses a unique opportunity to attain the Holy Achievement¹ and return to Heaven using only one lifetime of spiritual cultivation and propagation of Tao.",zh:"求道之後，人便擁有一個獨特的機會：只用一生的修道與辦道，就能成就聖果¹ 並返回天庭。（¹ 見本節後段註 1。）",vocab:"possess 擁有；unique 獨特的；attain 達到、成就；Holy Achievement 聖果、聖業成就；lifetime 一生；propagation 辦道、傳道",pat:"using only one lifetime of ... — 只用一生的……（時間與工夫的濃縮）。",dao:"白陽期修道可以一世修、一世成，機會難得。",ex:"He reached the goal using only one year of practice."},
+{id:"F-08",pg:13,en:"One must begin by improving one's temperament and ridding of bad habits and to renew one's life of being a good person.",zh:"人必須從改善自己的脾氣、去除壞習慣做起，重新做人、做一個好人。",vocab:"must 必須；improve 改善；temperament 脾氣、性情；rid of 去除；bad habit 壞習慣；renew 更新、重新做起",pat:"begin by ...-ing — 從……做起。",dao:"修道的起步最實際：改毛病、去脾氣，先做好人。",ex:"Begin by removing one bad habit."},
+{id:"F-09",pg:13,en:"This lays a great foundation for Tao cultivation as the Holy Message from celestial states: \"Those who wish to become Buddha through cultivating shall start by being a good person first\".",zh:"這為修道奠下堅實的基礎，正如仙佛聖訓所說：「想透過修行成佛的人，必須先從做好人開始。」",vocab:"lay a foundation 奠定基礎；celestial 仙佛的、天界的；Holy Message 聖訓；wish to 想要；shall 必須、應當",pat:"Those who wish to ... shall start by ... — 想……的人，必須先從……開始。",dao:"成佛先做好人：人道做好，天道可成。",ex:"Those who wish to lead shall start by listening."},
+{id:"F-10",pg:13,en:"The cultivation approach in this current White Yang Era is unlike the past periods of the Cyan Yang Era (1,500 years from approx. 2,500 BC to 1,000 BC) and Red Yang Era (3,000 years from approx. 1,000 BC to early 20th century).",zh:"本白陽期的修持方式，與過去的時期不同：青陽期約一千五百年（約西元前 2500 年至前 1000 年），紅陽期約三千年（約西元前 1000 年至二十世紀初）。",vocab:"approach 方式、法門；current 現在的；unlike 不同於；approx. 約、大約（approximately 的縮寫）；BC 西元前",pat:"be unlike the past periods of ... — 不同於過去……的時期。",dao:"三期修法因時不同：白陽期是在家修道、齊家修道。",ex:"This method is unlike the past methods."},
+{id:"F-11",pg:13,en:"In the past Eras, it was essential for devoted cultivators to abandon family, career, and society to adopt an ascetic practice.",zh:"在過去的時期，虔誠的修行人必須拋棄家庭、事業與社會，採取苦行的修持方式。",vocab:"essential 必需的、必要的；devoted 虔誠的、專志的；abandon 拋棄、捨離；career 事業；adopt 採取；ascetic 苦行的",pat:"it was essential for sb. to ... — 對某人來說，……是必需的。",dao:"昔時修行須出家苦修，是當時因緣下的修法。",ex:"It was essential for monks to leave home."},
+{id:"F-12",pg:13,en:"This would often involve secluding oneself to cutivate in remote locations such as mountains or wilderness.",zh:"這往往意味著把自己隱居起來，到山林或荒野等偏遠地方修行。（書上 cutivate 應為 cultivate「修行」之誤植，轉錄照原書，閱讀時請留意。）",vocab:"involve 包括、意味著；seclude oneself 隱居、與世隔絕；cultivate 修行（原書誤植 cutivate）；remote 偏遠的；location 地點；wilderness 荒野",pat:"involve ...-ing — 意味著要……、包括……。",dao:"過去修行常須遠離塵世、深山苦修，與白陽在家修道成對照。",ex:"The retreat involved living in the mountains."},
+{id:"F-13",pg:13,en:"In this current Era, cultivation of the Tao begins from working on the fundamental qualities of being human².",zh:"在本期，修道是從做人的基本道理² 做起的。（² 人道 Ren Tao，見本節後段註 2。）",vocab:"fundamental 基本的；quality 品德、素質；being human 做人、為人",pat:"begin from ...-ing — 從……開始、由……做起。",dao:"修天道先從人道做起：做人的基本道理是修道的地基。",ex:"Good writing begins from honest thinking."},
+{id:"F-14",pg:14,en:"This process actually takes place at home and within the society, with the involvement and participation of the whole family.",zh:"這個過程實際上是在家庭裡、社會中進行的，全家人共同投入、共同參與。",vocab:"process 過程；actually 實際上；take place 進行、發生；involvement 投入、參與；participation 參與",pat:"with the involvement of ... — 在……的共同參與下。",dao:"齊家修道：修道就在家庭與社會之中，全家同修同辦。",ex:"The project succeeded with the involvement of the whole family."},
+{id:"F-15",pg:14,en:"The ultimate aim of practising Tao as a family is to propagate Tao to more people.",zh:"以家庭為單位修辦道的最終目標，是把道傳給更多的人。",vocab:"ultimate 最終的；aim 目標；practise 修持、實踐（英式拼法）；propagate 傳播、辦道",pat:"The ultimate aim of ...-ing is to ... — ……的最終目標是……。",dao:"齊家的目的不在自了，而在渡人、成全更多人同登覺路。",ex:"The ultimate aim of studying is to serve others."}
+];
+renderCards(FOREWORD,'forewordCards',function(s){return '書頁 '+s.pg;});
+
+/* F-16 截斷句：待核對旗標卡（不臆測補寫） */
+(function(){
+  var host=document.getElementById('forewordCards');
+  var d=document.createElement('div');d.className='flag';
+  d.innerHTML='<b>F-16 · 待核對（書頁 14 末行）</b><br><span style="font-family:Georgia,serif">In Appendix 2 - &quot;The Tenets of Tao&quot; (道之宗旨) and Appendix 3 - &quot;The&quot;</span><br><span class="small">這一句在書頁 14 就截斷了，下一頁（書頁 15）已是「二、求道的殊勝」，本站照原樣標記、不自行補寫後半句。請 Cheng 對照原書確認：是書上本來如此，還是拍攝時裁切掉了。</span>';
+  host.appendChild(d);
+})();
+wireReader('foreword');
+
+/* ================= Foreword 註解與五倫八德 ================= */
+(function(){
+  var host=document.getElementById('forewordNotes');
+  var html='';
+  html+='<div class="notebox"><h4>註 1 · Holy Achievement（書頁 13 頁末註，照書錄入）</h4><p style="font-family:Georgia,serif">Holy Achievement: Achieving the restoration of one\'s Innate Nature. The Heavenly Mater will bestow Holy Titles accordingly to spirits returning to the Heaven of Ultimate Truth. This is determined by one\'s level of spiritual restoration as manifested by one\'s cultivation and propagation achievements.</p><p>大意：聖果／聖業成就，指恢復本性的成就。天母會依靈性回歸理天時恢復的程度——由其修道與辦道的成就所顯現——授予相應的聖位。</p></div>';
+  html+='<div class="notebox"><h4>註 2 · Ren Tao 人道（書頁 14 頁中註，照書錄入）</h4><p style="font-family:Georgia,serif">Fundamental qualities of being human (Ren Tao, 人道) literally mean the way to be human (做人的基本道理). Having received the Tao Transmission, cultivators should know that being born as a human carries the missions of administering this mortal world (治世) created by the Heavenly Mater (see "The Ten Admonishments of Heavenly Mater 皇母訓子十誡"). Of all the past saints, Confucius particularly elaborated on Ren Tao in full detail. It covers all the important qualities, interactions and relationships at home, work and in the community. These in Chinese are called the Five Cardinal Relationship Attributes and the Eight Virtues (Wu Lun Ba De, 五倫八德).</p><p>大意：人道就是做人的基本道理。求道後要明白：生而為人，負有治理這個由天母所造世間的使命（見《皇母訓子十誡》）。歷代聖人中，孔子對人道闡述最詳盡，涵蓋家庭、工作與社群中一切重要的品德、互動與關係，中文稱為五倫八德。</p></div>';
+  html+='<div class="notebox"><h4>Five Cardinal Relationship Attributes · 五倫（書頁 14，照書錄入）</h4><ul>'
+    +'<li><b>君臣有義</b> — Righteousness should exist between sovereign and subjects (including between employers and employees), where the sovereign respects the subjects whilst the subjects have loyalty to the sovereign.</li>'
+    +'<li><b>父子有親（父慈子孝）</b> — Caring love should exist between parents and children, where parents love the children whilst children have filial piety to parents.</li>'
+    +'<li><b>夫婦有別（各盡其責，相敬如賓）</b> — Acknowledge and respect the distinctive roles of husband and wife, where the husband and wife each fulfil their own duties to bring harmony and prosperity to the family.</li>'
+    +'<li><b>長幼有序（兄友弟恭）</b> — Order and respect should exist between siblings, where the elder siblings should be kind and take care of younger siblings who in return will respect the elder siblings.</li>'
+    +'<li><b>朋友有信</b> — Trustworthiness, sincerity and honesty should exist between friends.</li></ul></div>';
+  html+='<div class="notebox"><h4>Eight Virtues · 八德（書頁 14，照書錄入）</h4><ul>'
+    +'<li>Filial Piety — 孝 (xiao)</li><li>Sibling Love, Care and Respect — 悌 (ti)</li>'
+    +'<li>Loyalty — 忠 (zhong)</li><li>Trustworthiness and Honesty — 信 (xin)</li>'
+    +'<li>Propriety — 禮 (li)</li><li>Righteousness — 義 (yi)</li>'
+    +'<li>Integrity — 廉 (lian)</li><li>Shame — 恥 (chi)</li></ul></div>';
+  host.innerHTML=html;
+})();
+/* ================= 資料：求道的殊勝 句子卡 下半（書頁 21–27，照書轉錄） ================= */
+SIGNIF=SIGNIF.concat([
+{id:"B-45",pg:21,en:"During this Final Salvation period the Heavenly Mater (God) has decreed for the widespread salvation through Tao to the Three Realms (Three Realms 三曹: the Celestial Realm 天曹, the Underworld Realm 地曹, and the Humanly Realm 人曹).",zh:"在這末後普渡時期，天母（上帝）已頒下旨意，要藉著道把普渡廣行於三曹（三曹：天曹、地曹、人曹）。",vocab:"decree 頒旨、命令；widespread 廣泛的；salvation 普渡；realm 界、曹",pat:"has decreed for the ... salvation ... to ... — 已頒旨要把普渡……及於……。",dao:"普渡及於三曹：天、地、人同沾這一場末後普渡。",ex:"The school has planned for the new programme for all classes."},
+{id:"B-46",pg:21,en:"The Enlightened Teachers' virtues are due to the great virtues of the Mi-Le Buddha and the current Enlightened Teachers, being the Venerable Teacher Tian-Ran Shi Zun and the Venerable Teacher Lady Yue-Hui Shi Mu.",zh:"師德，則來自彌勒佛的大德，以及當代的明師——恭敬的天然師尊與月慧師母。",vocab:"be due to 由於、歸功於；current 當代的；venerable 恭敬的、德高望重的",pat:"are due to the great virtues of ... — 歸功於……的大德。",dao:"師德的具體：彌勒祖師與天然師尊、月慧師母的大德成全。",ex:"Our progress is due to the teacher's great patience."},
+{id:"B-47",pg:21,en:"It is their great vows to shoulder the burden of conducting the widespread salvation and bring sentient beings back to the Heaven of Ultimate Truth.",zh:"承擔普渡的重擔、把眾生帶回無極理天，是他們的大愿。",vocab:"vow 誓愿、大愿；shoulder 肩負、承擔；burden 重擔；conduct 進行、辦理",pat:"It is their great vows to ... — ……是他們的大愿。",dao:"普渡是師尊師母的大愿承擔，我們是蒙恩跟隨的人。",ex:"It is their vow to help every student finish the course."},
+{id:"B-48",pg:21,en:"In addition, there are also the important prerequisites of: ● the recipient's past cultivation efforts, ● affinities with saints and Buddhas, ● the good deeds and virtues from one's ancestors.",zh:"此外，還有幾個重要的先決條件：求道人過去修行的努力、與仙佛的因緣、以及祖先的功德。（書上以 ● 並列三項，照原樣錄入。）",vocab:"in addition 此外；prerequisite 先決條件；effort 努力；affinity 因緣；ancestor 祖先",pat:"there are also the prerequisites of: A, B, C — 還有先決條件：A、B、C。",dao:"自己有根基、與佛有緣、祖上有德——這是求道人這一方要具備的條件。",ex:"There are also the requirements of: effort, time, and honesty."},
+{id:"B-49",pg:"21–22",en:"All of the above are coupled with the oaths of the Introducer and Guarantor testifying in front of the altar that the characters of the Tao recipient are sufficiently qualified, and guaranteeing to the Tao recipients that the Tao is true, one's True Self is true, and the Heavenly Decree is true.",zh:"以上種種，再加上引師、保師在佛前立愿作證：證明求道人的品性足夠合格，並向求道人保證——道是真的、自己的真我（自性）是真的、天命是真的。（本句跨書頁 21–22，照書完整形錄入。）",vocab:"be coupled with 再加上、與……結合；oath 誓愿；testify 作證；in front of the altar 在佛前；character 品性；sufficiently 足夠地；qualified 合格的；guarantee 保證；decree 天命、旨意",pat:"are coupled with the oaths of ... testifying that ... — 再加上……立愿作證說……。",dao:"引保師以性命擔保：人品清白、道真、理真、天命真。",ex:"These facts are coupled with the teacher's promise that the course is genuine."},
+{id:"B-50",pg:22,en:"These prerequisites must be met at every Tao ceremony in order for Tao recipients to make their vows of receiving Tao and the Tao being received is the same Tao passed down since ancient times.",zh:"這些先決條件，必須在每一場求道儀式中都具備，求道人才能立下求道的愿；而所求的道，也正是自古相傳下來的同一個道。",vocab:"be met 被滿足、具備；in order for 為了使；make a vow 立愿；pass down 傳下來",pat:"must be met at every ... in order for ... to ... — 必須在每一次……中具備，……才能……。",dao:"每一場求道都嚴守這些條件，所傳才確實是亙古同一個道。",ex:"These rules must be met at every exam in order for students to pass fairly."},
+{id:"B-51",pg:22,en:"It is also referred to as The Bright and Great Tao, the Ultimate Vessel Dharma.",zh:"它（這個道）也被稱為光明大道、無上乘法。",vocab:"be referred to as 被稱為；bright 光明的；vessel 乘、法船；dharma 法",pat:"be also referred to as ... — 也被稱為……。",dao:"道名雖多——光明大道、無上乘法——指的同是一道。",ex:"It is also referred to as the direct path."},
+{id:"B-52",pg:22,en:"Furthermore, your Introducer and Guarantor must take an oath before God.",zh:"此外，你的引師與保師必須在上帝（佛）前立愿。",vocab:"furthermore 此外；take an oath 立誓、立愿；before God 在上帝面前",pat:"must take an oath before ... — 必須在……前立愿。",dao:"立愿不是口頭說說，是在佛前以性命作保的承諾。",ex:"Witnesses must take an oath before the judge."},
+{id:"B-53",pg:22,en:"The oath includes a declaration that they are not here to take advantage of you including monetarily, or to recruit you into some cult.",zh:"誓愿中包括一項宣告：他們不是來佔你便宜的——包括錢財上的便宜——也不是來招你加入什麼邪教的。",vocab:"include 包括；declaration 宣告；take advantage of 佔便宜、利用；monetarily 在金錢上；recruit 招募；cult 邪教",pat:"The oath includes a declaration that ... — 誓愿包括一項宣告：……。",dao:"先把話說在前面：不是騙財、不是拉人入教，清白可驗。",ex:"The letter includes a declaration that no fee will be charged."},
+{id:"B-54",pg:22,en:"Receiving Tao is definitely not the same as going to a church or shrine to pray for materialistic outcomes, or joining membership into a social group with religious affiliations.",zh:"求道絕對不同於去教堂或廟裡祈求物質上的結果，也不同於加入一個帶宗教色彩的社交團體成為會員。",vocab:"definitely 絕對、肯定；materialistic 物質的；outcome 結果；membership 會員資格；affiliation 關聯、屬性",pat:"is definitely not the same as ...-ing — 絕對不同於……。",dao:"求道不是求福報、不是入團體，是靈性回天的正事。",ex:"Studying is definitely not the same as memorising answers."},
+{id:"B-55",pg:22,en:"The difference is huge because we are now gathered at the Heavenly temple to enable our spirit to begin the transition from this earthly world back to Heaven by restoring the Innate Buddha Self inside everyone of us, instead of being lost amidst this material world and earthly possessions.",zh:"差別非常大，因為我們現在聚集在佛堂，是為了讓靈性藉著恢復每個人內在的本來佛性，開始從這個世間返回天上的轉變，而不是迷失在物質世界與世間財物之中。",vocab:"huge 巨大的；be gathered 聚集；enable 使能夠；transition 轉變、過渡；earthly 世間的；restore 恢復；amidst 在……之中；possession 財物",pat:"The difference is huge because ... instead of ... — 差別巨大，因為……，而不是……。",dao:"求道的目的：回天，不是迷失於物質。",ex:"The difference is huge because we learn by doing, instead of just listening."},
+{id:"B-56",pg:"22–23",en:"Thus, being able to find the Enlightened Teacher and receive the Genuine transmission of spiritual (True Self) awakening (性理真傳) via the Enlightened Teacher's pointer, are all due to the Heavenly Cycle (天運) reaching the Final Dharma Period (末法) and the present time being ripe for the holy work of Full and Complete Restoration of Spirits⁴ (收圓).",zh:"所以，能夠找到明師、得受明師一指的性理真傳，都是因為天運已到末法時期，現在正是收圓這件聖業時機成熟的時候。（本句跨書頁 22–23，照書完整形錄入；註 4 全文收在本節後段。）",vocab:"thus 所以；genuine 真正的；via 藉由、經由；pointer 一指；Heavenly Cycle 天運；ripe 成熟的；restoration 恢復、收圓",pat:"are all due to ... reaching ... and the time being ripe for ... — 都是因為……已到……、時機已成熟。",dao:"能拜明師、得真傳，是天運、末法、收圓三件事同時成熟的結果。",ex:"Our meeting is all due to the time being ripe for change."},
+{id:"B-57",pg:23,en:"Another reason why Heaven bestows Tao propagation for the masses at this point in time, is due to the fact that sentient beings' conscience and mindsets have over time deviated far towards material wealth and selfish gains, distancing themselves away from the Tao, instead of emphasising a life of spiritual enrichment.",zh:"上天在此時把傳道普給大眾的另一個原因是：眾生的良心與心態久而久之已遠遠偏向物質財富與自私的利益，離道越來越遠，而不是著重靈性充實的人生。",vocab:"bestow 賜予、普給；the masses 大眾；mindset 心態；deviate 偏離；selfish 自私的；distance 使遠離；emphasise 著重；enrichment 充實、豐富",pat:"Another reason why ... is due to the fact that ... — ……的另一個原因是……這個事實。",dao:"人心不古、偏離本心，正是上天道劫並降的背景。",ex:"Another reason why we practise daily is due to the fact that habits shape us."},
+{id:"B-58",pg:23,en:"In today's modernised world, sentient beings' attachments and desires have grown to an unprecedented height fuelled by endless temptations and indulgences.",zh:"在今天這個現代化的世界裡，眾生的執著與欲望被無盡的誘惑與放縱推高到前所未有的地步。",vocab:"modernised 現代化的；attachment 執著；unprecedented 前所未有的；fuel 推波助瀾、助長；temptation 誘惑；indulgence 放縱",pat:"have grown to an unprecedented height, fuelled by ... — 已升高到前所未有的地步，是被……助長的。",dao:"欲望被時代放大，正是修道要逆流而行的原因。",ex:"Prices have grown to an unprecedented height."},
+{id:"B-59",pg:23,en:"Sentient beings have hence lost the connection to their innate moral conscience and as a result have caused tremendous amounts of collective bad karmas.",zh:"眾生因此失去了與本具道德良心的連結，結果造下了大量的集體惡業。",vocab:"hence 因此；connection 連結；innate 本具的；moral conscience 道德良心；as a result 結果；tremendous 大量的；collective 集體的；karma 業",pat:"have hence lost ..., and as a result have caused ... — 因此失去了……，結果造下了……。",dao:"離了良心就造業：個人與集體的業，都從這裡來。",ex:"They have hence lost the habit and caused many problems."},
+{id:"B-60",pg:23,en:"This mountain of cumulative bad karma has over time materialised in the form of countless calamities on the horizon with no way to alter the course.",zh:"這座累積的惡業大山，久而久之已化成地平線上無數看得見的災劫，而且已沒有辦法改變它的走向了。",vocab:"mountain （比喻）大山；cumulative 累積的；materialise 化成、具體化；in the form of 以……的形式；calamity 災劫；on the horizon 在眼前、逼近中；alter 改變；course 走向",pat:"has materialised in the form of ... — 已化成……的形式出現。",dao:"劫不是無因天降：是累積共業化成的形。",ex:"Small debts materialised in the form of a mountain."},
+{id:"B-61",pg:23,en:"Spirits who could not enhance themselves through the many reincarnation journeys will unfortunately be unable to avoid these calamities.",zh:"那些在多次輪迴旅程中沒能提升自己的靈性，很不幸地，將無法避開這些災劫。",vocab:"enhance 提升；unfortunately 不幸地；avoid 避開",pat:"Spirits who could not ... will be unable to ... — 沒能……的靈性，將無法……。",dao:"平時不修、不提升自己，劫來時便無處可避。",ex:"Students who could not practise will be unable to pass."},
+{id:"B-62",pg:23,en:"However, the merciful Heavenly Mater could not bear to see the good cultivating spirits to be destroyed along with the wayward spirits during these calamities, therefore the Heavenly Mater has entrusted the Mi-Le Buddha, mentioned as Maitreya in Buddhism, Mahdi in Islam, and as Messiah in Judaism and Christianity, to conduct the Final Salvation from the start of the early 20th century.",zh:"然而，慈悲的天母不忍心看著善良修行的靈性，在災劫中與迷途的靈性一同被毀滅，因此天母託付彌勒佛——在佛教稱彌勒（Maitreya）、在伊斯蘭教稱馬赫迪（Mahdi）、在猶太教與基督教稱彌賽亞（Messiah）——從二十世紀初開始主持末後普渡。",vocab:"merciful 慈悲的；could not bear to 不忍心；be destroyed 被毀滅；wayward 迷途的、任性的；entrust 託付；conduct 主持、進行",pat:"could not bear to see A be ... along with B, therefore ... has entrusted C to ... — 不忍心看 A 與 B 一同……，因此託付 C 去……。",dao:"降道挽救良善：普渡是天母不忍善靈與迷靈玉石俱焚的慈悲安排。",ex:"The teacher could not bear to see the good students fail along with the careless ones."},
+{id:"B-63",pg:"23–24",en:"This explains why we can receive this precious Tao transmission relatively easily today.",zh:"這就說明了為什麼我們今天能相對容易地求得這珍貴的傳道。（本句跨書頁 23–24，照書完整形錄入。）",vocab:"explain 說明；precious 珍貴的；relatively 相對地",pat:"This explains why ... — 這就說明了為什麼……。",dao:"得道之易，源頭是天母的慈悲與彌勒的承擔。",ex:"This explains why the door is open today."},
+{id:"B-64",pg:24,en:"We must realise that all natural disasters and catastrophes are actually due to the collective karmic consequences of humans' bad deeds as per the Laws of Cause and Effect.",zh:"我們必須明白：一切天災巨變，其實都是依因果律而來的人類惡行集體業報。",vocab:"realise 明白、體認（英式拼法）；disaster 災害；catastrophe 巨災；karmic 業的；consequence 後果、業報；as per 依照",pat:"must realise that ... are due to ... as per ... — 必須明白……是依照……而由……造成的。",dao:"災劫有因：共業所感，依因果律而現。",ex:"We must realise that results are due to daily choices."},
+{id:"B-65",pg:24,en:"When the amount of negative karma accumulates and surmounts beyond a stable limit, disasters and catastrophes will break out.",zh:"當負面業力的量累積、超過一個穩定的限度時，災害與巨變就會爆發。",vocab:"amount 量；accumulate 累積；surmount 超過、越過；stable 穩定的；limit 限度；break out 爆發",pat:"When ... accumulates and surmounts beyond ..., ... will break out — 當……累積超過……，……就會爆發。",dao:"業滿則劫發：平時止惡，就是在消未來的劫。",ex:"When pressure surmounts beyond a limit, problems will break out."},
+{id:"B-66",pg:24,en:"If we look at the amount of animals being harmed and killed on a daily basis in the production of industrialised farming, the destruction to delicate environments and ecosystems, the never-ending pollution, resource depletion and overuse, Heaven can foresee that the safety of good-hearted people will be deeply affected by the wrongdoings of the wider human population.",zh:"看看工業化畜牧每天傷害、殺害動物的數量，對脆弱環境與生態系的破壞，沒完沒了的污染、資源耗竭與過度使用——上天可以預見，善良人們的安全將深受廣大人群惡行的影響。",vocab:"on a daily basis 每天；industrialised 工業化的；delicate 脆弱的；ecosystem 生態系；depletion 耗竭；overuse 過度使用；foresee 預見；wrongdoing 惡行",pat:"If we look at A, B, C, ... can foresee that ... — 若看 A、B、C，……可以預見……。",dao:"殺生、破壞、污染皆是共業：善人也會被大環境牽連，所以要降道挽救。",ex:"If we look at the daily waste, we can foresee a problem."},
+{id:"B-67",pg:24,en:"Therefore, cultivators after receiving the Tao transmission shall thoroughly understand the universal Laws of Cause and Effect, and further refrain from incurring new negative karmas so that we can rescue our own spiritual self and help the spirit of others in the Tao cultivation and propagation process.",zh:"因此，求道後的修道人應當透徹明白普世的因果律，並進一步戒絕再造新的惡業，好讓我們能在修道與辦道的過程中，救自己的靈性，也幫助別人的靈性。",vocab:"thoroughly 透徹地；universal 普世的；refrain from 戒絕、避免；incur 招致、造下；rescue 拯救",pat:"shall thoroughly understand ..., and further refrain from ... so that ... — 應當透徹明白……，並戒絕……，好讓……。",dao:"明因果、止新業，是求道後自救救人的基本工夫。",ex:"Students shall thoroughly understand the rules and refrain from cheating."},
+{id:"B-68",pg:"24–25",en:"The two Enlightened Teachers in charge of the Tao propagation in the present White Yang era are Ji-Gong Living Buddha and Yue-Hui Bodhisattva.",zh:"在當今白陽期負責傳道的兩位明師，是濟公活佛與月慧菩薩。（本句跨書頁 24–25，與 B-69 為同一段的連續兩句，照書完整形錄入。）",vocab:"in charge of 負責；era 時期",pat:"The two ... in charge of ... are A and B — 負責……的兩位……是 A 與 B。",dao:"我們所拜的當代明師是濟公活佛、月慧菩薩，不是拜人為師。",ex:"The two teachers in charge of the class are Mr A and Ms B."},
+{id:"B-69",pg:"24–25",en:"They are our current Enlightened Teachers because of their Heavenly Decree ordained by the Heavenly Mater to be in charge of the Tao transmission and propagation to the sentient beings within the Three Realms.",zh:"他們是我們當代的明師，因為天母授予他們天命，負責把傳道與辦道及於三曹眾生。（與 B-68 同段，連續錄入。）",vocab:"current 當代的；Heavenly Decree 天命；ordain 授予、命定；within 在……之內",pat:"because of their ... ordained by ... to be in charge of ... — 因為他們受……所命，負責……。",dao:"明師的身分來自天命，不是自封，也不是人推舉。",ex:"They are our leaders because of their duty assigned by the school."},
+{id:"B-70",pg:25,en:"In the past, the Heavenly Decree was passed down to many different Enlightened Teachers throughout different times and locations around the world.",zh:"過去，天命曾傳給世界各地不同時代、不同地方的許多位明師。",vocab:"be passed down 被傳下來；throughout 遍及；location 地方",pat:"was passed down to ... throughout ... — 曾傳給遍及……的……。",dao:"天命隨時隨地授給明師，道脈在世界各地延續。",ex:"The skill was passed down to many teachers around the world."},
+{id:"B-71",pg:25,en:"Depending on the affinity of the people in their location and time period, some Heavenly Decree lineages continued through many generations of Enlightened Teachers, whilst there are other Heavenly Decree lineages which only lasted through one or few generations of Enlightened Teachers.",zh:"依各地、各時代人們因緣的不同，有些天命法脈延續了許多代明師，有些則只延續了一代或少數幾代明師。",vocab:"depending on 依……而定；affinity 因緣；lineage 法脈、傳承；generation 代；last 延續、持續",pat:"Depending on ..., some ... continued through ..., whilst others only lasted ... — 依……不同，有些……延續……，有些只延續……。",dao:"法脈長短隨因緣：因緣深處傳得久，與 Preface 所述相應。",ex:"Depending on interest, some clubs continued through many years."},
+{id:"B-72",pg:25,en:"The only remaining main lineage of the Great Tao today, in the 5,000 years of this lineage through to the present day I-Kuan Tao, has spanned across 64 generations of Heavenly-decreed Enlightened Teachers in both China and India.",zh:"今天大道唯一存留的主法脈，在這條延續五千年、直到今日一貫道的法脈中，橫跨了中國與印度共六十四代奉天命的明師。",vocab:"remaining 存留的；main 主要的；span 橫跨；generation 代",pat:"has spanned across ... generations — 已橫跨……代。",dao:"六十四代一脈相傳，是道真、天命真的歷史證據。",ex:"The family has spanned across five generations in this town."},
+{id:"B-73",pg:25,en:"At the turn of the 20th century, the Heavenly Mater commanded the Great Tao's 63rd and 64th generation Patriarchs to commence the widespread rescuing of sentient beings.",zh:"在二十世紀之交，天母命令大道的第六十三代與六十四代祖師，開始廣泛救渡眾生。",vocab:"at the turn of 在……之交；command 命令；Patriarch 祖師；commence 開始；rescue 救渡",pat:"commanded ... to commence ... — 命令……開始……。",dao:"普渡由六十三、六十四代祖奉命開展，是天命的安排。",ex:"At the turn of the century, the school commenced a new programme."},
+{id:"B-74",pg:25,en:"This grand task is known as the Final Salvation.",zh:"這項宏大的任務，就是所謂的末後普渡。",vocab:"grand 宏大的；task 任務；be known as 被稱為",pat:"This grand task is known as ... — 這項宏大任務稱為……。",dao:"末後普渡：這一時間周期中最後一次的大普渡。",ex:"This grand task is known as the final rescue."},
+{id:"B-75",pg:25,en:"This is the only widespread Final Salvation in the current time-cycle, of which 60,000+ years have already passed so far.",zh:"這是當前這個時間周期中唯一的一次廣行末後普渡；這個周期至今已過了六萬多年。",vocab:"only 唯一的；time-cycle 時間周期；so far 至今",pat:"the only ... in the current ..., of which ... years have already passed — 是當前……中唯一的……，而其……年已經過去。",dao:"六萬多年才逢此一會，機會不再重來，當知把握。",ex:"This is the only chance in the term, of which half has already passed."},
+{id:"B-76",pg:25,en:"The 64th generation Patriarch and Matriarch were incarnations of the Ji-Gong Living Buddha and Yue-Hui Bodhisattva respectively.",zh:"第六十四代祖師與師母，分別是濟公活佛與月慧菩薩的化身。",vocab:"Matriarch 師母、女家長；incarnation 化身；respectively 分別地",pat:"A and B were incarnations of C and D respectively — A 與 B 分別是 C 與 D 的化身。",dao:"當代明師的身分：祖師、師母即活佛、菩薩化身臨凡。",ex:"The two founders were students of Master A and Master B respectively."},
+{id:"B-77",pg:25,en:"What Tao recipients' have received in the ceremony was not from any flesh-and-blood humans or from the Tao Transmitting Masters themselves.",zh:"求道人在儀式中所接受到的，不是來自任何血肉之軀的人，也不是來自點傳師本身。（書上 recipients' 的所有格寫法照原書錄入。）",vocab:"flesh-and-blood 血肉之軀的；themselves 本身",pat:"What ... have received ... was not from ... — ……所接受的，不是來自……。",dao:"傳道者是活佛借點傳師之手，求道人受的是天命真傳。",ex:"What we have received was not from the messenger himself."},
+{id:"B-78",pg:25,en:"During the Tao Ceremony, the Enlightened Teacher's pointer (明師一指) was actually performed by the Ji-Gong Living Buddha's spirit via the finger of the Tao Transmitting Master, using the fire as a medium to inject God's Holy energy (Holy spirit) into the Tao recipient's spirit.",zh:"在求道儀式中，明師一指其實是濟公活佛的靈，藉著點傳師的手指，以火為媒介，把上帝的神聖能量（聖靈）注入求道人的靈性之中。",vocab:"be performed 被施行；via 藉由；medium 媒介；inject 注入；Holy energy 神聖能量",pat:"was actually performed by ... via ..., using ... as a medium to ... — 其實是由……藉……施行，用……為媒介來……。",dao:"借火傳法：活佛借點傳師之手，打開生死門戶。",ex:"The message was delivered by the teacher via the assistant."},
+{id:"B-79",pg:25,en:"This Holy energy unlocks the Tao recipient's Heavenly Portal and links their spirit directly to the Heavenly Mater.",zh:"這股神聖能量打開求道人的玄關竅（天門），把他的靈性直接與天母連結起來。",vocab:"unlock 打開、開啟；Heavenly Portal 玄關、天門；link 連結；directly 直接地",pat:"unlocks ... and links ... directly to ... — 打開……，把……直接連結到……。",dao:"一指點開玄關，靈性自此與老母直接相通。",ex:"This key unlocks the door and links the rooms."},
+{id:"B-80",pg:26,en:"The Holy mission of Tao Transmission carried out by Ji-Gong Living Buddha during this Final Salvation period has already been planned by Heaven since a long time ago.",zh:"濟公活佛在這末後普渡時期所承擔的傳道神聖使命，早在很久以前就由上天安排好了。",vocab:"mission 使命；carry out 承擔、執行；be planned 被安排",pat:"has already been planned by ... since a long time ago — 早在很久以前就已被……安排好。",dao:"活佛辦普渡是天命早定，不是臨時起意。",ex:"The trip has already been planned by the school since last year."},
+{id:"B-81",pg:26,en:"Ji-Gong Living Buddha was well-known in Chinese culture by one of his incarnations during the Song Dynasty where he was a Buddhist monk, using his spiritual powers to help the poor, rescue those in need, and stand up to injustice.",zh:"濟公活佛在中國文化中廣為人知，是因他宋代的一次化身：當時他是一位佛教僧人，運用神通幫助窮人、救助有難的人、並挺身對抗不公。",vocab:"well-known 廣為人知的；incarnation 化身；Dynasty 朝代；monk 僧人；spiritual power 神通；stand up to 挺身對抗；injustice 不公",pat:"was well-known ... by one of his incarnations ... where he was ... — 因他的一次化身而廣為人知，那時他是……。",dao:"宋代濟公濟貧救難的形象，正是活佛慈悲的寫照。",ex:"The doctor was well-known for helping the poor."},
+{id:"B-82",pg:26,en:"He has a famous physical appearance of always carrying a fan.",zh:"他有一個著名的外貌特徵：總是拿著一把扇子。",vocab:"famous 著名的；physical appearance 外貌；carry 拿著、帶著；fan 扇子",pat:"has a famous appearance of always ...-ing — 有一個總是……的著名外貌特徵。",dao:"手持扇子是濟公活佛最易辨認的標誌，也與下一句聖經預言相應。",ex:"He has a famous habit of always carrying a notebook."},
+{id:"B-83",pg:26,en:"The coming of this great Buddha in charge of the baptism (Tao transmission) to people using fire was famously prophesied by John in the Bible, Matthew 3:11-12: \"I indeed baptise you with water unto repentance. but he that cometh after me is mightier than I, whose shoes I am not worthy to bear: he shall baptise you with the Holy Ghost, and with fire. Whose fan is in his hand, and he will thoroughly purge his floor, and gather his wheat into the garner; but he will burn up the chaff with unquenchable fire\".",zh:"這位偉大的佛——負責以火為人施洗（傳道）——的到來，早被約翰在《聖經·馬太福音》3:11-12 著名地預言：「我確實用水給你們施洗，叫你們悔改；但那在我以後來的，能力比我更大，我就是給他提鞋也不配。他要用聖靈與火給你們施洗。他手裡拿著簸箕（扇），要揚淨他的場，把麥子收進倉裡，把糠用不能滅絕的火燒盡。」（引文照書上文字，含句中 but 小寫的原書寫法。）",vocab:"baptism 施洗；prophesy 預言；baptise 施洗（英式拼法）；unto 向、給；repentance 悔改；mightier 更有能力的；be worthy to 配得；Holy Ghost 聖靈；purge 揚淨、清除；garner 倉庫；chaff 糠秕；unquenchable 不能滅絕的",pat:"was famously prophesied by ... in ... — 早被……在……中著名地預言。",dao:"施洗約翰預言以火施洗者「手裡拿著扇」——與濟公活佛的形象互為印證。",ex:"The event was prophesied by the teacher in the old book."},
+{id:"B-84",pg:26,en:"Ji-Gong Living Buddha's pointer during the ceremony points through and unlocks the recipient's Heavenly Portal of life and death.",zh:"濟公活佛在儀式中的一指，點穿並開啟求道人生死之門——玄關竅。",vocab:"point through 點穿；unlock 開啟；portal 門戶",pat:"points through and unlocks ... — 點穿並開啟……。",dao:"明師一指點開生死門戶，找到自家的真主人。",ex:"The key unlocks the portal of the old house."},
+{id:"B-85",pg:26,en:"This is a portal of great significance as it is through this sacred portal that one's spirit enters the body (during the embryo's formation) and leaves the body (at the end of one's physical life).",zh:"這是一個極重要的門戶，因為人的靈性正是通過這個神聖門戶進入身體（在胚胎形成之時），也通過它離開身體（在肉體生命結束之時）。",vocab:"significance 重要性；embryo 胚胎；formation 形成；physical 肉體的",pat:"it is through this ... that ... enters ... and leaves ... — 正是通過這個……，……進入……又離開……。",dao:"玄關是靈性出入之門：生從此入，死從此出，所以歸天要走正門。",ex:"It is through this door that guests enter and leave."},
+{id:"B-86",pg:26,en:"Now we know that there is something called the True Self, the spirit, the Buddha Self.",zh:"現在我們知道了：有一個東西叫做真我——靈性、佛性。",vocab:"be called 被稱為",pat:"there is something called ... — 有一個東西叫做……。",dao:"認識真主人，是求道後修道的第一課。",ex:"Now we know that there is something called gravity."},
+{id:"B-87",pg:26,en:"The Tao Transmitting Masters are merely agents acting on behalf of the Enlightened Teacher Ji-Gong Living Buddha to perform the True Dharma transmission via the ceremony with the holy fire to formalise the Teacher-disciple relationship (代師收徒) with Ji-Gong Living Buddha.",zh:"點傳師只是代理人，代表明師濟公活佛，藉著聖火的儀式施行真法傳授，與濟公活佛正式建立師徒關係（代師收徒）。（書上括號寫法照原書錄入。）",vocab:"merely 只是；agent 代理人；act on behalf of 代表；perform 施行；formalise 正式確立；disciple 弟子",pat:"are merely agents acting on behalf of ... to perform ... — 只是代表……施行……的代理人。",dao:"拜的是濟公活佛為師：點傳師代師收徒，不是拜人為師。",ex:"The assistants are merely agents acting on behalf of the teacher."},
+{id:"B-88",pg:"26–27",en:"In summary, the transmission passed down to the Tao recipient are collectively referred to as the Three Treasures, being the Genuine transmission of spiritual (True Self) awakening (性理真傳) in pointing of the Heavenly Portal, the heart-to-heart reception of the Heavenly Mantra and the Heavenly Seal via verbal transmission (口傳心印). This whole process completes the Tao Transmission Ceremony, also referred to as 'Qiu Tao', meaning 'receive Tao transmission'.",zh:"總結來說，傳給求道人的這一切，合稱為三寶：就是性理真傳——點開玄關竅、口傳心印地領受口訣與合同。整個過程完成了傳道儀式，也稱為「求道」，意思是「接受道之傳授」。（本句跨書頁 26–27，照書完整形錄入：前半在書頁 26、後半在書頁 27。）",vocab:"in summary 總結來說；collectively 合起來、共同地；be referred to as 被稱為；genuine 真正的；mantra 口訣、真言；seal 合同、印；verbal 口頭的；complete 完成",pat:"In summary, ... are collectively referred to as ... — 總結來說，……合稱為……。",dao:"三寶是真傳的總名：關、訣、印齊全，才是完整的求道。",ex:"In summary, these habits are collectively referred to as good manners."}
+]);
+renderCards(SIGNIF,'signifCards',function(s){return '書頁 '+s.pg;});
+
+/* 求道的殊勝：書頁 20、22、24 書上中文段，穿插在對應句子之前（照原書錄入） */
+(function(){
+  var host=document.getElementById('signifCards');
+  var cards=host.querySelectorAll('.card');
+  function zhpara(title,text,beforeCard){
+    var d=document.createElement('div');d.className='zhpara';
+    var h=document.createElement('h4');h.textContent=title;
+    var p=document.createElement('p');p.textContent=text;
+    d.appendChild(h);d.appendChild(p);
+    host.insertBefore(d,beforeCard);
+  }
+  zhpara('書上中文段（書頁 20）','我們之所以能求道，是沾了天恩師德，機緣成熟，現今遇上末後三期的白陽期應運，上天慈憫降道大開普渡。也是自己佛緣根基深厚、祖上有德，以及憑著自己佛前立愿；還有引保師在佛前立愿，用性命擔保求道人身家清白、品性端正、是個好人，保證求道人所求的道是道真、理真、天命真，是可以成仙作佛的大道，是亙古不輕傳的光明大道、無上乘法。不是騙人錢財，也不是入什麼教會、或邪教，跟一般拜拜或宗教信仰的人事團體是不一樣的。',cards[34]);
+  zhpara('書上中文段（書頁 22）','所以說，能拜明師求道，得受明師一指，傳授「性理真傳」，皆因時運已至末法收圓，及人心不古所召感以及因果律則所致。上天慈憫道劫並降，降道以挽救良善，降劫以警醒愚迷。',cards[55]);
+  zhpara('書上中文段（書頁 24）','我們所拜的當代明師是濟公活佛、月慧菩薩，不是拜人為師或拜點傳為師。剛剛求道時，是濟公活佛老師借著點傳師的手，點化我們，打開生死門戶，找到自家的真主人、靈性、佛性。而點傳師是代理濟公活佛老師，借火傳法，代師收徒，將回天的無上密寶「性理真傳」，口傳心印傳授予我們，這叫做「求道」。',cards[67]);
+})();
+wireReader('signif');
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="sanbao-gate.js"></script>
+</body>
+</html>
