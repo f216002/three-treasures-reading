@@ -884,17 +884,28 @@ body:not(.sanbao-approved) #listenApp{display:none}
       $('step2Msg').textContent = ok ? '已複製，回去剛才的大語言模型聊天室貼上送出吧。' : '複製失敗，請重試。';
     });
   }
-  /* 解析契約：以「第 N 句」切塊；欄位標記 中文：／英文：／主題：。 */
+  /* 解析契約：以「第 N 句」切塊；欄位標記 中文：／英文：／主題：。
+     英文欄取「英文：」之後、到「主題：」之前的所有行；連續重複的同一行合併成 1 行存入
+     （播放時本來就會把英文播 3 遍，存 3 行會變成 9 遍）；內容不同的行保留、用空格接起，不丟失。 */
   function parseOrganizedText(text) {
     var out = [];
     var blocks = String(text || '').split(/第\s*\d+\s*句/g).filter(function (b) { return b.trim().length > 0; });
     blocks.forEach(function (block) {
       var zhMatch = block.match(/中文[：:]\s*(.*?)(?=\n|$)/);
-      var enMatch = block.match(/英文[：:]\s*(.*?)(?=\n|$)/);
       var topicMatch = block.match(/主題[：:]\s*(.*?)(?=\n|$)/);
       var zh = zhMatch ? zhMatch[1].trim() : '';
-      var en = enMatch ? enMatch[1].trim() : '';
       var topic = topicMatch ? topicMatch[1].trim() : '';
+      var en = '';
+      var enStart = block.search(/英文[：:]/);
+      if (enStart !== -1) {
+        var rest = block.slice(enStart).replace(/英文[：:]\s*/, '');
+        var topicIdx = rest.search(/\n主題[：:]/);
+        if (topicIdx !== -1) rest = rest.slice(0, topicIdx);
+        var lines = rest.split('\n').map(function (l) { return l.trim(); }).filter(function (l) { return l.length > 0; });
+        var dedup = [];
+        lines.forEach(function (l) { if (!dedup.length || dedup[dedup.length - 1] !== l) dedup.push(l); });
+        en = dedup.join(' ');
+      }
       if (zh || en) out.push({ zh: zh, en: en, topic: topic });
     });
     return out;
@@ -922,7 +933,7 @@ body:not(.sanbao-approved) #listenApp{display:none}
         '<div>' + esc(it.en || '') + '</div><div class="muted">' + esc(it.zh || '') + '</div>';
       div.appendChild(row);
     });
-    $('parseMsg').textContent = '解析出 ' + items.length + ' 句，檢查無誤後存入句子庫。';
+    $('parseMsg').textContent = '解析出 ' + items.length + ' 句，檢查無誤後存入句子庫。（播放時每句：中文 1 遍＋英文 3 遍。）';
     $('saveParsedBtn').hidden = false;
   }
   async function saveParsed() {
