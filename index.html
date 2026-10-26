@@ -184,6 +184,29 @@ body.sanbao-admin .expl-btns{display:flex}
 .expl-btns .abtn{font-size:.9rem}
 .expl-saved{font-size:.85rem;color:var(--muted);align-self:center;display:none}
 .audio-src{font-size:.8rem;color:#8a8172;margin-left:8px}
+/* 後台審核面板（2026-10-26）：表格橫向捲動，手機不擠版 */
+#sanbaoAdminPanel table{width:100%;border-collapse:collapse;min-width:640px}
+#sanbaoAdminPanel th,#sanbaoAdminPanel td{border-bottom:1px solid #e9e1cf;padding:8px 6px;text-align:left;vertical-align:top;font-size:.9rem}
+#sanbaoAdminPanel .cell-main{font-weight:600}
+#sanbaoAdminPanel .cell-sub{font-size:.8rem;color:#8a8172;word-break:break-all}
+#sanbaoAdminPanel .mono{font-family:monospace;font-size:.75rem;word-break:break-all}
+#sanbaoAdminPanel .status-badge{display:inline-block;padding:1px 8px;border-radius:10px;font-size:.8rem;white-space:nowrap}
+#sanbaoAdminPanel .status-badge.pending{background:#f3e3ac}
+#sanbaoAdminPanel .status-badge.approved{background:#d9ead3}
+#sanbaoAdminPanel .status-badge.rejected{background:#f4cccc}
+#sanbaoAdminPanel .status-badge.suspended{background:#d9d9d9}
+#sanbaoAdminPanel td.actions{white-space:nowrap}
+#sanbaoAdminPanel td.actions button{cursor:pointer;border-radius:8px;border:1px solid #d8cdb4;background:#fff;padding:4px 12px;font:inherit;font-size:.85rem;margin:2px}
+#sanbaoAdminPanel td.actions button.danger{color:#8a1f1f;border-color:#e0a8a8}
+#sanbaoAdminPanel td.actions button.warn{background:#f3e3ac}
+#sanbaoAdminPanel td.actions button.ghost{background:transparent}
+#sanbaoAdminPanel .tabbtn.active{background:#26221b !important;color:#fff !important}
+/* 窄螢幕工具列收緊（2026-10-26）：管理員登入時工具列共 5 顆鍵，390px 寬手機剛好貼邊，
+   375px 會被切掉頭像；480px 以下改小 padding 與間距，行內樣式需 !important 才壓得過 */
+@media (max-width:480px){
+#sanbaoUtil{gap:4px !important;right:8px !important}
+#sanbaoUtil button,#sanbaoUtil a{padding:6px 10px !important;font-size:.8rem !important}
+}
 </style>
 </head>
 <body>
@@ -194,11 +217,6 @@ body.sanbao-admin .expl-btns{display:flex}
 <button id="sanbaoSignIn" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#26221b;color:#fff;padding:10px 22px;font:inherit">Google 登入</button>
 <button id="sanbaoApply" type="button" style="display:none;cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#fff;color:#26221b;padding:10px 22px;font:inherit;margin-left:8px">申請加入讀書會</button>
 <button id="sanbaoSignOut" type="button" style="display:none;cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#fff;color:#26221b;padding:10px 22px;font:inherit;margin-left:8px">登出</button>
-<div id="sanbaoAdmin" style="display:none;margin-top:22px;border-top:1px solid #e9e1cf;padding-top:16px">
-<h3 style="margin:0 0 8px">管理員審核（僅 f216002@gmail.com）</h3>
-<button id="sanbaoApproveAll" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#8a6d1f;color:#fff;padding:8px 18px;font:inherit">批次核准全部待審核</button>
-<div id="sanbaoReqList" style="margin-top:12px"></div>
-</div>
 <p style="font-size:.85rem;color:#8a8172">請用 Safari 或 Chrome 直接開啟本頁再登入；LINE 等 App 內建瀏覽器無法完成 Google 登入。</p>
 </div>
 
@@ -209,9 +227,43 @@ body.sanbao-admin .expl-btns{display:flex}
 <button id="sanbaoUtilSignIn" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">登入</button>
 <button id="sanbaoUtilSignOut" type="button" style="display:none;cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">登出</button>
 <button id="sanbaoUtilRefresh" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#26221b;color:#fff;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">重新整理</button>
+<button id="sanbaoUtilAdmin" type="button" style="display:none;cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#8a6d1f;color:#fff;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">後台審核</button>
 <a href="listening.html" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15);text-decoration:none">🎧 聽力練習</a>
 </div>
 
+
+<div id="sanbaoAdminPanel" style="display:none;position:fixed;inset:0;z-index:950;background:#f5eeda;overflow-y:auto;font-family:'Noto Sans TC',sans-serif;color:#26221b">
+<div style="max-width:860px;margin:0 auto;padding:20px 16px 48px">
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<h2 style="margin:0;flex:1 1 auto">後台審核</h2>
+<span style="font-size:.85rem;color:#8a8172">僅 f216002@gmail.com</span>
+<button id="sanbaoAdminClose" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#26221b;color:#fff;padding:6px 14px;font:inherit;font-size:.85rem">← 返回共讀</button>
+</div>
+<div id="sanbaoAdminBlocked" style="display:none;margin-top:20px;background:#fffdf8;border:1px solid #d8cdb4;border-radius:12px;padding:20px">此帳號不是管理員，無法使用後台。請用 f216002@gmail.com 登入。</div>
+<div id="sanbaoAdminApp">
+<div style="display:flex;gap:8px;margin-top:20px;flex-wrap:wrap">
+<button type="button" data-admin-tab="requests" class="tabbtn active" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;padding:6px 16px;font:inherit;font-size:.9rem">待審核申請（<span id="sanbaoReqCount">0 筆</span>）</button>
+<button type="button" data-admin-tab="teachers" class="tabbtn" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;padding:6px 16px;font:inherit;font-size:.9rem">已核准學員（<span id="sanbaoTeacherCount">0 位</span>）</button>
+</div>
+<div id="tabAdminRequests">
+<div style="margin-top:16px"><button id="sanbaoApproveAll" type="button" style="cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;background:#8a6d1f;color:#fff;padding:8px 18px;font:inherit">批次核准全部待審核</button></div>
+<div style="margin-top:12px;background:#fffdf8;border:1px solid #d8cdb4;border-radius:12px;overflow-x:auto">
+<table><thead><tr><th>姓名／信箱</th><th>UID</th><th>申請時間</th><th>狀態</th><th>操作</th></tr></thead>
+<tbody id="sanbaoReqBody"></tbody></table>
+</div>
+<p id="sanbaoReqEmpty" style="color:#8a8172">目前沒有申請。</p>
+</div>
+<div id="tabAdminTeachers" hidden>
+<div style="margin-top:12px;background:#fffdf8;border:1px solid #d8cdb4;border-radius:12px;overflow-x:auto">
+<table><thead><tr><th>姓名／信箱</th><th>UID</th><th>核准時間</th><th>狀態</th><th>操作</th></tr></thead>
+<tbody id="sanbaoTeacherBody"></tbody></table>
+</div>
+<p id="sanbaoTeacherEmpty" style="color:#8a8172">目前沒有已核准學員。</p>
+</div>
+</div>
+<div id="sanbaoAdminToast" style="display:none;position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#26221b;color:#fff;padding:10px 18px;border-radius:20px;font-size:.9rem;z-index:960;max-width:90vw;text-align:center"></div>
+</div>
+</div>
 
 <div class="wrap" id="top">
 
@@ -1358,6 +1410,6 @@ applyEdits(readLocalEdits());
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
-<script src="sanbao-gate.js?v=20261026-04"></script>
+<script src="sanbao-gate.js?v=20261026-05"></script>
 </body>
 </html>
