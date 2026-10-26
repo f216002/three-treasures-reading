@@ -16,6 +16,12 @@
   var userBox = document.getElementById('sanbaoGateUser');
   var signInBtn = document.getElementById('sanbaoSignIn');
   var applyBtn = document.getElementById('sanbaoApply');
+  var applyForm = document.getElementById('sanbaoApplyForm');
+  var applyName = document.getElementById('sanbaoApplyName');
+  var applyUnit = document.getElementById('sanbaoApplyUnit');
+  var applyDistrict = document.getElementById('sanbaoApplyDistrict');
+  var applySubmit = document.getElementById('sanbaoApplySubmit');
+  var applyCancel = document.getElementById('sanbaoApplyCancel');
   var signOutBtn = document.getElementById('sanbaoSignOut');
   function setMsg(t) { if (msg) msg.textContent = t; }
   function show(el, on) { if (el) el.style.display = on ? '' : 'none'; }
@@ -130,7 +136,7 @@
     var rows = [];
     snap.forEach(function (doc) {
       var d = doc.data() || {}; var id = doc.id;
-      rows.push('<tr><td><div class="cell-main">' + escAdmin(d.name || d.displayName || '未具名') + '</div><div class="cell-sub">' + escAdmin(d.email || '') + '</div></td>' +
+      rows.push('<tr><td><div class="cell-main">' + escAdmin(d.name || d.displayName || '未具名') + '</div><div class="cell-sub">' + escAdmin(d.email || '') + '</div><div class="cell-sub">單位：' + escAdmin(d.unit || '—') + ' · 區別：' + escAdmin(d.district || '—') + '</div></td>' +
         '<td class="mono">' + escAdmin(id) + '</td><td>' + fmtAdminDate(d.createdAt) + '</td><td>' + adminBadge(d.status) + '</td><td class="actions">' +
         (d.status === 'pending'
           ? '<button type="button" data-admin-approve="' + escAdmin(id) + '">核准</button>' +
@@ -146,7 +152,7 @@
     var rows = [];
     snap.forEach(function (doc) {
       var d = doc.data() || {}; var id = doc.id;
-      rows.push('<tr><td><div class="cell-main">' + escAdmin(d.name || d.displayName || '未具名') + '</div><div class="cell-sub">' + escAdmin(d.email || '') + '</div></td>' +
+      rows.push('<tr><td><div class="cell-main">' + escAdmin(d.name || d.displayName || '未具名') + '</div><div class="cell-sub">' + escAdmin(d.email || '') + '</div><div class="cell-sub">單位：' + escAdmin(d.unit || '—') + ' · 區別：' + escAdmin(d.district || '—') + '</div></td>' +
         '<td class="mono">' + escAdmin(id) + '</td><td>' + fmtAdminDate(d.approvedAt) + '</td><td>' + teacherBadge(d) + '</td><td class="actions">' +
         (d.active
           ? '<button type="button" class="warn" data-admin-suspend="' + escAdmin(id) + '">暫停</button>'
@@ -205,6 +211,7 @@
         var now = window.firebase.firestore.FieldValue.serverTimestamp();
         return db.collection('sanbao_approvedUsers').doc(id).set({
           uid: d.uid || id, email: d.email || '', name: d.name || d.displayName || '',
+          unit: d.unit || '', district: d.district || '',
           active: true, status: 'approved', approvedAt: now, updatedAt: now
         }).then(function () {
           return reqRef.update({ status: 'approved', updatedAt: now });
@@ -245,6 +252,7 @@
         var now = window.firebase.firestore.FieldValue.serverTimestamp();
         jobs.push(db.collection('sanbao_approvedUsers').doc(doc.id).set({
           uid: d.uid || doc.id, email: d.email || '', name: d.name || d.displayName || '',
+          unit: d.unit || '', district: d.district || '',
           active: true, status: 'approved', approvedAt: now, updatedAt: now
         }));
         jobs.push(db.collection('sanbao_accessRequests').doc(doc.id).update({ status: 'approved', updatedAt: now }));
@@ -286,19 +294,51 @@
       else setMsg('Google 登入失敗：' + (err.message || err.code));
     });
   };
-  applyBtn.onclick = function () {
+  /* 申請表單（2026-10-26 Cheng 要求）：姓名／單位／區別三格皆必填，寫入申請單供後台審核。
+     舊版頁面沒有表單時，維持原本直接送出的行為（姓名取 Google 名字）。 */
+  function submitApplication() {
     var user = auth.currentUser;
     if (!user) return;
+    var hasForm = !!(applyForm && applyName && applyUnit && applyDistrict);
+    var name = hasForm ? applyName.value.trim() : (user.displayName || '');
+    var unit = hasForm ? applyUnit.value.trim() : '';
+    var district = hasForm ? applyDistrict.value.trim() : '';
+    if (hasForm && (!name || !unit || !district)) {
+      setMsg('請填寫姓名、單位、區別，三格都是必填。');
+      if (!name && applyName) applyName.focus();
+      else if (!unit && applyUnit) applyUnit.focus();
+      else if (applyDistrict) applyDistrict.focus();
+      return;
+    }
     db.collection('sanbao_accessRequests').doc(user.uid).set({
-      uid: user.uid, email: user.email || '', name: user.displayName || '',
+      uid: user.uid, email: user.email || '', name: name, unit: unit, district: district,
       status: 'pending', createdAt: window.firebase.firestore.FieldValue.serverTimestamp()
     }).then(function () {
       setMsg('申請已送出，請等管理員核准後重新整理頁面。');
-      show(applyBtn, false);
+      show(applyBtn, false); show(applyForm, false);
     }).catch(function (err) {
-      setMsg('申請送出失敗：' + (err.code || err.message) + '（請先發布三寶規則）');
+      if (err.code === 'permission-denied') {
+        setMsg('送出失敗：你已經有一筆審核中的申請，請等管理員審核，或請管理員協助。');
+      } else {
+        setMsg('申請送出失敗：' + (err.code || err.message) + '（請先發布三寶規則）');
+      }
     });
+  }
+  applyBtn.onclick = function () {
+    var user = auth.currentUser;
+    if (!user) return;
+    if (applyForm && applyName) {
+      if (!applyName.value) applyName.value = user.displayName || '';
+      show(applyBtn, false); show(applyForm, true);
+      applyName.focus();
+    } else {
+      submitApplication();
+    }
   };
+  if (applyCancel) applyCancel.onclick = function () {
+    show(applyForm, false); show(applyBtn, true);
+  };
+  if (applySubmit) applySubmit.onclick = submitApplication;
   signOutBtn.onclick = function () { auth.signOut(); };
   /* 右上角常駐鍵：登入／登出／重新整理（2026-10-26 Cheng 要求）。
      登出後必須把門檻恢復原狀：藏起內文、重新顯示登入門檻、收回管理員身分，
@@ -339,7 +379,7 @@
       var g = document.getElementById('sanbaoGate');
       if (g) g.style.display = '';
       setMsg('本教材不公開，僅供核准學員閱讀。請先用 Google 帳號登入。');
-      show(signInBtn, true); show(applyBtn, false); show(signOutBtn, false);
+      show(signInBtn, true); show(applyBtn, false); show(signOutBtn, false); show(applyForm, false);
       show(utilAdmin, false); closeAdminPanel(); userBox.style.display = 'none';
       showUtil(false); setUtilUser(null);
       document.querySelectorAll('.expl-paste').forEach(function (el) { el.contentEditable = 'false'; });
