@@ -556,10 +556,96 @@ function playCardAzure(card,tk){
     setTimeout(function(){if(!finished&&AZ_AUDIO.paused&&!AZ_AUDIO.currentTime)done(false);},8000);
   });
 }
+
+/* On-demand Azure（新內容規則，跟 V4／多語言學習網頁同一套）：
+   1. 先找預合成檔 audio/{id}.mp3（140 張批次）；
+   2. 沒有預合成檔，就走 V4 Cloud Function synthesizeV4Source 即時合成中文段＋英文段，
+      函式端有雲端快取（第一次合成後，之後所有人拿快取，Azure 不再計費）；
+      本機再用 IndexedDB 快取一次，同一台裝置第二次播連函式都不用打；
+   3. 函式失敗（未登入、未核准、單句超過 300 字上限、當日新合成額度用完）就退回裝置語音，
+      絕不讓句子播不出來。管理員（f216002@gmail.com）在函式端無上限，
+      所以新章節由管理員先點播一遍暖快取，學員之後播的就全是快取。 */
+var AZ_SEG_CACHE=new Map();
+var AZ_IDB=null;
+function azIdb(){
+  return new Promise(function(res){
+    if(AZ_IDB){res(AZ_IDB);return;}
+    if(!('indexedDB' in window)){res(null);return;}
+    try{
+      var rq=indexedDB.open('sanbao-audio-cache',1);
+      rq.onupgradeneeded=function(){rq.result.createObjectStore('audio');};
+      rq.onsuccess=function(){AZ_IDB=rq.result;res(AZ_IDB);};
+      rq.onerror=function(){res(null);};
+    }catch(e){res(null);}
+  });
+}
+function azIdbGet(key){
+  return azIdb().then(function(db){
+    if(!db)return null;
+    return new Promise(function(res){
+      try{
+        var q=db.transaction('audio','readonly').objectStore('audio').get(key);
+        q.onsuccess=function(){res(q.result||null);};q.onerror=function(){res(null);};
+      }catch(e){res(null);}
+    });
+  });
+}
+function azIdbPut(key,val){
+  azIdb().then(function(db){
+    if(!db)return;
+    try{db.transaction('audio','readwrite').objectStore('audio').put(val,key);}catch(e){}
+  });
+}
+var AZ_SYNTH_FN=null;
+async function getAzureSegment(locale,text){
+  var key=locale+'\n'+text;
+  if(AZ_SEG_CACHE.has(key))return AZ_SEG_CACHE.get(key);
+  var local=await azIdbGet(key);
+  if(local){AZ_SEG_CACHE.set(key,local);return local;}
+  if(!window.firebase||!window.firebase.app||!window.firebase.app().functions)throw new Error('no-functions');
+  if(!AZ_SYNTH_FN)AZ_SYNTH_FN=window.firebase.app().functions('us-east1').httpsCallable('synthesizeV4Source',{timeout:60000});
+  var r=await AZ_SYNTH_FN({locale:locale,text:text});
+  var d=(r&&r.data)||{};
+  if(!d.audioBase64)throw new Error('empty-audio');
+  var url='data:'+(d.contentType||'audio/mpeg')+';base64,'+d.audioBase64;
+  AZ_SEG_CACHE.set(key,url);azIdbPut(key,url);
+  return url;
+}
+function playAudioUrl(url,tk){
+  return new Promise(function(resolve){
+    if(!AZ_AUDIO){resolve(false);return;}
+    var finished=false;
+    function done(ok){if(finished)return;finished=true;AZ_AUDIO.onended=null;AZ_AUDIO.onerror=null;resolve(ok);}
+    AZ_AUDIO.onended=function(){done(true);};
+    AZ_AUDIO.onerror=function(){done(false);};
+    AZ_AUDIO.src=url;
+    var pr=AZ_AUDIO.play();
+    if(pr&&pr.catch)pr.catch(function(){done(false);});
+  });
+}
+async function playCardOnDemand(card,tk){
+  setRep(card,'Azure 合成');
+  var zhUrl=await getAzureSegment('zh-TW',card._s.zh);
+  if(tk!==playToken)return false;
+  if(!(await playAudioUrl(zhUrl,tk)))return false;
+  var enUrl=await getAzureSegment('en-US',card._s.en);
+  for(var i=0;i<3;i++){
+    if(tk!==playToken)return false;
+    await repGap();
+    if(tk!==playToken)return false;
+    setRep(card,'Azure 英文第 '+(i+1)+' / 3 遍');
+    if(!(await playAudioUrl(enUrl,tk)))return false;
+  }
+  return tk===playToken;
+}
 async function playCardSeq(card,tk){
   setRep(card,'Azure 錄音');
   var ok=await playCardAzure(card,tk);
   if(ok||tk!==playToken)return ok;
+  try{
+    var ok2=await playCardOnDemand(card,tk);
+    if(ok2||tk!==playToken)return ok2;
+  }catch(e){}
   setRep(card,'');
   return await speakCardSeq(card,tk);
 }
@@ -913,6 +999,7 @@ applyEdits(readLocalEdits());
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
 <script src="sanbao-gate.js"></script>
 </body>
 </html>
