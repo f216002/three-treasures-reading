@@ -17,8 +17,6 @@
   var signInBtn = document.getElementById('sanbaoSignIn');
   var applyBtn = document.getElementById('sanbaoApply');
   var signOutBtn = document.getElementById('sanbaoSignOut');
-  var adminBox = document.getElementById('sanbaoAdmin');
-  var reqList = document.getElementById('sanbaoReqList');
   function setMsg(t) { if (msg) msg.textContent = t; }
   function show(el, on) { if (el) el.style.display = on ? '' : 'none'; }
   function openGate() {
@@ -84,52 +82,201 @@
       show(applyBtn, true);
     });
   }
-  function loadRequests() {
-    db.collection('sanbao_accessRequests').where('status', '==', 'pending').get().then(function (snap) {
-      if (snap.empty) { reqList.innerHTML = '<p>目前沒有待審核申請。</p>'; return; }
-      reqList.innerHTML = '';
-      snap.forEach(function (doc) {
-        var d = doc.data();
-        var row = document.createElement('div');
-        row.style.margin = '8px 0';
-        row.textContent = (d.name || '') + '（' + (d.email || '') + '）';
-        var b = document.createElement('button');
-        b.type = 'button'; b.textContent = '核准';
-        b.style.cssText = 'cursor:pointer;margin-left:10px;border-radius:8px;border:1px solid #d8cdb4;background:#fff;padding:4px 14px;font:inherit';
-        b.onclick = function () { approveOne(doc.id, d); };
-        row.appendChild(b);
-        reqList.appendChild(row);
+  /* ---------- 後台審核面板（2026-10-26 Cheng 要求；設計比照 V4 後台） ----------
+     入口：右上角工具列「後台審核」鍵，僅管理員可見；面板開啟時再驗一次管理員身分。
+     分頁：待審核申請（核准／拒絕＋備註／刪除）＋已核准學員（暫停／恢復／刪除）。
+     規則已允許管理員 list／update／delete 這兩個集合，不需改規則。 */
+  var adminPanel = document.getElementById('sanbaoAdminPanel');
+  var adminBlocked = document.getElementById('sanbaoAdminBlocked');
+  var adminApp = document.getElementById('sanbaoAdminApp');
+  var adminReqBody = document.getElementById('sanbaoReqBody');
+  var adminTeacherBody = document.getElementById('sanbaoTeacherBody');
+  var adminReqEmpty = document.getElementById('sanbaoReqEmpty');
+  var adminTeacherEmpty = document.getElementById('sanbaoTeacherEmpty');
+  var adminReqCount = document.getElementById('sanbaoReqCount');
+  var adminTeacherCount = document.getElementById('sanbaoTeacherCount');
+  var adminToast = document.getElementById('sanbaoAdminToast');
+  var adminTab = 'requests';
+  var currentUser = null;
+  function escAdmin(v) {
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function fmtAdminDate(ts) {
+    if (!ts) return '—';
+    try {
+      var d = typeof ts.toDate === 'function' ? ts.toDate() : new Date(ts);
+      return d.toLocaleString('zh-TW', { hour12: false });
+    } catch (_) { return '—'; }
+  }
+  function adminToastShow(msg, isErr) {
+    if (!adminToast) return;
+    adminToast.textContent = msg;
+    adminToast.style.background = isErr ? '#8a1f1f' : '#26221b';
+    adminToast.style.display = 'block';
+    clearTimeout(adminToastShow._t);
+    adminToastShow._t = setTimeout(function () { adminToast.style.display = 'none'; }, 4000);
+  }
+  function adminBadge(status) {
+    var map = { pending: ['待審核', 'pending'], approved: ['已核准', 'approved'], rejected: ['已拒絕', 'rejected'] };
+    var e = map[status] || [status || '—', ''];
+    return '<span class="status-badge ' + e[1] + '">' + escAdmin(e[0]) + '</span>';
+  }
+  function teacherBadge(d) {
+    if (d.active) return '<span class="status-badge approved">使用中</span>';
+    if (d.status === 'rejected') return '<span class="status-badge rejected">已拒絕</span>';
+    return '<span class="status-badge suspended">已暫停</span>';
+  }
+  function renderAdminRequests(snap) {
+    var rows = [];
+    snap.forEach(function (doc) {
+      var d = doc.data() || {}; var id = doc.id;
+      rows.push('<tr><td><div class="cell-main">' + escAdmin(d.name || d.displayName || '未具名') + '</div><div class="cell-sub">' + escAdmin(d.email || '') + '</div></td>' +
+        '<td class="mono">' + escAdmin(id) + '</td><td>' + fmtAdminDate(d.createdAt) + '</td><td>' + adminBadge(d.status) + '</td><td class="actions">' +
+        (d.status === 'pending'
+          ? '<button type="button" data-admin-approve="' + escAdmin(id) + '">核准</button>' +
+            '<button type="button" class="danger" data-admin-reject="' + escAdmin(id) + '">拒絕</button>'
+          : '') +
+        '<button type="button" class="ghost" data-admin-del-req="' + escAdmin(id) + '">刪除</button></td></tr>');
+    });
+    adminReqBody.innerHTML = rows.join('');
+    adminReqEmpty.style.display = rows.length ? 'none' : '';
+    adminReqCount.textContent = rows.length + ' 筆';
+  }
+  function renderAdminTeachers(snap) {
+    var rows = [];
+    snap.forEach(function (doc) {
+      var d = doc.data() || {}; var id = doc.id;
+      rows.push('<tr><td><div class="cell-main">' + escAdmin(d.name || d.displayName || '未具名') + '</div><div class="cell-sub">' + escAdmin(d.email || '') + '</div></td>' +
+        '<td class="mono">' + escAdmin(id) + '</td><td>' + fmtAdminDate(d.approvedAt) + '</td><td>' + teacherBadge(d) + '</td><td class="actions">' +
+        (d.active
+          ? '<button type="button" class="warn" data-admin-suspend="' + escAdmin(id) + '">暫停</button>'
+          : '<button type="button" data-admin-restore="' + escAdmin(id) + '">恢復</button>') +
+        '<button type="button" class="danger" data-admin-del-teacher="' + escAdmin(id) + '">刪除</button></td></tr>');
+    });
+    adminTeacherBody.innerHTML = rows.join('');
+    adminTeacherEmpty.style.display = rows.length ? 'none' : '';
+    adminTeacherCount.textContent = rows.length + ' 位';
+  }
+  function loadAdminLists() {
+    db.collection('sanbao_accessRequests').orderBy('createdAt', 'desc').get().then(renderAdminRequests).catch(function (err) {
+      adminReqBody.innerHTML = ''; adminReqEmpty.style.display = '';
+      adminReqEmpty.textContent = '讀取申請失敗：' + (err.code || err.message);
+    });
+    db.collection('sanbao_approvedUsers').orderBy('approvedAt', 'desc').get().then(renderAdminTeachers).catch(function (err) {
+      adminTeacherBody.innerHTML = ''; adminTeacherEmpty.style.display = '';
+      adminTeacherEmpty.textContent = '讀取核准名單失敗：' + (err.code || err.message);
+    });
+  }
+  function showAdminTab(name) {
+    adminTab = name;
+    document.querySelectorAll('[data-admin-tab]').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-admin-tab') === name);
+    });
+    document.getElementById('tabAdminRequests').hidden = name !== 'requests';
+    document.getElementById('tabAdminTeachers').hidden = name !== 'teachers';
+  }
+  function openAdminPanel() {
+    if (!adminPanel) return;
+    if (!isAdmin(currentUser)) {
+      adminPanel.style.display = 'block';
+      if (adminBlocked) adminBlocked.style.display = '';
+      if (adminApp) adminApp.style.display = 'none';
+      return;
+    }
+    if (adminBlocked) adminBlocked.style.display = 'none';
+    if (adminApp) adminApp.style.display = '';
+    adminPanel.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    showAdminTab(adminTab);
+    loadAdminLists();
+  }
+  function closeAdminPanel() {
+    if (adminPanel) adminPanel.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  function adminApprove(id) {
+    var reqRef = db.collection('sanbao_accessRequests').doc(id);
+    return reqRef.get().then(function (snap) {
+      if (!snap.exists) throw new Error('找不到這筆申請。');
+      var d = snap.data() || {};
+      if (d.status !== 'pending') throw new Error('這筆申請已經處理過了。');
+      return db.collection('sanbao_approvedUsers').doc(id).get().then(function (t) {
+        if (t.exists && (t.data() || {}).active === true) throw new Error('此人已經在核准名單中。');
+        var now = window.firebase.firestore.FieldValue.serverTimestamp();
+        return db.collection('sanbao_approvedUsers').doc(id).set({
+          uid: d.uid || id, email: d.email || '', name: d.name || d.displayName || '',
+          active: true, status: 'approved', approvedAt: now, updatedAt: now
+        }).then(function () {
+          return reqRef.update({ status: 'approved', updatedAt: now });
+        });
       });
-    }).catch(function (err) {
-      reqList.innerHTML = '<p>讀取申請失敗：' + (err.code || err.message) + '（請先發布三寶規則）</p>';
-    });
+    }).then(function () { adminToastShow('已核准。'); loadAdminLists(); });
   }
-  function approveOne(uid, d) {
-    db.collection('sanbao_approvedUsers').doc(uid).set({
-      uid: uid, email: d.email || '', name: d.name || '',
-      active: true, approvedAt: window.firebase.firestore.FieldValue.serverTimestamp()
-    }).then(function () {
-      return db.collection('sanbao_accessRequests').doc(uid).update({ status: 'approved' });
-    }).then(loadRequests).catch(function (err) {
-      alert('核准失敗：' + (err.code || err.message));
-    });
+  function adminReject(id) {
+    var note = window.prompt('拒絕原因（可留空，會記在申請單上）：');
+    if (note === null) return Promise.resolve();
+    var update = { status: 'rejected', updatedAt: window.firebase.firestore.FieldValue.serverTimestamp() };
+    if (note.trim()) update.adminNote = note.trim();
+    return db.collection('sanbao_accessRequests').doc(id).update(update).then(function () {
+      return db.collection('sanbao_approvedUsers').doc(id).get();
+    }).then(function (t) {
+      if (t.exists) return db.collection('sanbao_approvedUsers').doc(id).update({ active: false, status: 'rejected', updatedAt: window.firebase.firestore.FieldValue.serverTimestamp() });
+    }).then(function () { adminToastShow('已拒絕申請。'); loadAdminLists(); });
   }
-  document.getElementById('sanbaoApproveAll').onclick = function () {
-    db.collection('sanbao_accessRequests').where('status', '==', 'pending').get().then(function (snap) {
+  function adminDeleteReq(id) {
+    if (!window.confirm('確定刪除這筆申請？此動作無法復原。')) return Promise.resolve();
+    return db.collection('sanbao_accessRequests').doc(id).delete().then(function () { adminToastShow('已刪除申請。'); loadAdminLists(); });
+  }
+  function adminSetTeacher(id, active) {
+    return db.collection('sanbao_approvedUsers').doc(id).update({
+      active: active, status: active ? 'approved' : 'suspended',
+      updatedAt: window.firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function () { adminToastShow(active ? '已恢復使用權。' : '已暫停使用權。'); loadAdminLists(); });
+  }
+  function adminDeleteTeacher(id) {
+    if (!window.confirm('確定從核准名單刪除此人？對方將立即失去閱讀權限。此動作無法復原。')) return Promise.resolve();
+    return db.collection('sanbao_approvedUsers').doc(id).delete().then(function () { adminToastShow('已刪除。'); loadAdminLists(); });
+  }
+  function adminApproveAll() {
+    return db.collection('sanbao_accessRequests').where('status', '==', 'pending').get().then(function (snap) {
       var jobs = [];
       snap.forEach(function (doc) {
-        var d = doc.data();
+        var d = doc.data() || {};
+        var now = window.firebase.firestore.FieldValue.serverTimestamp();
         jobs.push(db.collection('sanbao_approvedUsers').doc(doc.id).set({
-          uid: doc.id, email: d.email || '', name: d.name || '',
-          active: true, approvedAt: window.firebase.firestore.FieldValue.serverTimestamp()
+          uid: d.uid || doc.id, email: d.email || '', name: d.name || d.displayName || '',
+          active: true, status: 'approved', approvedAt: now, updatedAt: now
         }));
-        jobs.push(db.collection('sanbao_accessRequests').doc(doc.id).update({ status: 'approved' }));
+        jobs.push(db.collection('sanbao_accessRequests').doc(doc.id).update({ status: 'approved', updatedAt: now }));
       });
       return Promise.all(jobs);
-    }).then(loadRequests).catch(function (err) {
-      alert('批次核准失敗：' + (err.code || err.message));
+    }).then(function () { adminToastShow('批次核准完成。'); loadAdminLists(); });
+  }
+  function bindAdminAction(el, attr, handler) {
+    if (!el) return;
+    el.addEventListener('click', function (ev) {
+      var t = ev.target.closest('[' + attr + ']');
+      if (!t) return;
+      handler(t.getAttribute(attr)).catch(function (err) {
+        adminToastShow('操作失敗：' + ((err && err.message) || '未知錯誤'), true);
+      });
     });
-  };
+  }
+  bindAdminAction(adminReqBody, 'data-admin-approve', adminApprove);
+  bindAdminAction(adminReqBody, 'data-admin-reject', adminReject);
+  bindAdminAction(adminReqBody, 'data-admin-del-req', adminDeleteReq);
+  bindAdminAction(adminTeacherBody, 'data-admin-suspend', function (id) { return adminSetTeacher(id, false); });
+  bindAdminAction(adminTeacherBody, 'data-admin-restore', function (id) { return adminSetTeacher(id, true); });
+  bindAdminAction(adminTeacherBody, 'data-admin-del-teacher', adminDeleteTeacher);
+  document.querySelectorAll('[data-admin-tab]').forEach(function (b) {
+    b.addEventListener('click', function () { showAdminTab(b.getAttribute('data-admin-tab')); });
+  });
+  var adminApproveAllBtn = document.getElementById('sanbaoApproveAll');
+  if (adminApproveAllBtn) adminApproveAllBtn.addEventListener('click', function () {
+    adminApproveAll().catch(function (err) { adminToastShow('批次核准失敗：' + ((err && err.message) || '未知錯誤'), true); });
+  });
+  var adminCloseBtn = document.getElementById('sanbaoAdminClose');
+  if (adminCloseBtn) adminCloseBtn.addEventListener('click', closeAdminPanel);
   signInBtn.onclick = function () {
     setMsg('正在開啟 Google 登入…');
     auth.signInWithPopup(provider).catch(function (err) {
@@ -159,8 +306,10 @@
   var utilSignIn = document.getElementById('sanbaoUtilSignIn');
   var utilSignOut = document.getElementById('sanbaoUtilSignOut');
   var utilUser = document.getElementById('sanbaoUtilUser');
+  var utilAdmin = document.getElementById('sanbaoUtilAdmin');
   if (utilSignIn) utilSignIn.onclick = function () { if (signInBtn) signInBtn.click(); };
   if (utilSignOut) utilSignOut.onclick = function () { auth.signOut(); };
+  if (utilAdmin) utilAdmin.onclick = function () { openAdminPanel(); };
   function showUtil(signedIn) {
     show(utilSignIn, !signedIn); show(utilSignOut, signedIn);
   }
@@ -183,6 +332,7 @@
     utilUser.style.display = 'flex';
   }
   auth.onAuthStateChanged(function (user) {
+    currentUser = user || null;
     if (!user) {
       document.body.classList.remove('sanbao-approved', 'sanbao-admin');
       window.SANBAO_IS_ADMIN = false;
@@ -190,7 +340,7 @@
       if (g) g.style.display = '';
       setMsg('本教材不公開，僅供核准學員閱讀。請先用 Google 帳號登入。');
       show(signInBtn, true); show(applyBtn, false); show(signOutBtn, false);
-      show(adminBox, false); userBox.style.display = 'none';
+      show(utilAdmin, false); closeAdminPanel(); userBox.style.display = 'none';
       showUtil(false); setUtilUser(null);
       document.querySelectorAll('.expl-paste').forEach(function (el) { el.contentEditable = 'false'; });
       return;
@@ -205,11 +355,10 @@
       document.body.classList.add('sanbao-admin');
       window.SANBAO_IS_ADMIN = true;
       document.querySelectorAll('.expl-paste').forEach(function (el) { el.contentEditable = 'true'; });
-      show(adminBox, true);
-      loadRequests();
+      show(utilAdmin, true);
       openGate();
     } else {
-      show(adminBox, false);
+      show(utilAdmin, false);
       checkApproval(user);
     }
   });
