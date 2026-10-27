@@ -203,6 +203,10 @@
     var rows = [];
     snap.forEach(function (doc) {
       var d = doc.data() || {}; var id = doc.id;
+      /* 待審核分頁只列 pending（2026-10-27 Cheng 回報：已核准的 9 筆仍留在待審核分頁、數字停在 9）。
+         不在查詢加 where＋orderBy（會要 Firestore 複合索引），改在前端篩選：已核准／已拒絕的申請不再列入，
+         計數（分頁鈕上的 N 筆）與空狀態都跟著只算 pending；已核准者改看「已核准學員」分頁。 */
+      if (d.status !== 'pending') return;
       rows.push('<tr><td><div class="cell-main">' + escAdmin(d.name || d.displayName || '未具名') + '</div><div class="cell-sub">' + escAdmin(d.email || '') + '</div><div class="cell-sub">單位：' + escAdmin(d.unit || '—') + ' · 區別：' + escAdmin(d.district || '—') + '</div></td>' +
         '<td class="mono">' + escAdmin(id) + '</td><td>' + fmtAdminDate(d.createdAt) + '</td><td>' + adminBadge(d.status) + '</td><td class="actions">' +
         (d.status === 'pending'
