@@ -15,25 +15,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f4edde; --bg2:#efe7d7; --surface:#ffffff; --surface2:#fbf6ec;
+  --bg:#FFF8E1; --bg2:#FFF3C4; --surface:#ffffff; --surface2:#FFFDE7;
   --ink:#1e1a13; --ink2:#4a4436; --muted:#7d7466;
-  --line:#e0d3b6; --line2:#e9e1cf;
-  --gold:#8a6d1f; --gold2:#b8933a; --goldsoft:#f3e9cd;
-  --seal:#8c3b2e; --sealsoft:#f6e3dd;
-  --teal:#2e5f57; --tealsoft:#ddebe6;
-  --chip:#efe8d8;
-  --shadow:0 1px 2px rgba(60,45,10,.08),0 12px 30px rgba(60,45,10,.12);
+  --line:#F5D78E; --line2:#F9E7B8;
+  --gold:#E65100; --gold2:#FF8F00; --goldsoft:#FFECB3;
+  --seal:#E53935; --sealsoft:#FFEBEE;
+  --teal:#43A047; --tealsoft:#E8F5E9;
+  --chip:#FFF3C4;
+  --shadow:0 1px 2px rgba(230,126,0,.10),0 12px 30px rgba(230,126,0,.14);
   --radius:14px;
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --bg:#171410; --bg2:#1d1913; --surface:#262019; --surface2:#2b241b;
-    --ink:#f2e9d8; --ink2:#d8cdb4; --muted:#a3967f;
-    --line:#4a4132; --line2:#38322a;
-    --gold:#d9b45f; --gold2:#c9a24a; --goldsoft:#3a2f16;
-    --seal:#e08a76; --sealsoft:#3d231c;
-    --teal:#8fc4b8; --tealsoft:#1d322c;
-    --chip:#2b251b;
+    --bg:#201812; --bg2:#2A1E14; --surface:#332619; --surface2:#3A2B1C;
+    --ink:#FFF3D6; --ink2:#E8D9B8; --muted:#B8A888;
+    --line:#57452E; --line2:#453A28;
+    --gold:#FFB74D; --gold2:#FFA726; --goldsoft:#4A3410;
+    --seal:#FF8A80; --sealsoft:#4A2018;
+    --teal:#81C784; --tealsoft:#1E3A26;
+    --chip:#3A2E1C;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
   }
 }
@@ -61,10 +61,10 @@ nav.mainnav a:hover{background:var(--chip);color:var(--ink)}
 .hero .en-title{font-family:Georgia,"Times New Roman",serif;font-size:clamp(17px,2.6vw,22px);color:var(--ink2);line-height:1.5;margin:0 0 18px}
 .hero .slogan{font-family:Georgia,serif;font-style:italic;color:var(--gold);font-size:16px;line-height:1.7;max-width:640px;margin:0 0 26px}
 .hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
-.btn{display:inline-block;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:11px 20px;font-size:15px;text-decoration:none;font-weight:500}
-.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.btn:hover{border-color:var(--gold2)}
-.btn.primary:hover{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn{display:inline-block;border:1px solid #FFB300;background:#FFECB3;color:#BF360C;border-radius:10px;padding:11px 20px;font-size:15px;text-decoration:none;font-weight:700}
+.btn.primary{background:#FF7A00;color:#fff;border-color:#FF7A00;box-shadow:0 4px 18px rgba(255,122,0,.45);font-weight:700}
+.btn:hover{border-color:#FF7A00}
+.btn.primary:hover{background:#E56A00;border-color:#E56A00;color:#fff;box-shadow:0 4px 22px rgba(229,106,0,.55)}
 
 .factgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 10px}
 .fact{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
@@ -80,7 +80,7 @@ nav.mainnav a:hover{background:var(--chip);color:var(--ink)}
 
 /* ---------- sections ---------- */
 section.block{padding:44px 0 6px}
-.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px;border-bottom:2px solid var(--goldsoft);padding-bottom:10px}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px;border-bottom:2px solid #FFB300;padding-bottom:10px}
 .sec-head h2{font-family:"Noto Serif TC",serif;font-weight:900;font-size:30px;margin:0;letter-spacing:.03em;text-wrap:balance}
 .sec-head .en{font-family:Georgia,serif;color:var(--ink2);font-size:15px}
 .sec-sub{color:var(--ink2);font-size:15px;max-width:760px;margin:4px 0 20px}
@@ -93,7 +93,7 @@ section.block{padding:44px 0 6px}
 /* ---------- TOC ---------- */
 .toc-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .toc-tools button{border:1px solid var(--line);background:var(--surface);color:var(--ink2);border-radius:999px;padding:7px 15px;font-size:13.5px}
-.toc-tools button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.toc-tools button.on{background:#FF7A00;color:#fff;border-color:#FF7A00}
 .toc-group{margin-bottom:8px}
 .toc-group h3{font-family:"Noto Serif TC",serif;font-size:17px;margin:20px 0 8px;color:var(--ink)}
 .toc-group h3 .pg{color:var(--muted);font-family:"Noto Sans TC",sans-serif;font-size:13px;font-weight:400;margin-left:8px}
@@ -112,12 +112,22 @@ section.block{padding:44px 0 6px}
 .toolbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:9px 13px;font-size:13.5px;font-weight:500}
 .toolbtn:hover{border-color:var(--gold2)}
 .toolbtn.playing{background:var(--seal);border-color:var(--seal);color:#fff}
+/* ---------- 播放列分色（2026-10-27 陽光活力版） ---------- */
+.toolbtn[data-act="playselected"]{background:#FF7A00;border-color:#FF7A00;color:#fff;font-weight:700}
+.toolbtn[data-act="playselected"]:hover{background:#E56A00;border-color:#E56A00}
+.toolbtn[data-act="playselected"].playing{background:#E53935;border-color:#E53935}
+.toolbtn[data-act="pause"]{background:#FFECB3;border-color:#FFB300;color:#7A4A00;font-weight:700}
+.toolbtn[data-act="stop"]{background:#E53935;border-color:#E53935;color:#fff;font-weight:700}
+.toolbtn[data-act="font"]{background:#FFF9C4;border-color:#FFB300;color:#7A4A00}
+.loop-check{background:#E8F5E9 !important;border-color:#81C784 !important;color:#2E7D32}
+.loop-check input{accent-color:#43A047}
+.reader-tools input[type=search]:focus{border-color:#FF7A00;outline:2px solid rgba(255,122,0,.25);outline-offset:0}
 .count-note{font-size:13px;color:var(--muted)}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px 16px;margin-bottom:14px;box-shadow:var(--shadow);overflow-wrap:break-word}
 .card.playing-now{border-color:var(--gold2);box-shadow:0 0 0 2px var(--goldsoft),var(--shadow)}
 .card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.sid{font-family:Georgia,serif;font-weight:700;font-size:13px;background:var(--ink);color:var(--bg);border-radius:6px;padding:2px 9px;letter-spacing:.04em}
+.sid{font-family:Georgia,serif;font-weight:700;font-size:13px;background:#FF7A00;color:#fff;border-radius:6px;padding:2px 9px;letter-spacing:.04em}
 .card-top .pgno{font-size:12.5px;color:var(--muted)}
 .card-actions{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
 .abtn{border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:8px;padding:5px 11px;font-size:12.5px;font-weight:500}
@@ -176,11 +186,11 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
 .reminder-zh{font-family:"Noto Sans TC",sans-serif !important}
 /* ---------- 勾選／播放勾選／循環（2026-10-26，學外語句子庫模式） ---------- */
 .sel-row{display:inline-flex;gap:8px;align-items:center;font-size:13.5px}
-.sel-row input[type=checkbox]{width:20px;height:20px;accent-color:#8a6d1f}
+.sel-row input[type=checkbox]{width:20px;height:20px;accent-color:#FF7A00}
 .loop-check{display:inline-flex;gap:6px;align-items:center;font-size:13.5px;border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:9px 13px}
 .loop-check input{width:20px;height:20px;accent-color:#8a6d1f}
 .toolbtn:disabled{opacity:.45}
-.card-check{width:20px;height:20px;flex:none;accent-color:#8a6d1f}
+.card-check{width:20px;height:20px;flex:none;accent-color:#FF7A00}
 .empty-note{border:1px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center;color:var(--muted);font-size:14.5px;display:none}
 </style>
 <style id="sanbaoGateCss">body:not(.sanbao-approved) .wrap{display:none!important}</style>
