@@ -472,13 +472,118 @@
   });
   var adminCloseBtn = document.getElementById('sanbaoAdminClose');
   if (adminCloseBtn) adminCloseBtn.addEventListener('click', closeAdminPanel);
+  /* ---- 內建瀏覽器偵測（2026-10-27 Cheng 回報 LINE 內無法登入；比照 V4 v4-auth.js） ----
+     LINE / Facebook / Instagram / WeChat 等 App 內建瀏覽器會隔離儲存空間，
+     Google 彈出視窗登入在裡面跑不起來（Safari 本人則可以登入）。
+     偵測到就把登入鍵改為一鍵跳轉系統瀏覽器，跳不過去就顯示引導覆蓋層。 */
+  function detectInAppBrowser() {
+    var ua = navigator.userAgent || '';
+    if (/Line\//i.test(ua)) return 'LINE';
+    if (/FBAN\/|FBAV\//i.test(ua)) return 'Facebook';
+    if (/Instagram/i.test(ua)) return 'Instagram';
+    if (/MicroMessenger/i.test(ua)) return 'WeChat';
+    return null;
+  }
+  function showWebviewGuide(appName, escapeAttempted) {
+    var oldGuide = document.getElementById('sanbaoWebviewGuide');
+    if (oldGuide) oldGuide.remove();
+    var siteUrl = location.origin + location.pathname;
+    var overlay = document.createElement('div');
+    overlay.id = 'sanbaoWebviewGuide';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);' +
+      'display:flex;align-items:center;justify-content:center;padding:24px;';
+    var card = document.createElement('div');
+    card.style.cssText = 'background:#fffdf8;border-radius:16px;max-width:420px;width:100%;' +
+      'padding:24px;color:#2b2620;font-size:.95rem;line-height:1.7;';
+    card.innerHTML =
+      '<h3 style="margin:0 0 10px;font-size:1.1rem;">' +
+      (escapeAttempted ? '沒有自動跳轉嗎？請手動開啟' : '請用 Safari / Chrome 開啟再登入') + '</h3>' +
+      '<p style="margin:0 0 10px;">您正在「' + appName + '」的內建瀏覽器中，Google 登入在這裡無法使用，這是 App 本身的限制，不是網站故障。</p>' +
+      '<p style="margin:0 0 6px;font-weight:700;">' +
+      (escapeAttempted ? '剛才已嘗試自動開啟系統瀏覽器，若沒有反應，請這樣做：' : '請這樣做：') + '</p>' +
+      '<ol style="margin:0 0 12px;padding-left:22px;">' +
+      '<li>先複製本站網址（按下面按鈕）</li>' +
+      '<li>iPhone 打開 Safari，Android 手機打開 Chrome</li>' +
+      '<li>在網址列貼上網址，開啟網站後再登入</li>' +
+      '</ol>' +
+      '<p style="margin:0 0 12px;word-break:break-all;font-size:.82rem;color:#8a7f6a;">' + siteUrl + '</p>';
+    var copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.textContent = '複製網站網址';
+    copyBtn.style.cssText = 'font:inherit;cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;' +
+      'background:#fff;color:#2b2620;padding:10px 20px;width:100%;margin-bottom:8px;';
+    var copyMsg = document.createElement('div');
+    copyMsg.style.cssText = 'font-size:.85rem;color:#2e7d32;min-height:1.4em;margin-bottom:8px;text-align:center;';
+    copyBtn.addEventListener('click', function () {
+      function done(ok) {
+        copyMsg.textContent = ok ? '已複製！去 Safari／Chrome 貼上開啟吧。' : '複製失敗，請長按上方網址手動複製。';
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(siteUrl).then(function () { done(true); }, function () { done(false); });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = siteUrl;
+        ta.style.cssText = 'position:fixed;opacity:0;';
+        document.body.appendChild(ta);
+        ta.select();
+        try { done(document.execCommand('copy')); } catch (e) { done(false); }
+        ta.remove();
+      }
+    });
+    card.appendChild(copyBtn);
+    card.appendChild(copyMsg);
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = '我知道了';
+    btn.style.cssText = 'font:inherit;cursor:pointer;border-radius:10px;border:1px solid #d8cdb4;' +
+      'background:#2b2620;color:#fff;padding:10px 20px;width:100%;';
+    btn.addEventListener('click', function () { overlay.remove(); });
+    card.appendChild(btn);
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+  }
+  function openInSystemBrowser() {
+    var appName = detectInAppBrowser();
+    var url = location.origin + location.pathname;
+    var ua = navigator.userAgent || '';
+    var target = null;
+    if (/iPad|iPhone|iPod/.test(ua)) {
+      target = 'x-safari-' + url;
+    } else if (/Android/.test(ua)) {
+      target = 'intent://' + location.host + location.pathname + '#Intent;scheme=https;end';
+    }
+    if (target) {
+      location.href = target;
+      showWebviewGuide(appName, true);
+    } else {
+      showWebviewGuide(appName, false);
+    }
+  }
+  if (detectInAppBrowser()) {
+    signInBtn.textContent = '在瀏覽器中開啟並登入';
+  }
   signInBtn.onclick = function () {
+    if (detectInAppBrowser()) { openInSystemBrowser(); return; }
+    signInBtn.disabled = true;
     setMsg('正在開啟 Google 登入…');
+    /* 看門狗（比照行事曆）：彈窗若 30 秒還沒回應（例如卡在主畫面 App 或內建瀏覽器），
+       恢復按鍵並提示改用 Safari／Chrome；使用者若還在選帳號可繼續，不受影響。 */
+    var watchdog = setTimeout(function () {
+      if (!auth.currentUser) {
+        signInBtn.disabled = false;
+        setMsg('登入還沒有完成：如果你正在選擇帳號請繼續；如果畫面卡住了，請按右上角「重新整理」後再試，或改用 Safari／Chrome 直接開啟本站。');
+      }
+    }, 30000);
     auth.signInWithPopup(provider).catch(function (err) {
       if (err.code === 'auth/popup-blocked') setMsg('彈出視窗被阻擋，請允許本網站的彈出視窗後再試一次。');
       else if (err.code === 'auth/popup-closed-by-user') setMsg('已關閉 Google 登入視窗。');
+      else if (err.code === 'auth/cancelled-popup-request') setMsg('登入被中斷，請再按一次登入。');
       else if (err.code === 'auth/unauthorized-domain') setMsg('此網域尚未在 Firebase 授權，請聯繫管理員（Firebase Console → Authentication → Authorized domains 加入 f216002.github.io）。');
+      else if (err.code === 'auth/operation-not-supported-in-this-environment') setMsg('請用 Safari 或 Chrome 直接開啟本網站再登入。');
       else setMsg('Google 登入失敗：' + (err.message || err.code));
+    }).finally(function () {
+      clearTimeout(watchdog);
+      if (!auth.currentUser) signInBtn.disabled = false;
     });
   };
   /* 申請表單（2026-10-26 Cheng 要求）：姓名／單位／區別三格皆必填，寫入申請單供後台審核。
@@ -557,6 +662,13 @@
       utilUser.textContent = (name.charAt(0) || '?');
     }
     utilUser.style.display = 'flex';
+  }
+  /* 整頁跳轉登入的回程收尾（比照 V4）：本站不用跳轉登入，僅處理殘留結果；
+     失敗時把實際錯誤顯示出來，不再靜默回到未登入。 */
+  if (auth.getRedirectResult) {
+    auth.getRedirectResult().then(function () {}).catch(function (err) {
+      setMsg('Google 登入失敗：' + ((err && err.message) || (err && err.code) || ''));
+    });
   }
   auth.onAuthStateChanged(function (user) {
     currentUser = user || null;
