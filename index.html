@@ -107,8 +107,10 @@ section.block{padding:44px 0 6px}
 @media(max-width:560px){.toc-row{flex-wrap:wrap}.toc-row .pg{flex-basis:auto}}
 
 /* ---------- reader ---------- */
-.reader-tools{position:sticky;top:64px;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
-.reader-tools input[type=search]{flex:1;min-width:150px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:9px 12px;font-size:14.5px;font-family:inherit}
+.reader-tools{position:sticky;top:64px;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;display:flex;gap:8px;flex-wrap:nowrap;align-items:center;margin-bottom:16px}
+.reader-tools .toolbtn,.reader-tools .sel-row,.reader-tools .loop-check,.reader-tools .count-note{white-space:nowrap}
+@media(max-width:760px){.reader-tools{gap:6px}.toolbtn{padding:8px 11px;font-size:13px}.loop-check{padding:8px 11px;font-size:13px}}
+@media(max-width:700px){.reader-tools{flex-wrap:wrap;padding:8px 10px}.toolbtn{padding:7px 9px}.loop-check{padding:7px 9px}.count-note{font-size:12px}}
 .toolbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:9px 13px;font-size:13.5px;font-weight:500}
 .toolbtn:hover{border-color:var(--gold2)}
 .toolbtn.playing{background:var(--seal);border-color:var(--seal);color:#fff}
@@ -121,7 +123,6 @@ section.block{padding:44px 0 6px}
 .toolbtn[data-act="font"]{background:#FFF9C4;border-color:#FFB300;color:#7A4A00}
 .loop-check{background:#E8F5E9 !important;border-color:#81C784 !important;color:#2E7D32}
 .loop-check input{accent-color:#43A047}
-.reader-tools input[type=search]:focus{border-color:#FF7A00;outline:2px solid rgba(255,122,0,.25);outline-offset:0}
 .count-note{font-size:13px;color:var(--muted)}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px 16px;margin-bottom:14px;box-shadow:var(--shadow);overflow-wrap:break-word}
@@ -387,7 +388,6 @@ body.sanbao-admin .expl-btns{display:flex}
   <section class="block" id="preface">
     <div class="sec-head"><h2>Preface</h2><span class="en">書頁 8–11 · 全文轉錄</span></div>
     <div class="reader-tools" data-reader="preface">
-      <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋 Preface 句子">
       <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
       <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
       <button class="toolbtn" data-act="pause" disabled>⏸ 暫停</button>
@@ -405,7 +405,6 @@ body.sanbao-admin .expl-btns{display:flex}
     <div class="sec-head"><h2>Foreword · 前言</h2><span class="en">書頁 12–14 · 一、恭喜的意義</span></div>
     <p class="sec-sub">書上中文段與英文句是分開刊登的，本站照原樣分開列：先中文段、再英文句（F-01 – F-15），不宣稱逐句對譯。書頁 13、14 的註 1、註 2 與五倫、八德細目收在本節後段。書頁 14 末行在書上截斷，已標為 F-16 待核對，本站不自行補寫。</p>
     <div class="reader-tools" data-reader="foreword">
-      <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋 Foreword 句子">
       <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
       <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
       <button class="toolbtn" data-act="pause" disabled>⏸ 暫停</button>
@@ -425,7 +424,6 @@ body.sanbao-admin .expl-btns{display:flex}
     <div class="sec-head"><h2>二、求道的殊勝</h2><span class="en">B. The Extraordinary and Sacred Significance of Receiving Tao · 書頁 15–27 · 全文轉錄</span></div>
     <p class="sec-sub">共 88 句（B-01 – B-88），照書上英文原樣轉錄；跨頁句 B-34、B-39、B-49、B-56、B-63、B-68／B-69、B-88 皆以完整形收錄。這 13 頁的中英文不是逐行對照，句子卡維持「以英文句為主、中文作學習解釋」：書上的中文段（書頁 15、20、22、24）照原樣穿插在相應位置，書頁 16 的可蘭經中文註、書頁 17 的龍天表註、註 3（書頁 19–20 完整版）與註 4（收圓，書頁 23 全文）收在本節後段。中文大意與五層解釋是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。朗讀用 Azure 錄音：每張卡一個播放鍵，依序播中文大意 1 遍、英文 3 遍（美式女聲 en-US-JennyNeural、中文女聲 zh-TW-HsiaoChenNeural，兩段合併為一個音檔全站共用；尚未上線的句子先以裝置語音代替）。</p>
     <div class="reader-tools" data-reader="signif">
-      <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋求道的殊勝句子">
       <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
       <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
       <button class="toolbtn" data-act="pause" disabled>⏸ 暫停</button>
@@ -448,7 +446,6 @@ body.sanbao-admin .expl-btns{display:flex}
     <div class="sec-head"><h2>壹、什麼是道</h2><span class="en">1. What is Tao? · 書頁 28–53 · 全文轉錄</span></div>
     <p class="sec-sub">共 219 句（C1-01 – C1-219），照書上英文原樣轉錄；跨頁句 C1-07、C1-35、C1-51、C1-58、C1-79、C1-83、C1-92、C1-141、C1-154、C1-215 皆以完整形收錄。這 26 頁的中英文不是逐行對照，句子卡維持「以英文句為主、中文作學習解釋」：書上中文段 17 段（書頁 28、31、33、34–35、36、37、38、40、41、42、43、44、45、46、48、49）照原樣穿插在相應位置，註 5–11 與圖一至圖五對照表收在本節後段。中文大意是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。</p>
     <div class="reader-tools" data-reader="chapter1">
-      <input type="search" placeholder="搜尋句子編號或關鍵字（Search）" aria-label="搜尋壹、什麼是道句子">
       <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
       <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
       <button class="toolbtn" data-act="pause" disabled>⏸ 暫停</button>
@@ -1188,23 +1185,20 @@ function renderCards(list,hostId,pageOf){
 }
 function wireReader(section){
   var tools=document.querySelector('.reader-tools[data-reader="'+section+'"]');
-  var input=tools.querySelector('input[type=search]');
   var note=tools.querySelector('.count-note');
   var host=document.getElementById(section+'Cards');
   var empty=document.querySelector('[data-empty="'+section+'"]');
   var fs=1;
   function update(){
-    var q=input.value.trim().toLowerCase();var n=0;
+    var n=0;
     host.querySelectorAll('.card').forEach(function(c){
-      var s=c._s;
-      var hit=!q||s.id.toLowerCase().indexOf(q)>=0||s.en.toLowerCase().indexOf(q)>=0||s.zh.indexOf(q)>=0;
-      c.style.display=hit?'':'none';if(hit)n++;
+      c.style.display='';n++;
     });
     note.textContent=n+' 句';
     empty.style.display=n?'none':'block';
     updateSel(section);
   }
-  input.addEventListener('input',update);update();
+  update();
   tools.addEventListener('click',function(e){
     var b=e.target.closest('button');if(!b)return;
     var act=b.dataset.act;
