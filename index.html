@@ -905,7 +905,53 @@ function azIdbPut(key,val){
   });
 }
 var AZ_SYNTH_FN=null;
+/* 過長句切段（2026-10-29：P-20 英文 366 字、P-30 英文 311 字超過函式 300 字硬上限，
+   學員下載一律失敗；且函式先擋長度才查快取，管理員暖快取也救不了，必須前端切段）。
+   切段規則：按句號切，每段不超過 280 字（留 20 字安全邊距；函式以字元數計，
+   這裡用 JS length 計，只會多算不會少算）；單句本身超長就按詞界硬切。
+   切段後的每段走原本的單段合成＋快取，所以快取與每日額度都以段為單位。 */
+function splitAzureText(text){
+  var pieces=text.match(/[^.!?。！？；]+[.!?。！？；]+["'」』）)]*\s*/g)||[text];
+  var chunks=[];var cur='';
+  pieces.forEach(function(p){
+    p=p.trim();
+    if(!p)return;
+    if(!cur){cur=p;return;}
+    if((cur+' '+p).length<=280){cur=cur+' '+p;}
+    else{chunks.push(cur);cur=p;}
+  });
+  if(cur)chunks.push(cur);
+  var out=[];
+  chunks.forEach(function(c){
+    while(c.length>280){
+      var cut=c.lastIndexOf(' ',280);
+      if(cut<200)cut=280;
+      out.push(c.slice(0,cut).trim());
+      c=c.slice(cut).trim();
+    }
+    if(c)out.push(c);
+  });
+  return out;
+}
 async function getAzureSegment(locale,text){
+  if(text.length<=280)return getAzureSegmentSingle(locale,text);
+  var rate=locale==='zh-TW'?'-20%':'-40%';
+  var key=locale+'\n'+rate+'\n'+text;
+  if(AZ_SEG_CACHE.has(key))return AZ_SEG_CACHE.get(key);
+  var chunks=splitAzureText(text);
+  var bufs=[];
+  for(var i=0;i<chunks.length;i++){
+    var u=await getAzureSegmentSingle(locale,chunks[i]);
+    bufs.push(await dataUrlToBytes(u));
+  }
+  var total=0;bufs.forEach(function(b){total+=b.byteLength;});
+  var out=new Uint8Array(total);var off=0;
+  bufs.forEach(function(b){out.set(new Uint8Array(b),off);off+=b.byteLength;});
+  var url=URL.createObjectURL(new Blob([out],{type:'audio/mpeg'}));
+  AZ_SEG_CACHE.set(key,url);
+  return url;
+}
+async function getAzureSegmentSingle(locale,text){
   /* 2026-10-29 Cheng 指示：英文再放慢 20%（-20%→-40%），中文維持 -20%；
      快取鍵加入語速，否則已快取的舊語速音檔會繼續被播出。 */
   var rate=locale==='zh-TW'?'-20%':'-40%';
@@ -1129,7 +1175,12 @@ async function downloadMerged(zh,en,filename,btn){
     document.body.appendChild(a);a.click();a.remove();
     setTimeout(function(){URL.revokeObjectURL(a.href);},5000);
   }catch(e){
-    alert('下載失敗：目前無法合成音檔。請確認已登入核准，或稍後再試。');
+    var code=String((e&&e.code)||'');
+    if(code.indexOf('resource-exhausted')>=0){
+      alert('下載失敗：今日新合成額度已用完（每人每天 30 句）。已經合成過的句子不受影響，仍可下載；請明天再試，或請管理員先播放一次，讓這句進共用快取。');
+    }else{
+      alert('下載失敗：目前無法合成音檔。請確認已登入核准，或稍後再試。');
+    }
   }finally{btn.disabled=false;btn.textContent=old;}
 }
 function downloadCard(card,btn){
