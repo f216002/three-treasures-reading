@@ -366,6 +366,13 @@ body.sanbao-admin .expl-btns{display:flex}
         <button class="toolbtn hero-dl" type="button" data-hero="title" aria-label="下載標題音檔">⬇ 下載</button>
       </div>
     </div>
+    <div class="teacher-audio-row hero-teacher-row" data-teacher-item="hero-title">
+      <button class="abtn teacher-rec-btn" type="button" data-tact="rec">● 錄音</button>
+      <button class="abtn teacher-rec-btn" type="button" data-tact="prev" disabled>▶ 試聽</button>
+      <button class="abtn teacher-rec-btn" type="button" data-tact="save" disabled>💾 儲存共用</button>
+      <button class="abtn teacher-play-btn" type="button" data-tact="play" style="display:none">▶ 老師錄音</button>
+      <span class="teacher-rec-status teacher-rec-btn"></span>
+    </div>
     <div class="hrow">
       <div class="htext">
         <p class="slogan">Receive the Tao Transmission to Initiate the Revival of One's Innate Nature &amp; Transcend the Six Pathways of Reincarnation</p>
@@ -375,6 +382,13 @@ body.sanbao-admin .expl-btns{display:flex}
         <button class="toolbtn hero-play" type="button" data-hero="slogan" data-label="▶ 播放">▶ 播放</button>
         <button class="toolbtn hero-dl" type="button" data-hero="slogan" aria-label="下載副標音檔">⬇ 下載</button>
       </div>
+    </div>
+    <div class="teacher-audio-row hero-teacher-row" data-teacher-item="hero-slogan">
+      <button class="abtn teacher-rec-btn" type="button" data-tact="rec">● 錄音</button>
+      <button class="abtn teacher-rec-btn" type="button" data-tact="prev" disabled>▶ 試聽</button>
+      <button class="abtn teacher-rec-btn" type="button" data-tact="save" disabled>💾 儲存共用</button>
+      <button class="abtn teacher-play-btn" type="button" data-tact="play" style="display:none">▶ 老師錄音</button>
+      <span class="teacher-rec-status teacher-rec-btn"></span>
     </div>
     <div class="hero-cta">
       <a class="btn primary" href="#preface">開始共讀 Preface</a>
@@ -388,6 +402,13 @@ body.sanbao-admin .expl-btns{display:flex}
           <button class="toolbtn hero-play" type="button" data-hero="reminder" data-label="▶ 播放">▶ 播放</button>
           <button class="toolbtn hero-dl" type="button" data-hero="reminder" aria-label="下載溫馨提醒音檔">⬇ 下載</button>
         </div>
+      </div>
+      <div class="teacher-audio-row hero-teacher-row" data-teacher-item="hero-reminder">
+        <button class="abtn teacher-rec-btn" type="button" data-tact="rec">● 錄音</button>
+        <button class="abtn teacher-rec-btn" type="button" data-tact="prev" disabled>▶ 試聽</button>
+        <button class="abtn teacher-rec-btn" type="button" data-tact="save" disabled>💾 儲存共用</button>
+        <button class="abtn teacher-play-btn" type="button" data-tact="play" style="display:none">▶ 老師錄音</button>
+        <span class="teacher-rec-status teacher-rec-btn"></span>
       </div>
       <p>This book is meant to promote greater inter-faith understanding and <i>not meant specifically for Muslim consumption</i>.</p>
       <p>Please be aware of local publication laws before bringing into your country of residence.</p>
@@ -1313,6 +1334,7 @@ var TEACHER_RECORDER=null;
 var TEACHER_REC_CARD=null;
 var currentTeacherBtn=null;
 var TEACHER_BLOB_URL=null;
+var TEACHER_HERO_ITEMS=[];
 
 function teacherAudioIsAdmin(){return document.body.classList.contains('sanbao-admin');}
 function teacherRecStatus(card,txt){var t=card._t;if(t&&t.status)t.status.textContent=txt||'';}
@@ -1576,6 +1598,15 @@ function paintTeacherAudioButtons(){
     t.prev.disabled=!has&&!sess;
     t.save.disabled=!sess;
   });
+  TEACHER_HERO_ITEMS.forEach(function(item){
+    var has2=!!TEACHER_AUDIO_MAP[item._s.id];
+    var sess2=TEACHER_REC_SESSION[item._s.id];
+    var u=item._t;
+    if(has2)u.row.classList.add('has-teacher-audio');else u.row.classList.remove('has-teacher-audio');
+    u.play.style.display=has2?'':'none';
+    u.prev.disabled=!has2&&!sess2;
+    u.save.disabled=!sess2;
+  });
 }
 function loadTeacherAudioMap(attempt){
   if(!window.SANBAO_DB||!window.firebase||!window.firebase.auth||!window.firebase.auth().currentUser){
@@ -1590,6 +1621,24 @@ function loadTeacherAudioMap(attempt){
     paintTeacherAudioButtons();
   }).catch(function(){});
 }
+/* 首頁三段 hero（標題／副標／溫馨提醒）也接同一套老師錄音（2026-10-29 Cheng 指示：有 Azure 播放鍵的地方都要有）：
+   hero 列是靜態 HTML，用 data-teacher-item 當卡號（hero-title／hero-slogan／hero-reminder），
+   共用同一 Storage 路徑與 Firestore 對照表，不需改規則。 */
+document.querySelectorAll('.hero-teacher-row').forEach(function(row){
+  var item={_s:{id:row.dataset.teacherItem},_t:{
+    rec:row.querySelector('[data-tact="rec"]'),
+    prev:row.querySelector('[data-tact="prev"]'),
+    save:row.querySelector('[data-tact="save"]'),
+    play:row.querySelector('[data-tact="play"]'),
+    status:row.querySelector('.teacher-rec-status'),
+    row:row
+  }};
+  item._t.rec.addEventListener('click',function(){toggleTeacherRecording(item,item._t.rec);});
+  item._t.prev.addEventListener('click',function(){previewTeacherRecording(item,item._t.prev);});
+  item._t.save.addEventListener('click',function(){saveTeacherAudio(item,item._t.save);});
+  item._t.play.addEventListener('click',function(){playTeacherAudio(item,item._t.play);});
+  TEACHER_HERO_ITEMS.push(item);
+});
 loadTeacherAudioMap(0);
 
 function renderCards(list,hostId,pageOf){
