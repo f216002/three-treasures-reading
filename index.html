@@ -215,6 +215,14 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
 <style>
 .edit-btn{display:none}
 body.sanbao-admin .edit-btn{display:inline-block}
+/* 老師錄音共用（2026-10-29）：錄音鍵只顯示給管理員；整列平時隱藏，管理員或有共用錄音時才顯示。 */
+.teacher-audio-row{display:none;gap:6px;flex-wrap:wrap;align-items:center;margin:2px 0 10px}
+body.sanbao-admin .teacher-audio-row{display:flex}
+.teacher-audio-row.has-teacher-audio{display:flex}
+.teacher-rec-btn{display:none}
+body.sanbao-admin .teacher-rec-btn{display:inline-block}
+.teacher-rec-btn.recording{background:#8a1f1f;color:#fff;border-color:#8a1f1f}
+.teacher-rec-status{font-size:12px;color:var(--muted)}
 .card.editing .en-s,.card.editing .zh-s,.card.editing .expl-paste{outline:2px dashed #b8933a;outline-offset:2px;background:#fff8e1}
 .expl-paste{border:1px solid var(--line);background:var(--surface2);border-radius:var(--radius);padding:16px 18px;line-height:1.9;color:var(--ink);min-height:24px;font-size:calc(15.5px * var(--fs,1))}
 .expl-paste p{margin:8px 0}
@@ -791,6 +799,7 @@ function resetBtn(btn){
 var AZ_AUDIO=document.getElementById('sanbaoAudio');
 function stopPlay(){
   playToken++;
+  if(currentTeacherBtn)resetTeacherBtn();
   isPaused=false;
   if(AZ_AUDIO){try{AZ_AUDIO.pause();AZ_AUDIO.removeAttribute('src');AZ_AUDIO.load();}catch(e){}}
   if(synth)synth.cancel();
@@ -837,6 +846,7 @@ function playCardAzure(card,tk){
    2. 沒有預合成檔，就走 V4 Cloud Function synthesizeV4Source 即時合成中文段＋英文段，
       函式端有雲端快取（第一次合成後，之後所有人拿快取，Azure 不再計費）；
       2026-10-26 新規格：呼叫時帶 rate '-20%'＋style（中文 gentle／英文 affectionate），
+      2026-10-29 Cheng 指示：英文 rate 改為 '-40%'（再放慢 20%），中文維持 '-20%'。
       須等函式改版部署後才生效，部署前舊函式會忽略這兩個參數、維持原語速（中文 -10%／英文 -15%、無語氣）；
       本機再用 IndexedDB 快取一次，同一台裝置第二次播連函式都不用打；
    3. 函式失敗（未登入、未核准、單句超過 300 字上限、當日新合成額度用完）就退回裝置語音，
@@ -875,14 +885,17 @@ function azIdbPut(key,val){
 }
 var AZ_SYNTH_FN=null;
 async function getAzureSegment(locale,text){
-  var key=locale+'\n'+text;
+  /* 2026-10-29 Cheng 指示：英文再放慢 20%（-20%→-40%），中文維持 -20%；
+     快取鍵加入語速，否則已快取的舊語速音檔會繼續被播出。 */
+  var rate=locale==='zh-TW'?'-20%':'-40%';
+  var key=locale+'\n'+rate+'\n'+text;
   if(AZ_SEG_CACHE.has(key))return AZ_SEG_CACHE.get(key);
   var local=await azIdbGet(key);
   if(local){AZ_SEG_CACHE.set(key,local);return local;}
   if(!window.firebase||!window.firebase.app||!window.firebase.app().functions)throw new Error('no-functions');
   if(!AZ_SYNTH_FN)AZ_SYNTH_FN=window.firebase.app().functions('us-east1').httpsCallable('synthesizeV4Source',{timeout:60000});
   var style=locale==='zh-TW'?'gentle':'affectionate';
-  var r=await AZ_SYNTH_FN({locale:locale,text:text,rate:'-20%',style:style});
+  var r=await AZ_SYNTH_FN({locale:locale,text:text,rate:rate,style:style});
   var d=(r&&r.data)||{};
   if(!d.audioBase64)throw new Error('empty-audio');
   var url='data:'+(d.contentType||'audio/mpeg')+';base64,'+d.audioBase64;
@@ -1131,6 +1144,26 @@ function makeCard(s,pageLabel){
   bEdit.addEventListener('click',function(){toggleEdit(card,bEdit);});
   acts.appendChild(bEdit);
   top.appendChild(chk);top.appendChild(sid);top.appendChild(pg);top.appendChild(rep);top.appendChild(acts);
+  var tRow=document.createElement('div');tRow.className='teacher-audio-row';
+  var tRec=document.createElement('button');tRec.className='abtn teacher-rec-btn';tRec.type='button';tRec.textContent='● 錄音';
+  tRec.setAttribute('aria-label','錄製老師錄音');
+  tRec.addEventListener('click',function(){toggleTeacherRecording(card,tRec);});
+  tRow.appendChild(tRec);
+  var tPrev=document.createElement('button');tPrev.className='abtn teacher-rec-btn';tPrev.type='button';tPrev.textContent='▶ 試聽';tPrev.disabled=true;
+  tPrev.setAttribute('aria-label','試聽老師錄音');
+  tPrev.addEventListener('click',function(){previewTeacherRecording(card,tPrev);});
+  tRow.appendChild(tPrev);
+  var tSave=document.createElement('button');tSave.className='abtn teacher-rec-btn';tSave.type='button';tSave.textContent='💾 儲存共用';tSave.disabled=true;
+  tSave.setAttribute('aria-label','儲存老師錄音，全體學員都聽得到');
+  tSave.addEventListener('click',function(){saveTeacherAudio(card,tSave);});
+  tRow.appendChild(tSave);
+  var tPlay=document.createElement('button');tPlay.className='abtn teacher-play-btn';tPlay.type='button';tPlay.textContent='▶ 老師錄音';tPlay.style.display='none';
+  tPlay.setAttribute('aria-label','播放老師錄音');
+  tPlay.addEventListener('click',function(){playTeacherAudio(card,tPlay);});
+  tRow.appendChild(tPlay);
+  var tStatus=document.createElement('span');tStatus.className='teacher-rec-status teacher-rec-btn';
+  tRow.appendChild(tStatus);
+  card._t={rec:tRec,prev:tPrev,save:tSave,play:tPlay,status:tStatus,row:tRow};
   var en=document.createElement('p');en.className='en-s';en.textContent=s.en;
   var zh=document.createElement('p');zh.className='zh-s';
   var lbl=document.createElement('span');lbl.className='lbl';lbl.textContent='大意';
@@ -1158,7 +1191,7 @@ function makeCard(s,pageLabel){
     var open=card.classList.toggle('open');
     tg.textContent=open?'收合詳細解釋':'詳細解釋（剝洋蔥五層）';
   });
-  card.appendChild(top);card.appendChild(en);card.appendChild(zh);card.appendChild(tg);card.appendChild(det);
+  card.appendChild(top);card.appendChild(tRow);card.appendChild(en);card.appendChild(zh);card.appendChild(tg);card.appendChild(det);
   /* _f 必須在 en／zhText／expl 建立完成後才指派（2026-10-26 修正：先前寫在前面，
      var 提升讓三者全是 undefined，toggleEdit 一設 contentEditable 就出錯）。 */
   card._f={en:en,zhText:zhText,expl:expl,explSaved:explSaved};
@@ -1266,6 +1299,298 @@ function toggleEdit(card,btn){
     window.SANBAO_DB.collection('sanbao_cardEdits').doc(card._s.id).set(v).catch(function(){});
   }
 }
+
+/* ================= 老師錄音共用（2026-10-29 Cheng 指示） =================
+   只有管理員能錄音；錄完儲存後，全體核准學員的卡片上都會出現「▶ 老師錄音」鍵。
+   原本的 Azure 播放鍵不動。儲存：Storage sanbao_teacher_audio/{卡號}.{wav|m4a|webm}
+   ＋ Firestore sanbao_teacherAudio/{卡號}（audioPath／mime／updatedAt／updatedBy）。
+   錄音流程比照 V4：MediaRecorder → 音量平衡（-16 LUFS）→ WAV（iPhone 也能播）；
+   單張卡最長 120 秒（V4 是 30 秒，讀書會英文句較長故放寬）；一次只能錄一張卡。
+   老師錄音走共用播放器 AZ_AUDIO，所以開始播 Azure（或按停止／暫停）時會自動停掉老師錄音，反之亦然。 */
+var TEACHER_AUDIO_MAP={};
+var TEACHER_REC_SESSION={};
+var TEACHER_RECORDER=null;
+var TEACHER_REC_CARD=null;
+var currentTeacherBtn=null;
+var TEACHER_BLOB_URL=null;
+
+function teacherAudioIsAdmin(){return document.body.classList.contains('sanbao-admin');}
+function teacherRecStatus(card,txt){var t=card._t;if(t&&t.status)t.status.textContent=txt||'';}
+
+async function getNaturalVoiceStream(){
+  var supported=navigator.mediaDevices.getSupportedConstraints?navigator.mediaDevices.getSupportedConstraints():{};
+  var audio={};
+  ['autoGainControl','echoCancellation','noiseSuppression'].forEach(function(name){
+    if(supported[name])audio[name]={exact:false};
+  });
+  if(supported.channelCount)audio.channelCount={ideal:1};
+  if(supported.sampleRate)audio.sampleRate={ideal:48000};
+  if(supported.sampleSize)audio.sampleSize={ideal:16};
+  try{
+    return await navigator.mediaDevices.getUserMedia({audio:audio});
+  }catch(error){
+    if(error&&(error.name==='NotAllowedError'||error.name==='SecurityError'))throw error;
+    ['autoGainControl','echoCancellation','noiseSuppression'].forEach(function(name){
+      if(supported[name])audio[name]={ideal:false};
+    });
+    return navigator.mediaDevices.getUserMedia({audio:audio});
+  }
+}
+function preferredRecMime(){
+  try{
+    if(window.MediaRecorder&&MediaRecorder.isTypeSupported){
+      if(MediaRecorder.isTypeSupported('audio/mp4'))return 'audio/mp4';
+      if(MediaRecorder.isTypeSupported('audio/webm;codecs=opus'))return 'audio/webm;codecs=opus';
+    }
+  }catch(e){}
+  return '';
+}
+function createVoiceRecorder(stream){
+  var mime=preferredRecMime();
+  try{
+    return mime?new MediaRecorder(stream,{mimeType:mime,audioBitsPerSecond:128000}):new MediaRecorder(stream,{audioBitsPerSecond:128000});
+  }catch(e){
+    try{return new MediaRecorder(stream);}catch(e2){return null;}
+  }
+}
+function audioBufferPeak(audioBuffer){
+  var peak=0;
+  for(var channel=0;channel<audioBuffer.numberOfChannels;channel++){
+    var samples=audioBuffer.getChannelData(channel);
+    for(var index=0;index<samples.length;index++){
+      peak=Math.max(peak,Math.abs(samples[index]));
+    }
+  }
+  return peak;
+}
+async function kWeightedBuffer(audioBuffer){
+  var OfflineContext=window.OfflineAudioContext||window.webkitOfflineAudioContext;
+  if(!OfflineContext)return audioBuffer;
+  var context=new OfflineContext(audioBuffer.numberOfChannels,audioBuffer.length,audioBuffer.sampleRate);
+  var source=context.createBufferSource();source.buffer=audioBuffer;
+  var shelf=context.createBiquadFilter();shelf.type='highshelf';shelf.frequency.value=1681.974;shelf.gain.value=4;
+  var highpass=context.createBiquadFilter();highpass.type='highpass';highpass.frequency.value=38.135;highpass.Q.value=0.5003;
+  source.connect(shelf);shelf.connect(highpass);highpass.connect(context.destination);
+  source.start();
+  return context.startRendering();
+}
+function blockEnergy(audioBuffer,start,length){
+  var energy=0;
+  for(var channel=0;channel<audioBuffer.numberOfChannels;channel++){
+    var samples=audioBuffer.getChannelData(channel);
+    var end=Math.min(samples.length,start+length);
+    var channelEnergy=0;
+    for(var index=start;index<end;index++){channelEnergy+=samples[index]*samples[index];}
+    energy+=channelEnergy/Math.max(1,end-start);
+  }
+  return energy;
+}
+function energyToLufs(energy){return -0.691+10*Math.log10(Math.max(energy,1e-12));}
+function measureIntegratedLufs(audioBuffer){
+  var blockLength=Math.max(1,Math.round(audioBuffer.sampleRate*0.4));
+  var step=Math.max(1,Math.round(audioBuffer.sampleRate*0.1));
+  var energies=[];
+  if(audioBuffer.length<=blockLength){energies.push(blockEnergy(audioBuffer,0,audioBuffer.length));}
+  else{for(var start=0;start+blockLength<=audioBuffer.length;start+=step){energies.push(blockEnergy(audioBuffer,start,blockLength));}}
+  var aboveAbsoluteGate=energies.filter(function(energy){return energyToLufs(energy)>-70;});
+  if(!aboveAbsoluteGate.length)return -70;
+  var preliminaryEnergy=aboveAbsoluteGate.reduce(function(sum,value){return sum+value;},0)/aboveAbsoluteGate.length;
+  var relativeGate=energyToLufs(preliminaryEnergy)-10;
+  var gated=aboveAbsoluteGate.filter(function(energy){return energyToLufs(energy)>relativeGate;});
+  var integratedEnergy=gated.reduce(function(sum,value){return sum+value;},0)/Math.max(1,gated.length);
+  return energyToLufs(integratedEnergy);
+}
+function encodeMonoWav(audioBuffer,gain){
+  var length=audioBuffer.length;
+  var channelCount=audioBuffer.numberOfChannels;
+  var output=new ArrayBuffer(44+length*2);
+  var view=new DataView(output);
+  function writeText(offset,text){for(var i=0;i<text.length;i++){view.setUint8(offset+i,text.charCodeAt(i));}}
+  writeText(0,'RIFF');view.setUint32(4,36+length*2,true);writeText(8,'WAVE');writeText(12,'fmt ');
+  view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);
+  view.setUint32(24,audioBuffer.sampleRate,true);view.setUint32(28,audioBuffer.sampleRate*2,true);
+  view.setUint16(32,2,true);view.setUint16(34,16,true);writeText(36,'data');view.setUint32(40,length*2,true);
+  var channels=[];
+  for(var c=0;c<channelCount;c++){channels.push(audioBuffer.getChannelData(c));}
+  var offset=44;
+  for(var index=0;index<length;index++){
+    var sample=0;
+    for(var ch=0;ch<channelCount;ch++){sample+=channels[ch][index];}
+    sample=(sample/channelCount)*gain;
+    sample=Math.max(-1,Math.min(1,sample));
+    view.setInt16(offset,sample<0?sample*0x8000:sample*0x7fff,true);
+    offset+=2;
+  }
+  return new Blob([output],{type:'audio/wav'});
+}
+var RECORDING_TAIL_TRIM_SECONDS=0.2;
+function trimRecordingTail(context,audioBuffer,trimSeconds){
+  if(!trimSeconds||trimSeconds<=0)return audioBuffer;
+  var trimSamples=Math.floor(audioBuffer.sampleRate*trimSeconds);
+  var minKeepSamples=Math.floor(audioBuffer.sampleRate*0.3);
+  if(audioBuffer.length<=trimSamples+minKeepSamples)return audioBuffer;
+  var keptLength=audioBuffer.length-trimSamples;
+  var trimmed=context.createBuffer(audioBuffer.numberOfChannels,keptLength,audioBuffer.sampleRate);
+  for(var channel=0;channel<audioBuffer.numberOfChannels;channel++){
+    trimmed.getChannelData(channel).set(audioBuffer.getChannelData(channel).subarray(0,keptLength));
+  }
+  return trimmed;
+}
+async function normalizeTeacherRecording(blob){
+  var AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass)return {blob:blob,mimeType:blob.type||'audio/webm',normalized:false};
+  var context=new AudioContextClass();
+  try{
+    var audioBuffer=await context.decodeAudioData((await blob.arrayBuffer()).slice(0));
+    audioBuffer=trimRecordingTail(context,audioBuffer,RECORDING_TAIL_TRIM_SECONDS);
+    var weighted=await kWeightedBuffer(audioBuffer);
+    var measuredLufs=measureIntegratedLufs(weighted);
+    var peak=audioBufferPeak(audioBuffer);
+    if(!Number.isFinite(measuredLufs)||peak<=0){
+      return {blob:blob,mimeType:blob.type||'audio/webm',normalized:false};
+    }
+    var targetGain=Math.pow(10,(-16-measuredLufs)/20);
+    var peakLimit=Math.pow(10,-1/20)/peak;
+    var gain=Math.max(0.01,Math.min(targetGain,peakLimit,Math.pow(10,18/20)));
+    var normalizedBlob=encodeMonoWav(audioBuffer,gain);
+    return {blob:normalizedBlob,mimeType:'audio/wav',normalized:true};
+  }finally{
+    await context.close();
+  }
+}
+function resetTeacherBtn(){
+  if(TEACHER_BLOB_URL){try{URL.revokeObjectURL(TEACHER_BLOB_URL);}catch(e){}TEACHER_BLOB_URL=null;}
+  if(currentTeacherBtn){
+    currentTeacherBtn.classList.remove('playing','stop');
+    if(currentTeacherBtn.classList.contains('teacher-play-btn'))currentTeacherBtn.textContent='▶ 老師錄音';
+    else currentTeacherBtn.textContent='▶ 試聽';
+    currentTeacherBtn=null;
+  }
+}
+function playTeacherUrl(url,btn,isBlob){
+  stopPlay();
+  if(TEACHER_BLOB_URL){try{URL.revokeObjectURL(TEACHER_BLOB_URL);}catch(e){}TEACHER_BLOB_URL=null;}
+  if(isBlob)TEACHER_BLOB_URL=url;
+  currentTeacherBtn=btn;btn.classList.add('playing','stop');btn.textContent='■ 停止';
+  AZ_AUDIO.onended=function(){resetTeacherBtn();};
+  AZ_AUDIO.onerror=function(){resetTeacherBtn();};
+  AZ_AUDIO.src=url;
+  var pr=AZ_AUDIO.play();if(pr&&pr.catch)pr.catch(function(){resetTeacherBtn();});
+}
+function playTeacherBlob(blob,btn){
+  if(currentTeacherBtn===btn){stopPlay();return;}
+  playTeacherUrl(URL.createObjectURL(blob),btn,true);
+}
+async function playTeacherAudio(card,btn){
+  if(currentTeacherBtn===btn){stopPlay();return;}
+  var m=TEACHER_AUDIO_MAP[card._s.id];
+  if(!m)return;
+  stopPlay();
+  try{
+    var url=await window.firebase.storage().ref(m.audioPath).getDownloadURL();
+    playTeacherUrl(url,btn,false);
+  }catch(e){
+    var old=btn.textContent;btn.textContent='載入失敗';
+    setTimeout(function(){btn.textContent=old;},2000);
+  }
+}
+function previewTeacherRecording(card,btn){
+  var sess=TEACHER_REC_SESSION[card._s.id];
+  if(sess){playTeacherBlob(sess.blob,btn);return;}
+  playTeacherAudio(card,card._t.play);
+}
+async function toggleTeacherRecording(card,btn){
+  if(!teacherAudioIsAdmin())return;
+  if(TEACHER_RECORDER&&TEACHER_RECORDER.state==='recording'){
+    if(TEACHER_REC_CARD!==card){teacherRecStatus(card,'另一張卡片正在錄音，請先停止。');return;}
+    TEACHER_RECORDER.stop();return;
+  }
+  if(!navigator.mediaDevices||!window.MediaRecorder){teacherRecStatus(card,'這裡不支援錄音，請用 Chrome、Edge 或 Safari。');return;}
+  try{
+    var stream=await getNaturalVoiceStream();
+    var chunks=[];
+    var recorder=createVoiceRecorder(stream);
+    if(!recorder){teacherRecStatus(card,'這裡不支援錄音，請用 Chrome、Edge 或 Safari。');return;}
+    TEACHER_RECORDER=recorder;TEACHER_REC_CARD=card;
+    recorder.ondataavailable=function(e){if(e.data.size)chunks.push(e.data);};
+    recorder.onstop=async function(){
+      stream.getTracks().forEach(function(t){t.stop();});
+      var rawBlob=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});
+      teacherRecStatus(card,'正在平衡錄音音量…');
+      var processed={blob:rawBlob,mimeType:rawBlob.type||'audio/webm',normalized:false};
+      try{processed=await normalizeTeacherRecording(rawBlob);}catch(e){}
+      TEACHER_REC_SESSION[card._s.id]={blob:processed.blob,mimeType:processed.mimeType};
+      var t=card._t;
+      if(t){t.prev.disabled=false;t.save.disabled=false;t.save.textContent='💾 儲存共用';}
+      btn.classList.remove('recording');btn.textContent='● 重新錄音';
+      teacherRecStatus(card,processed.normalized?'錄音就緒，音量已平衡。':'錄音就緒（保留原始音量）。');
+      TEACHER_RECORDER=null;TEACHER_REC_CARD=null;
+    };
+    recorder.start();
+    btn.classList.add('recording');btn.textContent='■ 停止錄音';
+    teacherRecStatus(card,'錄音中…請與麥克風保持穩定距離。');
+    setTimeout(function(){if(TEACHER_RECORDER===recorder&&recorder.state==='recording')recorder.stop();},120000);
+  }catch(e){
+    teacherRecStatus(card,'未取得麥克風權限。');
+  }
+}
+async function saveTeacherAudio(card,btn){
+  if(!teacherAudioIsAdmin())return;
+  var sess=TEACHER_REC_SESSION[card._s.id];
+  if(!sess)return;
+  if(!window.SANBAO_DB||!window.firebase.storage){teacherRecStatus(card,'儲存功能尚未就緒，請重新整理再試。');return;}
+  if(btn.classList.contains('saving'))return;
+  btn.classList.add('saving');btn.textContent='儲存中…';
+  teacherRecStatus(card,'儲存中…');
+  try{
+    var mime=sess.mimeType||'audio/webm';
+    var ext=mime.indexOf('mp4')>=0?'m4a':mime.indexOf('wav')>=0?'wav':'webm';
+    var path='sanbao_teacher_audio/'+card._s.id+'.'+ext;
+    var old=TEACHER_AUDIO_MAP[card._s.id];
+    var storage=window.firebase.storage();
+    await storage.ref(path).put(sess.blob,{contentType:mime});
+    if(old&&old.audioPath&&old.audioPath!==path){try{await storage.ref(old.audioPath).delete();}catch(e){}}
+    var user=window.firebase.auth().currentUser;
+    await window.SANBAO_DB.collection('sanbao_teacherAudio').doc(card._s.id).set({
+      audioPath:path,mime:mime,
+      updatedAt:window.firebase.firestore.FieldValue.serverTimestamp(),
+      updatedBy:user?user.email:''
+    },{merge:true});
+    TEACHER_AUDIO_MAP[card._s.id]={audioPath:path,mime:mime};
+    paintTeacherAudioButtons();
+    btn.classList.remove('saving');btn.textContent='已儲存 ✓';
+    teacherRecStatus(card,'已儲存，全體學員都聽得到。');
+    setTimeout(function(){if(btn.textContent==='已儲存 ✓')btn.textContent='💾 儲存共用';},3000);
+  }catch(e){
+    btn.classList.remove('saving');btn.textContent='💾 儲存共用';
+    teacherRecStatus(card,'儲存失敗：'+(e&&e.message?e.message:'未知錯誤'));
+  }
+}
+function paintTeacherAudioButtons(){
+  document.querySelectorAll('.card').forEach(function(card){
+    var t=card._t;if(!t)return;
+    var has=!!TEACHER_AUDIO_MAP[card._s.id];
+    var sess=TEACHER_REC_SESSION[card._s.id];
+    if(has)t.row.classList.add('has-teacher-audio');else t.row.classList.remove('has-teacher-audio');
+    t.play.style.display=has?'':'none';
+    t.prev.disabled=!has&&!sess;
+    t.save.disabled=!sess;
+  });
+}
+function loadTeacherAudioMap(attempt){
+  if(!window.SANBAO_DB||!window.firebase||!window.firebase.auth||!window.firebase.auth().currentUser){
+    if(attempt<60)setTimeout(function(){loadTeacherAudioMap(attempt+1);},1000);
+    return;
+  }
+  window.SANBAO_DB.collection('sanbao_teacherAudio').get().then(function(snap){
+    snap.forEach(function(doc){
+      var d=doc.data()||{};
+      if(d.audioPath)TEACHER_AUDIO_MAP[doc.id]={audioPath:d.audioPath,mime:d.mime||''};
+    });
+    paintTeacherAudioButtons();
+  }).catch(function(){});
+}
+loadTeacherAudioMap(0);
 
 function renderCards(list,hostId,pageOf){
   var host=document.getElementById(hostId);
@@ -2940,6 +3265,7 @@ wireReader('chapter4');
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 <script src="sanbao-gate.js?v=20261026-10"></script>
 </body>
 </html>
