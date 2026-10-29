@@ -1,7 +1,6 @@
 // 完整 Storage 規則（2026-10-29 三寶老師錄音版）
-// 底本＝20261016 快照（storage.rules.live-20261016.txt，全文未動），僅在 catch-all 拒絕前新增 sanbao_teacher_audio 一段。
-// 注意：Storage 規則檔不在 repo，發布前請先核對 Console 現行規則；若現行規則與底本不同，
-// 請以現行為準，只把 storage-rules-sanbao-snippet-20261029.txt 的三寶段補進去再發布。
+// 底本＝Cheng 2026-10-29 提供的現行 Storage 規則全文未動，僅在 catch-all 拒絕前新增 sanbao_teacher_audio 一段。
+// 注意：現行規則中台灣第一冊為公開讀取（allow read: if true），與 20261016 快照的「須登入」不同；此處照現行版原樣保留，未改動。
 // 用法：整份取代 Firebase Console → Storage → Rules 後按 Publish。
 
 rules_version = '2';
@@ -105,7 +104,7 @@ service firebase.storage {
     // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
     // 寫入只限管理員。
     match /v4-book-tw1/{allPaths=**} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if request.auth != null
         && request.auth.token.email.lower() == 'f216002@gmail.com';
     }
