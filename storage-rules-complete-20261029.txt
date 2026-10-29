@@ -1,0 +1,174 @@
+// 完整 Storage 規則（2026-10-29 三寶老師錄音版）
+// 底本＝20261016 快照（storage.rules.live-20261016.txt，全文未動），僅在 catch-all 拒絕前新增 sanbao_teacher_audio 一段。
+// 注意：Storage 規則檔不在 repo，發布前請先核對 Console 現行規則；若現行規則與底本不同，
+// 請以現行為準，只把 storage-rules-sanbao-snippet-20261029.txt 的三寶段補進去再發布。
+// 用法：整份取代 Firebase Console → Storage → Rules 後按 Publish。
+
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // v2 Sentence Bank teacher recordings (chinese-sentence-bank-v2).
+    // Reads are public, same as the old Apps Script audio endpoint.
+    // Writes need any Firebase Authentication sign-in; the v2 site uses
+    // anonymous sign-in and the teacher PIN gates the recording UI.
+    match /v2_audio/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // V4 教師錄音（舊路徑 v4_audio/xxx.webm）：公開讀取；寫入只限管理員。
+    // 注意：Storage rules 無法查詢 Firestore 的核准名單，
+    // 所以這裡只擋「未登入／匿名」，真正的審核把關在 Firestore rules
+    //（錄音檔的路徑要寫進文件，那一步只有本人或管理員能做）。
+    match /v4_audio/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // V4 老師個人錄音（v4_audio/{uid}/xxx.webm）：公開讀取；
+    // 寫入限本人（須 Google 登入＋信箱已驗證）或管理員。
+    match /v4_audio/{teacherId}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.token.email_verified == true
+        && (request.auth.uid == teacherId
+          || request.auth.token.email.lower() == 'f216002@gmail.com');
+    }
+
+    // 中文歌曲 MV（songs/xxx.mp4）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /songs/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // 招生頁圖片（2026-10-03 新增）：老師個人照片＋課程圖片（enroll/{uid}/xxx.jpg）。
+    // 公開讀取（家長瀏覽＋社群預覽卡）；寫入限本人（須 Google 登入＋信箱已驗證）或管理員。
+    // 注意：Storage rules 無法查詢 Firestore 的核准名單，
+    // 真正的審核把關在 Firestore rules（圖片 URL 要寫進 enrollPages 文件，
+    // 那一步只有已核准的老師本人能做）。
+    // 位置必須在下方的 catch-all 拒絕之前，否則不會生效。
+    match /enroll/{teacherId}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && request.auth.token.email_verified == true
+        && (request.auth.uid == teacherId
+          || request.auth.token.email.lower() == 'f216002@gmail.com');
+    }
+
+    // 六冊句庫（v4-bank/*.json）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /v4-bank/{file} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // 第七冊《五百字說華語》（v4-book7/**）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 含子資料夾 v4-book7/pages/（電子書 manifest、頁面圖片、課框檔）。
+    // 2026-10-16 修正：原寫法 {file} 只涵蓋正下方檔案，pages/ 子目錄被拒絕
+    //（電子書載入 storage/unauthorized），改為 {allPaths=**}，比照其他各冊。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /v4-book7/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // TTS 語音檔（shared-tts/**）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /shared-tts/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // HSK 句庫（v4-hsk/**）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 含子資料夾 v4-hsk/pages/（電子書頁面圖片）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /v4-hsk/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // 台灣第一冊電子書（v4-book-tw1/**）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 含子資料夾 v4-book-tw1/pages/（電子書頁面圖片）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /v4-book-tw1/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // 台灣第二冊電子書（v4-book-tw2/**）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /v4-book-tw2/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // 台灣第三冊電子書（v4-book-tw3/**）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /v4-book-tw3/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // 台灣第四冊電子書（v4-book-tw4/**）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /v4-book-tw4/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // 台灣第五冊電子書（v4-book-tw5/**）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /v4-book-tw5/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // 台灣第六冊電子書（v4-book-tw6/**）：須登入讀取（2026-10-10，Cheng 要求）。
+    // 未登入無法讀取；前端用 Storage SDK 帶登入身份直接下載。
+    // 寫入只限管理員。
+    match /v4-book-tw6/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // 三寶讀書會老師錄音共用（2026-10-29 新增）：錄音檔 sanbao_teacher_audio/{卡號}.{wav|m4a|webm}。
+    // 讀：須登入（網站本身有登入門檻；真正能「發現」錄音的對照表在 Firestore sanbao_teacherAudio，
+    // 那一步只放核准學員與管理員，見 Firestore 規則）；寫入／刪除：只有管理員。
+    // 位置在下方的 catch-all 拒絕之前。
+    match /sanbao_teacher_audio/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    // Azure-generated audio is private. Only the trusted Cloud Function uses
+    // the Admin SDK to read and write these objects.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
