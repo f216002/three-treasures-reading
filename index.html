@@ -1445,7 +1445,9 @@ function encodeMonoWav(audioBuffer,gain){
   }
   return new Blob([output],{type:'audio/wav'});
 }
-var RECORDING_TAIL_TRIM_SECONDS=0.2;
+/* 結尾切除（2026-10-29 Cheng 實測：0.2 秒不夠，點擊聲仍在結尾，改為 0.5 秒；
+   句尾通常是靜音，不會切到說話聲）。 */
+var RECORDING_TAIL_TRIM_SECONDS=0.5;
 function trimRecordingTail(context,audioBuffer,trimSeconds){
   if(!trimSeconds||trimSeconds<=0)return audioBuffer;
   var trimSamples=Math.floor(audioBuffer.sampleRate*trimSeconds);
@@ -1545,7 +1547,7 @@ async function toggleTeacherRecording(card,btn){
       var t=card._t;
       if(t){t.prev.disabled=false;t.save.disabled=false;t.save.textContent='💾 儲存共用';}
       btn.classList.remove('recording');btn.textContent='● 重新錄音';
-      teacherRecStatus(card,processed.normalized?'錄音就緒，音量已平衡。':'錄音就緒（保留原始音量）。');
+      teacherRecStatus(card,processed.normalized?'錄音就緒，音量已平衡，結尾 0.5 秒已切除。':'錄音就緒，但結尾未切除（保留原始音量，請重錄一次）。');
       TEACHER_RECORDER=null;TEACHER_REC_CARD=null;
     };
     recorder.start();
