@@ -1,0 +1,397 @@
+// 完整 Firestore 規則（2026-10-29 三寶老師錄音版）
+// 底本＝現行已發布規則（辨喜完整版 20261029，全文未動），僅在三寶段新增 sanbao_teacherAudio 一段。
+// 用法：整份取代 Firebase Console → Firestore Database → Rules 後按 Publish。
+// 完整 Firestore 規則（2026-10-29 合併版，新增辨喜文集印地文讀書會兩段）
+// 舊規則（2026-10-26 合併版）全文未動，僅在末尾接上辨喜文集兩段。
+// 用法：整份取代 Firebase Console → Firestore Database → Rules 後按 Publish。
+// 完整 Firestore 規則（2026-10-26 合併版）
+// 舊規則（2026-10-07 更新版）全文未動，僅在末尾接上三寶讀書會與聽力練習兩段。
+// 用法：整份取代 Firebase Console → Firestore Database → Rules 後按 Publish。
+
+rules_version = '2';
+
+// Firebase 專案 my-chinese-sentence-bank-v3 完整 Firestore 規則（2026-10-07 更新版）
+// 用途：貼到 Firebase Console → Firestore Database → Rules，整份取代後按 Publish。
+// 包含 V2（匿名寫入）、V3（Google 登入＋審核）、V4（Google 登入＋審核，獨立集合）、
+// 招生頁（2026-10-03 新增：enrollPages／enrollSlugs，舊規則一行未動）、
+// 語言學習（2026-10-05 新增：langlearn，老師個人語言學習空間，舊規則一行未動）、
+// 使用統計（2026-10-07 新增：v4_analytics_sessions，老師登入登出＋頁面停留，舊規則一行未動）。
+// 重點：V2 的 v2_sentences / v2_meta 區塊必須存在，否則 V2 新增句子會報
+// "Missing or insufficient permissions." —— 2026-09-28 故障即因此發生。
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function verifiedEmail() {
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email is string;
+    }
+
+    /* ================= V2：老師個人站（匿名登入即可寫入） ================= */
+
+    // 句子：所有人可讀；登入（匿名即可）才能寫
+    match /v2_sentences/{docId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+    // 設定檔：所有人可讀；登入才能寫
+    match /v2_meta/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    /* ================= V3：多國老師平台（Google 登入＋審核） ================= */
+
+    // Bootstrap administrator. This account remains authorized while the
+    // approval system is being introduced, so the owner cannot be locked out.
+    function isAdmin() {
+      return verifiedEmail()
+        && request.auth.token.email == 'f216002@gmail.com';
+    }
+
+    function isApprovedTeacher(teacherId) {
+      return isAdmin()
+        || (
+          verifiedEmail()
+          && request.auth.uid == teacherId
+          && exists(/databases/$(database)/documents/approvedTeachers/$(teacherId))
+          && get(/databases/$(database)/documents/approvedTeachers/$(teacherId)).data.active == true
+        );
+    }
+
+    // A signed-in applicant may create only their own pending request.
+    // Only the administrator may review, approve, reject, or delete requests.
+    match /accessRequests/{teacherId} {
+      allow get: if isAdmin()
+        || (signedIn() && request.auth.uid == teacherId);
+      allow list: if isAdmin();
+      allow create: if verifiedEmail()
+        && request.auth.uid == teacherId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.status == 'pending';
+      allow update: if isAdmin()
+        || (
+          verifiedEmail()
+          && request.auth.uid == teacherId
+          && resource.data.status == 'pending'
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.email == request.auth.token.email
+          && request.resource.data.status == 'pending'
+        );
+      allow delete: if isAdmin();
+    }
+
+    // Teachers may read their own approval result. Only the administrator can
+    // create approvals, suspend access, restore access, or change roles.
+    match /approvedTeachers/{teacherId} {
+      allow get: if isAdmin()
+        || (signedIn() && request.auth.uid == teacherId);
+      allow list, create, update, delete: if isAdmin();
+    }
+
+    // Every teacher remains isolated by Firebase UID. Authentication alone is
+    // insufficient: the teacher must also have an active approval record.
+    match /teachers/{teacherId} {
+      allow read, create, update, delete:
+        if isApprovedTeacher(teacherId);
+
+      match /{document=**} {
+        allow read, create, update, delete:
+          if isApprovedTeacher(teacherId);
+      }
+    }
+
+    /* ================= V4：獨立站（Google 登入＋審核，與 V3 隔離） ================= */
+
+    function isV4Admin() {
+      return verifiedEmail()
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    function isV4ApprovedTeacher() {
+      return isV4Admin()
+        || (
+          verifiedEmail()
+          && exists(/databases/$(database)/documents/v4_approvedTeachers/$(request.auth.uid))
+          && get(/databases/$(database)/documents/v4_approvedTeachers/$(request.auth.uid)).data.active == true
+        );
+    }
+
+    // V4 申請：本人可建立自己的 pending 申請、可讀自己的申請；只有管理員可審核。
+    match /v4_accessRequests/{teacherId} {
+      allow get: if isV4Admin()
+        || (signedIn() && request.auth.uid == teacherId);
+      allow list: if isV4Admin();
+      allow create: if verifiedEmail()
+        && request.auth.uid == teacherId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.status == 'pending';
+      allow update: if isV4Admin()
+        || (
+          verifiedEmail()
+          && request.auth.uid == teacherId
+          && resource.data.status == 'pending'
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.email == request.auth.token.email
+          && request.resource.data.status == 'pending'
+        );
+      allow delete: if isV4Admin();
+    }
+
+    // V4 核准名單：本人可讀自己的核准結果；只有管理員可新增、修改、刪除。
+    match /v4_approvedTeachers/{teacherId} {
+      allow get: if isV4Admin()
+        || (signedIn() && request.auth.uid == teacherId);
+      allow list, create, update, delete: if isV4Admin();
+    }
+
+    // V4 共版課程（第一～六冊）：所有人可讀，只有管理員可寫。
+    // 老師的編輯／刪除改走 v4_teachers/{uid}/overrides，不影響他人。
+    match /v4_sentences/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isV4Admin();
+    }
+
+    // V4 設定：所有人可讀；核准老師可寫。
+    match /v4_meta/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isV4ApprovedTeacher();
+    }
+
+    // V4 老師個人資料：個人句庫＋課程「補充」（sentences）、共版課程覆寫層（overrides）。
+    // 只有本人（須為已核准老師）與管理員可讀寫。
+    match /v4_teachers/{teacherId}/sentences/{docId} {
+      allow read, create, update, delete: if isV4ApprovedTeacher()
+        && (request.auth.uid == teacherId || isV4Admin());
+    }
+    match /v4_teachers/{teacherId}/overrides/{docId} {
+      allow read, create, update, delete: if isV4ApprovedTeacher()
+        && (request.auth.uid == teacherId || isV4Admin());
+    }
+
+    /* ================= 使用統計（2026-10-07 新增）：老師登入登出＋頁面停留 ================= */
+    // 每位老師登入時建立一筆 session（doc id＝uid_登入時間戳），記錄登出時間、
+    // 使用時長、各頁面停留、句庫是否實際下載（流量估算用）。
+    // 老師只能建立／讀寫自己的 session（uid 須等於本人），看不到別人的；
+    // 只有管理員可讀取全部（後台「使用統計」分頁）。
+    match /v4_analytics_sessions/{sessionId} {
+      allow create: if isV4ApprovedTeacher()
+        && request.resource.data.uid == request.auth.uid;
+      allow update: if isV4ApprovedTeacher()
+        && resource.data.uid == request.auth.uid;
+      allow get, list: if isV4Admin()
+        || (isV4ApprovedTeacher() && resource.data.uid == request.auth.uid);
+    }
+
+    /* ================= 招生頁（2026-10-03 新增）：全球中文班公開招生 ================= */
+    // 每位審核通過的老師一頁：任何人可讀（含靜態產生器與家長瀏覽）；
+    // 建立／修改只限已核准老師本人；刪除只限管理員。
+    match /enrollPages/{uid} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && isV4ApprovedTeacher();
+      allow update: if (request.auth != null
+          && request.auth.uid == uid
+          && isV4ApprovedTeacher())
+        || isV4Admin();
+      allow delete: if isV4Admin();
+    }
+
+    // 網址代號對照：保證全站唯一。任何人可讀（老師即時查重用）；
+    // 老師只能登記／刪除自己的代號；不開放修改（改代號＝刪舊建新）。
+    match /enrollSlugs/{slug} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && isV4ApprovedTeacher()
+        && !exists(/databases/$(database)/documents/enrollSlugs/$(slug))
+        && request.resource.data.uid == request.auth.uid;
+      allow delete: if request.auth != null
+        && resource.data.uid == request.auth.uid;
+      allow update: if false;
+    }
+
+    /* ================= 語言學習 Language Learning（2026-10-05 新增） ================= */
+    // 每位登入老師的專屬語言學習空間：只有本人與管理員可讀寫自己的子樹。
+    // 不需審核——Google 登入即擁有自己的 langlearn/{uid} 空間。
+    match /langlearn/{userId}/{document=**} {
+      allow read: if signedIn()
+        && (request.auth.uid == userId || isV4Admin());
+      allow write: if signedIn()
+        && (request.auth.uid == userId || isV4Admin());
+    }
+
+    /* ================= 寶光崇正行事曆（2026-10-21 新增） ================= */
+
+    function isCalAdmin() {
+      return verifiedEmail()
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+
+    function isCalApprovedUser() {
+      return isCalAdmin()
+        || (
+          verifiedEmail()
+          && exists(/databases/$(database)/documents/cal_approvedUsers/$(request.auth.uid))
+          && get(/databases/$(database)/documents/cal_approvedUsers/$(request.auth.uid)).data.active == true
+        );
+    }
+
+    // 行事曆申請：本人可建立自己的 pending 申請、可讀自己的申請；只有管理員可審核。
+    match /cal_accessRequests/{userId} {
+      allow get: if isCalAdmin()
+        || (signedIn() && request.auth.uid == userId);
+      allow list: if isCalAdmin();
+      allow create: if verifiedEmail()
+        && request.auth.uid == userId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.status == 'pending';
+      allow update: if isCalAdmin()
+        || (
+          verifiedEmail()
+          && request.auth.uid == userId
+          && resource.data.status == 'pending'
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.email == request.auth.token.email
+          && request.resource.data.status == 'pending'
+        );
+      allow delete: if isCalAdmin();
+    }
+
+    // 行事曆核准名單：本人可讀自己的核准結果；只有管理員可新增、修改、刪除。
+    match /cal_approvedUsers/{userId} {
+      allow get: if isCalAdmin()
+        || (signedIn() && request.auth.uid == userId);
+      allow list, create, update, delete: if isCalAdmin();
+    }
+
+    // 私人行程：每人獨立空間，只有本人（須已核准）與管理員可讀寫。
+    match /cal_users/{userId}/privateEvents/{eventId} {
+      allow read, create, update, delete: if isCalApprovedUser()
+        && (request.auth.uid == userId || isCalAdmin());
+    }
+
+    /* ================= 三寶讀書會（2026-10-26 新增，與 V4 隔離） ================= */
+    function isSanbaoAdmin() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+    function isSanbaoApproved() {
+      return isSanbaoAdmin()
+        || (
+          request.auth != null
+          && request.auth.token.email_verified == true
+          && exists(/databases/$(database)/documents/sanbao_approvedUsers/$(request.auth.uid))
+          && get(/databases/$(database)/documents/sanbao_approvedUsers/$(request.auth.uid)).data.active == true
+        );
+    }
+    // 申請：本人可建立自己的 pending 申請、可讀自己的申請；只有管理員可審核、刪除。
+    match /sanbao_accessRequests/{userId} {
+      allow get: if isSanbaoAdmin()
+        || (request.auth != null && request.auth.uid == userId);
+      allow list: if isSanbaoAdmin();
+      allow create: if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.uid == userId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.status == 'pending';
+      allow update: if isSanbaoAdmin();
+      allow delete: if isSanbaoAdmin();
+    }
+    // 核准名單：本人可讀自己的核准結果；只有管理員可新增、修改、刪除。
+    // 學員讀自己的核准文件是門檻判斷的必要條件（前端 checkApproval 用）。
+    match /sanbao_approvedUsers/{userId} {
+      allow get: if isSanbaoAdmin()
+        || (request.auth != null && request.auth.uid == userId);
+      allow list, create, update, delete: if isSanbaoAdmin();
+    }
+    // 卡片修改（2026-10-26 新增：句子卡每欄可編輯，管理員儲存的修改全站共用）：
+    // 讀：管理員、三寶核准者、V4 核准者皆可；寫：只有管理員。
+    function isSanbaoReader() {
+      return isSanbaoApproved()
+        || (
+          request.auth != null
+          && request.auth.token.email_verified == true
+          && exists(/databases/$(database)/documents/v4_approvedTeachers/$(request.auth.uid))
+          && get(/databases/$(database)/documents/v4_approvedTeachers/$(request.auth.uid)).data.active == true
+        );
+    }
+    match /sanbao_cardEdits/{cardId} {
+      allow get, list: if isSanbaoReader();
+      allow create, update, delete: if isSanbaoAdmin();
+    }
+
+    // 聽力練習共用句庫（2026-10-26 新增；沿用上方已有的 isSanbaoAdmin / isSanbaoReader）：
+    // 讀：管理員、三寶核准者、V4 核准者皆可；寫：只有管理員。
+    match /sanbao_listenBank/{sentenceId} {
+      allow get, list: if isSanbaoReader();
+      allow create, update, delete: if isSanbaoAdmin();
+    }
+    // 管理員個人待整理：只有管理員本人可讀寫自己的項目。
+    match /sanbao_listenInbox/{userId}/items/{itemId} {
+      allow get, list, create, update, delete: if isSanbaoAdmin()
+        && request.auth != null
+        && request.auth.uid == userId;
+    }
+
+    // 使用統計（2026-10-26 新增：sanbao_analytics_sessions，學員登入登出＋使用時長；沿用上方已有的 isSanbaoAdmin / isSanbaoReader）：
+    // 建／改：核准學員（本群組或 V4 已核准老師）只能寫自己的 session；讀全部：只有管理員（後台「使用統計」分頁）。
+    match /sanbao_analytics_sessions/{sessionId} {
+      allow create: if isSanbaoReader()
+        && request.auth.uid == request.resource.data.uid;
+      allow update: if isSanbaoReader()
+        && request.auth.uid == resource.data.uid;
+      allow get, list: if isSanbaoAdmin()
+        || (isSanbaoReader() && request.auth.uid == resource.data.uid);
+    }
+    // 老師錄音共用（2026-10-29 新增；沿用上方已有的 isSanbaoAdmin / isSanbaoReader）：
+    // 讀：管理員、三寶核准者、V4 核准者皆可；寫：只有管理員。
+    // 前端：index.html 老師錄音列；Storage 檔見 storage-rules-complete-20261029.txt。
+    match /sanbao_teacherAudio/{cardId} {
+      allow get, list: if isSanbaoReader();
+      allow create, update, delete: if isSanbaoAdmin();
+    }
+
+    /* ================= 辨喜文集印地文讀書會（2026-10-29 新增，與 V4／三寶隔離） ================= */
+    // 前端：vivek-gate.js；申請 vivek_accessRequests、核准 vivek_approvedUsers。
+    // V4 已核准老師直通本站，不需再申請（前端 checkApproval 用 v4_approvedTeachers 判斷，
+    // 其讀取權由上方 V4 規則提供，不需在此重寫）。管理員審核方式：在 Firestore
+    // 直接建立 vivek_approvedUsers/{uid}（active=true），不另設後台面板。
+    function isVivekAdmin() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
+    // 申請：本人可建立自己的 pending 申請、可讀自己的申請；只有管理員可審核、刪除。
+    match /vivek_accessRequests/{userId} {
+      allow get: if isVivekAdmin()
+        || (request.auth != null && request.auth.uid == userId);
+      allow list: if isVivekAdmin();
+      allow create: if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.uid == userId
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.status == 'pending';
+      allow update: if isVivekAdmin();
+      allow delete: if isVivekAdmin();
+    }
+    // 核准名單：本人可讀自己的核准結果；只有管理員可新增、修改、刪除。
+    // 學員讀自己的核准文件是門檻判斷的必要條件（前端 checkApproval 用）。
+    match /vivek_approvedUsers/{userId} {
+      allow get: if isVivekAdmin()
+        || (request.auth != null && request.auth.uid == userId);
+      allow list, create, update, delete: if isVivekAdmin();
+    }
+  }
+}
