@@ -1,0 +1,8 @@
+// 三寶讀書會老師錄音共用（2026-10-29 新增）：貼到現行 Storage 規則 catch-all 拒絕段之前。
+// 讀：須登入；寫入／刪除：只有管理員 f216002@gmail.com。
+// 對照表在 Firestore sanbao_teacherAudio（只放核准學員與管理員），見 firestore-rules-complete-20261029-sanbao-audio.txt。
+    match /sanbao_teacher_audio/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.email.lower() == 'f216002@gmail.com';
+    }
