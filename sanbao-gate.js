@@ -35,6 +35,7 @@
       db.collection('sanbao_cardEdits').get().then(function (snap) {
         var edits = {};
         snap.forEach(function (doc) { edits[doc.id] = doc.data(); });
+        window.SANBAO_cloudEdits = edits;
         window.SANBAO_applyEdits(edits);
       }).catch(function () {});
     }
