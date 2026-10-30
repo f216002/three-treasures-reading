@@ -107,7 +107,7 @@ section.block{padding:44px 0 6px}
 @media(max-width:560px){.toc-row{flex-wrap:wrap}.toc-row .pg{flex-basis:auto}}
 
 /* ---------- reader ---------- */
-.reader-tools{position:sticky;top:64px;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;display:flex;gap:8px;flex-wrap:nowrap;align-items:center;margin-bottom:16px}
+.reader-tools{position:sticky;top:64px;z-index:20;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px;display:flex;gap:8px;flex-wrap:nowrap;align-items:center;margin-bottom:16px}
 .reader-tools .toolbtn,.reader-tools .sel-row,.reader-tools .loop-check,.reader-tools .count-note{white-space:nowrap}
 @media(max-width:760px){.reader-tools{gap:6px}.toolbtn{padding:8px 11px;font-size:13px}.loop-check{padding:8px 11px;font-size:13px}}
 @media(max-width:700px){.reader-tools{flex-wrap:wrap;padding:8px 10px}.toolbtn{padding:7px 9px}.loop-check{padding:7px 9px}.count-note{font-size:12px}}
@@ -143,6 +143,7 @@ section.block{padding:44px 0 6px}
 .count-note{font-size:13px;color:var(--muted)}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px 16px;margin-bottom:14px;box-shadow:var(--shadow);overflow-wrap:break-word}
+.card{content-visibility:auto;contain-intrinsic-size:auto 180px}
 .card.playing-now{border-color:var(--gold2);box-shadow:0 0 0 2px var(--goldsoft),var(--shadow)}
 .card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
 .sid{font-family:Georgia,serif;font-weight:700;font-size:13px;background:#FF7A00;color:#fff;border-radius:6px;padding:2px 9px;letter-spacing:.04em}
@@ -1698,6 +1699,27 @@ function renderCards(list,hostId,pageOf){
   var host=document.getElementById(hostId);
   list.forEach(function(s){host.appendChild(makeCard(s,pageOf(s)));});
 }
+/* ================= 逐節懶渲染（20261030 效能修復：1379 張不再一次全量進 DOM） =================
+   各節改 queueCards 登記，滑到該節附近才真的渲染；渲染過的不卸載，勾選／播放／編輯／老師錄音
+   這些掃 DOM 的邏輯都不用改。渲染完補做三件原本在載入時掃全頁的事：該節計數、
+   本機＋雲端編輯套用、老師錄音鍵標記；中文段穿插（SANBAO_POST）也在此時跑，順序與原本一致。 */
+var SANBAO_POST={};
+var SANBAO_LAZY={};
+function queueCards(list,hostId,pageOf,section,sectionElId){
+  SANBAO_LAZY[section]={list:list,hostId:hostId,pageOf:pageOf,section:section,sectionElId:sectionElId,rendered:false};
+}
+function renderLazySection(section){
+  var e=SANBAO_LAZY[section];if(!e||e.rendered)return;
+  e.rendered=true;
+  var host=document.getElementById(e.hostId);
+  host.dataset.rendered='1';
+  renderCards(e.list,e.hostId,e.pageOf);
+  (SANBAO_POST[section]||[]).forEach(function(fn){fn();});
+  var upd=window.SANBAO_readerUpdate&&window.SANBAO_readerUpdate[section];if(upd)upd();
+  applyEdits(readLocalEdits());
+  if(window.SANBAO_cloudEdits)applyEdits(window.SANBAO_cloudEdits);
+  if(window.paintTeacherAudioButtons)paintTeacherAudioButtons();
+}
 function wireReader(section){
   var tools=document.querySelector('.reader-tools[data-reader="'+section+'"]');
   var note=tools.querySelector('.count-note');
@@ -1705,6 +1727,7 @@ function wireReader(section){
   var empty=document.querySelector('[data-empty="'+section+'"]');
   var fs=1;
   function update(){
+    if(!host.dataset.rendered){ note.textContent=''; if(empty)empty.style.display='none'; return; }
     var n=0;
     host.querySelectorAll('.card').forEach(function(c){
       c.style.display='';n++;
@@ -1714,6 +1737,8 @@ function wireReader(section){
     updateSel(section);
   }
   update();
+  window.SANBAO_readerUpdate = window.SANBAO_readerUpdate || {};
+  window.SANBAO_readerUpdate[section] = update;
   tools.addEventListener('click',function(e){
     var b=e.target.closest('button');if(!b)return;
     var act=b.dataset.act;
@@ -1780,7 +1805,7 @@ var PREFACE=[
 {id:"E-04",pg:11,en:"We also felt the tremendous responsibility in translating the key Holy teachings and messages of Buddhas, saints and sages into English both in a timely and comprehensible manner in order to assist in efficient Tao propagation during this Final Salvation period.",zh:"我們也深感責任重大，要把佛、聖人與賢哲的重要聖教與訊息，及時而易懂地譯成英文，以協助在末後普渡期間有效地傳道。",vocab:"tremendous 巨大的；responsibility 責任；key 關鍵的；saint 聖人；sage 賢哲；timely 及時的；comprehensible 易懂的；manner 方式；efficient 有效的",pat:"both in a ... and ... manner — 以既……又……的方式。",dao:"翻譯求及時、求易懂，一切為了普渡的效率與眾生的受益。",ex:"Explain it in a simple and comprehensible manner."},
 {id:"E-05",pg:11,en:"Lastly, we would like to take this opportunity to extend a warm invitation to encourage Tao relatives from around the world with fluent Western language backgrounds and dedicated Tao propagation aspirations to contact us to join our growing list of translation projects.",zh:"最後，我們想藉這個機會誠摯邀請全球各地精通西方語言、並懷有傳道宏願的道親與我們聯絡，加入我們日益成長的翻譯計畫名單。",vocab:"lastly 最後；take this opportunity 藉此機會；extend a warm invitation 誠摯邀請；Tao relatives 道親；fluent 流利的；dedicated 專志的；aspiration 宏願、志向；growing 日益成長的",pat:"take this opportunity to ... — 藉此機會……。",dao:"廣邀同道同參翻譯、共同成全普渡大業。",ex:"We take this opportunity to invite more helpers."}
 ];
-renderCards(PREFACE,'prefaceCards',function(s){return '書頁 '+s.pg;});
+queueCards(PREFACE,'prefaceCards',function(s){return '書頁 '+s.pg;},'preface','preface');
 wireReader('preface');
 </script>
 
@@ -1818,15 +1843,15 @@ var FOREWORD=[
 {id:"F-14",pg:14,en:"This process actually takes place at home and within the society, with the involvement and participation of the whole family.",zh:"這個過程實際上是在家庭裡、社會中進行的，全家人共同投入、共同參與。",vocab:"process 過程；actually 實際上；take place 進行、發生；involvement 投入、參與；participation 參與",pat:"with the involvement of ... — 在……的共同參與下。",dao:"齊家修道：修道就在家庭與社會之中，全家同修同辦。",ex:"The project succeeded with the involvement of the whole family."},
 {id:"F-15",pg:14,en:"The ultimate aim of practising Tao as a family is to propagate Tao to more people.",zh:"以家庭為單位修辦道的最終目標，是把道傳給更多的人。",vocab:"ultimate 最終的；aim 目標；practise 修持、實踐（英式拼法）；propagate 傳播、辦道",pat:"The ultimate aim of ...-ing is to ... — ……的最終目標是……。",dao:"齊家的目的不在自了，而在渡人、成全更多人同登覺路。",ex:"The ultimate aim of studying is to serve others."}
 ];
-renderCards(FOREWORD,'forewordCards',function(s){return '書頁 '+s.pg;});
+queueCards(FOREWORD,'forewordCards',function(s){return '書頁 '+s.pg;},'foreword','foreword');
 
 /* F-16 截斷句：待核對旗標卡（不臆測補寫） */
-(function(){
+(SANBAO_POST['foreword']=(SANBAO_POST['foreword']||[])).push(function(){
   var host=document.getElementById('forewordCards');
   var d=document.createElement('div');d.className='flag';
   d.innerHTML='<b>F-16 · 待核對（書頁 14 末行）</b><br><span style="font-family:Georgia,serif">In Appendix 2 - &quot;The Tenets of Tao&quot; (道之宗旨) and Appendix 3 - &quot;The&quot;</span><br><span class="small">這一句在書頁 14 就截斷了，下一頁（書頁 15）已是「二、求道的殊勝」，本站照原樣標記、不自行補寫後半句。請 Cheng 對照原書確認：是書上本來如此，還是拍攝時裁切掉了。</span>';
   host.appendChild(d);
-})();
+});
 wireReader('foreword');
 
 /* ================= Foreword 註解與五倫八德 ================= */
@@ -1895,10 +1920,10 @@ SIGNIF=SIGNIF.concat([
 {id:"B-87",pg:26,en:"The Tao Transmitting Masters are merely agents acting on behalf of the Enlightened Teacher Ji-Gong Living Buddha to perform the True Dharma transmission via the ceremony with the holy fire to formalise the Teacher-disciple relationship (代師收徒) with Ji-Gong Living Buddha.",zh:"點傳師只是代理人，代表明師濟公活佛，藉著聖火的儀式施行真法傳授，與濟公活佛正式建立師徒關係（代師收徒）。（書上括號寫法照原書錄入。）",vocab:"merely 只是；agent 代理人；act on behalf of 代表；perform 施行；formalise 正式確立；disciple 弟子",pat:"are merely agents acting on behalf of ... to perform ... — 只是代表……施行……的代理人。",dao:"拜的是濟公活佛為師：點傳師代師收徒，不是拜人為師。",ex:"The assistants are merely agents acting on behalf of the teacher."},
 {id:"B-88",pg:"26–27",en:"In summary, the transmission passed down to the Tao recipient are collectively referred to as the Three Treasures, being the Genuine transmission of spiritual (True Self) awakening (性理真傳) in pointing of the Heavenly Portal, the heart-to-heart reception of the Heavenly Mantra and the Heavenly Seal via verbal transmission (口傳心印). This whole process completes the Tao Transmission Ceremony, also referred to as 'Qiu Tao', meaning 'receive Tao transmission'.",zh:"總結來說，傳給求道人的這一切，合稱為三寶：就是性理真傳——點開玄關竅、口傳心印地領受口訣與合同。整個過程完成了傳道儀式，也稱為「求道」，意思是「接受道之傳授」。（本句跨書頁 26–27，照書完整形錄入：前半在書頁 26、後半在書頁 27。）",vocab:"in summary 總結來說；collectively 合起來、共同地；be referred to as 被稱為；genuine 真正的；mantra 口訣、真言；seal 合同、印；verbal 口頭的；complete 完成",pat:"In summary, ... are collectively referred to as ... — 總結來說，……合稱為……。",dao:"三寶是真傳的總名：關、訣、印齊全，才是完整的求道。",ex:"In summary, these habits are collectively referred to as good manners."}
 ]);
-renderCards(SIGNIF,'signifCards',function(s){return '書頁 '+s.pg;});
+queueCards(SIGNIF,'signifCards',function(s){return '書頁 '+s.pg;},'signif','significance');
 
 /* 求道的殊勝：書頁 20、22、24 書上中文段，穿插在對應句子之前（照原書錄入） */
-(function(){
+(SANBAO_POST['signif']=(SANBAO_POST['signif']||[])).push(function(){
   var host=document.getElementById('signifCards');
   var cards=host.querySelectorAll('.card');
   function zhpara(title,text,beforeCard){
@@ -1911,7 +1936,7 @@ renderCards(SIGNIF,'signifCards',function(s){return '書頁 '+s.pg;});
   zhpara('書上中文段（書頁 20）','我們之所以能求道，是沾了天恩師德，機緣成熟，現今遇上末後三期的白陽期應運，上天慈憫降道大開普渡。也是自己佛緣根基深厚、祖上有德，以及憑著自己佛前立愿；還有引保師在佛前立愿，用性命擔保求道人身家清白、品性端正、是個好人，保證求道人所求的道是道真、理真、天命真，是可以成仙作佛的大道，是亙古不輕傳的光明大道、無上乘法。不是騙人錢財，也不是入什麼教會、或邪教，跟一般拜拜或宗教信仰的人事團體是不一樣的。',cards[34]);
   zhpara('書上中文段（書頁 22）','所以說，能拜明師求道，得受明師一指，傳授「性理真傳」，皆因時運已至末法收圓，及人心不古所召感以及因果律則所致。上天慈憫道劫並降，降道以挽救良善，降劫以警醒愚迷。',cards[55]);
   zhpara('書上中文段（書頁 24）','我們所拜的當代明師是濟公活佛、月慧菩薩，不是拜人為師或拜點傳為師。剛剛求道時，是濟公活佛老師借著點傳師的手，點化我們，打開生死門戶，找到自家的真主人、靈性、佛性。而點傳師是代理濟公活佛老師，借火傳法，代師收徒，將回天的無上密寶「性理真傳」，口傳心印傳授予我們，這叫做「求道」。',cards[67]);
-})();
+});
 wireReader('signif');
 applyEdits(readLocalEdits());
 </script>
@@ -2138,10 +2163,10 @@ var CHAPTER1=[
 {id:"C1-218",pg:51,en:"The workings of Yin and Yang derived from Tao, which facilitates the creation of myriad things.",zh:"陰陽的運行源自於道，而道促成了萬物的生成。"},
 {id:"C1-219",pg:51,en:"Therefore, the true teachings of all religions are aligned with Tao, the Ultimate Truth (萬教歸一理).",zh:"因此，各宗教真正的教義都與道、也就是終極真理相契合。"},
 ];
-renderCards(CHAPTER1,'chapter1Cards',function(s){return '書頁 '+s.pg;});
+queueCards(CHAPTER1,'chapter1Cards',function(s){return '書頁 '+s.pg;},'chapter1','chapter1');
 
 /* 壹、什麼是道：書上中文段，穿插在對應句子之前（照原書錄入） */
-(function(){
+(SANBAO_POST['chapter1']=(SANBAO_POST['chapter1']||[])).push(function(){
   var host=document.getElementById('chapter1Cards');
   var cards=host.querySelectorAll('.card');
   function zhpara(title,paras,beforeCard){
@@ -2167,7 +2192,7 @@ renderCards(CHAPTER1,'chapter1Cards',function(s){return '書頁 '+s.pg;});
   zhpara("書上中文段（書頁 46） · 兩儀",["太極陰陽二氣互為激盪消長，而化為兩儀，權宜用太極圖「☯」(圖三)來代表，此為一生二。"],cards[173]);
   zhpara("書上中文段（書頁 48） · 四象",["兩儀產生金木火水土五行真氣，此為二生三，權宜用四象圖「[四象圖圖符]」(圖四)來代表。"],cards[189]);
   zhpara("書上中文段（書頁 49） · 皇極",["此先天真炁落入後天，經由四大與五蘊因緣和合而幻化成一切諸形萬物，此為三生萬物，為「皇極」，權宜用萬物圖「[萬物圖圖符]」(圖五)來代表。故萬物皆有「道」，道是一切諸形萬物運行的理則規範。"],cards[197]);
-})();
+});
 wireReader('chapter1');
 
 var CHAPTER2=[
@@ -2868,10 +2893,10 @@ var CHAPTER2=[
 {id:"C2-695",pg:88,en:"It is an extraordinary opportunity that is not easily afforded.",zh:"這是不容易提供的非凡機會。"},
 {id:"C2-696",pg:88,en:"It is a wonderful opportunity that is not easily…",zh:"這是一個不容易…的奇妙機會。"},
 ];
-renderCards(CHAPTER2,'chapter2Cards',function(s){return '書頁 '+s.pg;});
+queueCards(CHAPTER2,'chapter2Cards',function(s){return '書頁 '+s.pg;},'chapter2','chapter2');
 
 /* 貳、求道的真義：書上中文段，穿插在對應句子之前（照原書錄入） */
-(function(){
+(SANBAO_POST['chapter2']=(SANBAO_POST['chapter2']||[])).push(function(){
   var host=document.getElementById('chapter2Cards');
   var cards=host.querySelectorAll('.card');
   function zhpara(title,paras,beforeCard){
@@ -2895,7 +2920,7 @@ renderCards(CHAPTER2,'chapter2Cards',function(s){return '書頁 '+s.pg;});
   zhpara("書上中文段（書頁 85） · 八、超生了死、玄祖沾恩",["我們今天所求的大道，與往昔佛菩薩是一樣的至尊至貴，是超生了死，可以一世修一世成佛的無上乘法；是成佛的究竟解脫法，是證道歸真的唯一正法，即佛家所稱的「正法眼藏，涅槃妙心，實相無相，微妙法門，不立文字，教外別傳」的不二法門。也稱為「佛授記」，歷代仙佛菩薩就是但用此妙心而究竟可以成佛。"],cards[648]);
   zhpara("書上中文段（書頁 85） · 九玄七祖沾恩",["同時我們的九玄七祖亦蒙沾上天恩典，可以與我們共修佛法，而且隨其陽世子孫誠心修辦道，行功立德而升級。亦可辦理超拔祖先，脫離地獄受苦難，超氣入理而返回理天。此為仙佛所說的「一子求道玄祖沾恩，一子成道玄祖同超生。"],cards[648]);
   zhpara("書上中文段（書頁 85） · 三期末法與龍華大會",["現今正逢三期末法，上天大開三曹普渡，也是大特赦三曹，錯過了，機會不再來。將來開龍華大會，按功定果，玄祖沾恩；上天老母慈悲說：「爾九玄爾七祖共同脫苦，爾幾品他幾品共現威嚴。」也是身為子女行大大孝的最佳時機。"],cards[648]);
-})();
+});
 wireReader('chapter2');
 var CHAPTER3=[
 {id:"C3-01",pg:89,en:"Nan-Hai Ancient Buddha once mercifully admonished in a Holy Message: \\\"The Buddhist Three Treasures of Buddha (Spirit), Dharma and Sanga, are same as the Taoist Three Treasures of Physical Essence, Energy (Qi) and Spirit.",zh:"南海古佛曾在聖訓中慈悲告誡：佛教三寶——佛（靈性）、法、僧，與道教三寶——精、氣、神，是相同的。"},
@@ -3144,10 +3169,10 @@ var CHAPTER3=[
 {id:"C3-244",pg:157,en:"After receiving the Tao Transmission, once you can realise that your spirit naturally contains the utter innocence of an infant, you can then try to uphold, align, and unify with your utter innocence in every moment of your daily life. By doing so, you will be able to guide yourself and teach others whenever the affinity and opportunity arises, using your merciful heart to propagate the Tao, to perform all good deeds, and refrain from all sinful deeds. As a result, you won't have to worry about not doing enough in your cultivation and propagation in order to attain Tao achievement.",zh:"求道之後，一旦明白靈性本就具有嬰孩般的赤子之心，就可以試著在日常生活的每一刻持守、對齊、統一於赤子之心；如此一來，遇到緣分與機會時，就能以慈心引導自己、教化他人，弘道渡人、眾善奉行、諸惡莫做；結果就不必擔心修道弘道不夠、不能成就道果。"},
 {id:"C3-245",pg:157,en:"The Holy Message of Utter Innocence was given by the two celestials at Xiang Lin Temple in Brisbane, Australia, on 9th of October, 1999. The two celestials taught the vital importance of reviving one's infant-like Utter Innocence in our cultivation. There are four layers of Holy Messages within the original text, one inside another. The final fourth layer Holy Message stated \\\"Embrace your Utter Innocence, be impartial, loyal, and sincere in devoting yourself toward Tao practice \\\".",zh:"赤子之心的聖訓由兩位仙佛於一九九九年十月九日在澳洲布里斯班的祥霖佛堂所批；兩位仙佛教導了在修道中復甦嬰孩般赤子之心的重要；原文中有四層聖訓，一層包一層；最末第四層聖訓說：「抱持赤子之心，公正、忠誠、真心地奉道修行。」"},
 ];
-renderCards(CHAPTER3,'chapter3Cards',function(s){return '書頁 '+s.pg;});
+queueCards(CHAPTER3,'chapter3Cards',function(s){return '書頁 '+s.pg;},'chapter3','chapter3');
 
 /* 參、三寶真義與修道：書上中文段，穿插在對應句子之前（照原書錄入） */
-(function(){
+(SANBAO_POST['chapter3']=(SANBAO_POST['chapter3']||[])).push(function(){
   var host=document.getElementById('chapter3Cards');
   var cards=host.querySelectorAll('.card');
   function zhpara(title,paras,beforeCard){
@@ -3199,7 +3224,7 @@ renderCards(CHAPTER3,'chapter3Cards',function(s){return '書頁 '+s.pg;});
   zhpara("書上中文段（書頁 151–152）",["「本元會上天降道普渡眾生，共分三期，每期所傳的「合同」皆不一樣，乃因應不同的因緣時運，自然各有其不同意涵。青陽期為「單掌」，意為青色蓮葉。紅陽期為「雙掌合十」，猶如紅色蓮花。白陽期為手抱「子亥印」，猶如白蓮藕，修道要出污泥而不染，象徵在家修道在家成道，要恢復「赤子心」，修道有成就結果實要秋收了。」","小標（152 頁，組裝作 notebox，勿動 TOC）：\"(ii) Testimony of the Heavenly Seal\"／\"1. Cyan Yang Era\"／\"2. Red Yang Era\"／\"3. White Yang Era\"。"],cards[231]);
   zhpara("書上中文段（書頁 153–154）",["「《聖經·馬太福音 18:3》：「你們若不回轉成小孩的樣子，斷不得進天國。」故「合同」之意，乃化戾氣為祥和，化人心為天心，人同此心，心同此理，自然人人就合天意、合人意，即為「同心」或「合心」。進而發出宏慈善願，廣結善緣，普渡眾生，此德即與天地之德合，與諸佛菩薩合，與天意合；所謂「一切諸佛入我性，我性還共如來合」，此為「同心同德」。白陽弟子但用此心共辦三曹普渡，善氣沖天，行深自然就能實踐彌勒祖師的「彌勒淨土」，家家彌勒院，人人淨土心，此即「世界大同」的蓮花邦、人間淨土。」"],cards[237]);
   zhpara("書上中文段（書頁 156）",["「「赤子之心」者，非識、非知、非欲、非憎愛，亦無分別、不執著、不造作，天真純潔，餓來吃飯，睏來眠，於事無心，無心於事，一切順乎天然的流露。」","「求道後，若能悟入此含意，時時抱著一顆「赤子之心」；二六時中與赤子之心合，與赤子之心同，隨緣而化，與慈佈道，眾善奉行，諸惡莫做，何患道果不能成熟？」","C3-243 跨頁句（156–157）已補齊，見 157 節。","---- 書頁 157（窄帶 0–24%、22–46%、44–68%、66–88%、86–100% 目視核對；末帶僅空白＋頁尾 157，頁末無未完句）----"],cards[242]);
-})();
+});
 wireReader('chapter3');
 applyEdits(readLocalEdits());
 </script>
@@ -3331,10 +3356,10 @@ var CHAPTER4=[
 {id:"C4-122",pg:178,en:"They may often become opinionated, arrogant, suppressing others, and think that they are qualified at being a spiritual teacher themselves.",zh:"他們往往變得固執己見、傲慢自大、壓制他人，還自以為有資格為人師表。"},
 {id:"C4-123",pg:178,en:"Such cultivators are in fact ignoring the genuine truth already in their True Self and seeking for cultivation external to their spirit.",zh:"這樣的修道者其實是忽略了自己真我中本已具足的真正真理，反而向外尋求修持。"},
 ];
-renderCards(CHAPTER4,'chapter4Cards',function(s){return '書頁 '+s.pg;});
+queueCards(CHAPTER4,'chapter4Cards',function(s){return '書頁 '+s.pg;},'chapter4','chapter4');
 
 /* 肆、結語：書上中文段，穿插在對應書頁首張卡之前（照原書錄入） */
-(function(){
+(SANBAO_POST['chapter4']=(SANBAO_POST['chapter4']||[])).push(function(){
   var host=document.getElementById('chapter4Cards');
   var cards=host.querySelectorAll('.card');
   function zhpara(title,paras,beforeCard){
@@ -3359,8 +3384,45 @@ renderCards(CHAPTER4,'chapter4Cards',function(s){return '書頁 '+s.pg;});
   zhpara("書上中文段（書頁 175）",["三寶真傳：對於上上根人而言，即指即悟，不假修持。對於三乘根人而言，即受即修，即與彌勒佛結了見佛、聞法、證果之佛緣，即生不受三界所縛，超出五行矣。所以，上天若不是要拯救無數末法眾生免於四生六道，留下下元會天地人之佛種；何必勞煩彌勒佛與歷代諸仙佛神聖，及儒釋道已成道之弟子，下世打幫助道！而恩師「濟公活佛」亦是為普渡收圓的末法眾生，才與師母「月慧菩薩」把往昔諸佛諸祖單傳獨授之「末後一著」——「三寶真傳」公諸於世！"],cards[107]);
   zhpara("書上中文段（書頁 176）",["因此，末法諸多眾生，或因對「天地時節之運行變遷」沒有深入瞭解，或對「濟公活佛住世之一大事因緣」不曾深入探究；只知彌勒佛為千佛萬祖中的一佛一祖，而不知其為「應運佛」、「應運祖師」。只知白陽法門為千門萬法中之一個法門，而不深知白陽法門，乃是「非時不降、非人不傳」，應運而生之法門。"],cards[111]);
   zhpara("書上中文段（書頁 177）",["所以，不明三寶真傳之寶貴，心法真傳之稀有；更不明彌勒祖師之鴻慈大願，而大談修道玄妙之理；視末後一著活佛恩師所傳的「性理真傳」於不顧，而師心自用，自以為是，揚己抑彼，實則捨近求遠矣！"],cards[115]);
-})();
+});
 wireReader('chapter4');
+/* ================= 懶渲染啟動（接上 queueCards） ================= */
+(function(){
+  function sectionOfHash(){
+    var h=(location.hash||'').slice(1);if(!h)return null;
+    for(var k in SANBAO_LAZY){if(SANBAO_LAZY[k].sectionElId===h)return k;}
+    return null;
+  }
+  var hk=sectionOfHash();
+  if(hk)renderLazySection(hk);
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      for(var i=0;i<entries.length;i++){
+        if(entries[i].isIntersecting){
+          var elId=entries[i].target.id;
+          for(var k in SANBAO_LAZY){if(SANBAO_LAZY[k].sectionElId===elId){renderLazySection(k);break;}}
+          io.unobserve(entries[i].target);
+        }
+      }
+    },{rootMargin:'1000px 0px'});
+    for(var k in SANBAO_LAZY){var el=document.getElementById(SANBAO_LAZY[k].sectionElId);if(el)io.observe(el);}
+  }else{
+    for(var k in SANBAO_LAZY)renderLazySection(k);
+  }
+  if(hk&&!document.body.classList.contains('sanbao-approved')){
+    var mo=new MutationObserver(function(){
+      if(document.body.classList.contains('sanbao-approved')){
+        mo.disconnect();
+        var el=document.getElementById((location.hash||'').slice(1));
+        if(el)el.scrollIntoView();
+      }
+    });
+    mo.observe(document.body,{attributes:true,attributeFilter:['class']});
+  }
+  window.addEventListener('hashchange',function(){
+    var k=sectionOfHash();if(k)renderLazySection(k);
+  });
+})();
 </script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -3368,6 +3430,6 @@ wireReader('chapter4');
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
-<script src="sanbao-gate.js?v=20261026-10"></script>
+<script src="sanbao-gate.js?v=20261030-01"></script>
 </body>
 </html>
