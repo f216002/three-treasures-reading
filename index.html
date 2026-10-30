@@ -1178,7 +1178,7 @@ async function downloadMerged(zh,en,filename,btn){
   }catch(e){
     var code=String((e&&e.code)||'');
     if(code.indexOf('resource-exhausted')>=0){
-      alert('下載失敗：今日新合成額度已用完（每人每天 30 句）。已經合成過的句子不受影響，仍可下載；請明天再試，或請管理員先播放一次，讓這句進共用快取。');
+      alert('下載失敗：今日新合成額度已用完（每人每天 60 次新合成）。已經合成過的句子不受影響，仍可下載；請明天再試，或請管理員先播放一次，讓這句進共用快取。');
     }else{
       alert('下載失敗：目前無法合成音檔。請確認已登入核准，或稍後再試。');
     }
