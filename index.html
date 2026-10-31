@@ -211,6 +211,9 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
 .toolbtn:disabled{opacity:.45}
 .card-check{width:20px;height:20px;flex:none;accent-color:#FF7A00}
 .empty-note{border:1px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center;color:var(--muted);font-size:14.5px;display:none}
+/* ---------- 附錄四對照表拼音／理由小字（2026-10-31 併入主頁） ---------- */
+#appendix4 .py{color:var(--muted);font-size:13.5px}
+#appendix4 .why{font-size:13.5px;color:#2e6b30;margin-top:2px}
 </style>
 <style id="sanbaoGateCss">body:not(.sanbao-approved) .wrap{display:none!important}</style>
 <style>
@@ -588,6 +591,14 @@ body.sanbao-admin .expl-btns{display:flex}
     <div class="notebox"><h4>待核對（照書原樣收錄，未補寫，請老師翻書確認）</h4><p>書頁 178 末句完整、其後大半頁空白，頁上無全章結束標記；依目錄附錄一自 179 頁起，判定第四章止於 178 頁。書上原拼法照原樣保留，未改正：161 頁 "(True Slf)"、166 頁 "sayings also goes"、170 頁 "each Buddhas"、178 頁 "talking abou"。中文大意 C4-110 "highest level above the upper level foundation" 已按書上 175 頁中文段「對於上上根人而言，即指即悟，不假修持」譯為「上上根者」。中文段按書頁插在該頁首張卡之前（第三章為逐卡定位；第四章轉錄檔只記到頁級）。</p></div>
   </section>
 
+  <!-- ================= APPENDIX 4 ================= -->
+  <section class="block" id="appendix4">
+    <div class="sec-head"><h2>附錄四 · 書末對照表</h2><span class="en">Appendix 4 · Tao Terminology Glossary · 書頁 231–255 · 已全文轉錄</span></div>
+    <p class="sec-sub">書上原文照錄不動，以示對原作者的尊重；審訂看法另欄並列，是經考證、多方考量後的不同看法，供學員參考，不取代原文；最終解釋以道場、老師為準。朗讀與主流程仍以書上原文為主，審訂欄只供研讀對照。純拼寫、排版錯誤已直接訂正（非作者見解）；體例已統一：美式拼寫、Innate Nature 大寫、Tao 拼寫、句首大寫、Tao achievement 改為 attain／attainment of the Tao。計數：主表 419 行＋審訂獨有 29 行；審訂異議 25 行、審訂建議 36 行、體例訂正 25 行，其餘皆與書上一致或照錄。</p>
+    <div id="appendix4Tables"><p>對照表載入中……</p></div>
+    <div class="notebox"><h4>頁末註</h4><p>審訂獨有 A19 行中文欄誤入 397 行授記的佛教義殘片，審訂建議為空，屬資料錯位，本表已剔除，建議併回 397 行或刪除。另：訓子十誡（419 行）的 Ten Admonishments 用 admonishment 是對的（十誡本就是告誡），與沙訓／聖訓／鸞訓的情況不同，不可一併改。</p></div>
+  </section>
+
   <!-- ================= SCHEDULE ================= -->
   <section class="block" id="schedule">
     <div class="sec-head"><h2>共讀時間與進度</h2><span class="en">Reading Group</span></div>
@@ -620,7 +631,7 @@ body.sanbao-admin .expl-btns{display:flex}
   </section>
 
   <footer>
-<nav style="margin:10px 0;text-align:center"><a href="#toc">目錄</a> · <a href="#preface">Preface</a> · <a href="#foreword">Foreword</a> · <a href="#significance">求道的殊勝</a> · <a href="#chapter1">壹、什麼是道</a> · <a href="#chapter2">貳、求道的真義</a> · <a href="#chapter3">參、三寶真義與修道</a> · <a href="#chapter4">肆、結語</a> · <a href="appendix4-glossary.html">附錄四</a> · <a href="#schedule">共讀時間與進度</a> · <a href="listening.html">🎧 聽力練習</a></nav>
+<nav style="margin:10px 0;text-align:center"><a href="#toc">目錄</a> · <a href="#preface">Preface</a> · <a href="#foreword">Foreword</a> · <a href="#significance">求道的殊勝</a> · <a href="#chapter1">壹、什麼是道</a> · <a href="#chapter2">貳、求道的真義</a> · <a href="#chapter3">參、三寶真義與修道</a> · <a href="#chapter4">肆、結語</a> · <a href="#appendix4">附錄四</a> · <a href="#schedule">共讀時間與進度</a> · <a href="listening.html">🎧 聽力練習</a></nav>
 
     本站內文照原書重新排版轉錄，未使用掃描圖；英文句照書上文字（含原書寫法），中文大意與五層解釋為學習用 AI 草稿、待老師審定。F-16 為書頁 14 末行截斷句，待核對原書後再補，不臆測補寫。C2-696 為書頁 88 末行截斷句，89 頁首已核對無接續，維持截斷，不臆測補寫。<br>
     《三寶真義與修道》The True Meanings of the Three Treasures and Cultivation of Tao · 英文三寶線上讀書會共讀用。
@@ -3422,6 +3433,51 @@ wireReader('chapter4');
   window.addEventListener('hashchange',function(){
     var k=sectionOfHash();if(k)renderLazySection(k);
   });
+})();
+</script>
+
+<script>
+/* 附錄四對照表：滑到才載入（比照正文懶渲染，主頁初次載入不變重） */
+(function(){
+  var done=false,loading=false;
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function py(p){return p?'<div class="py">'+esc(p)+'</div>':'';}
+  function revCell(r){
+    if(r.st==='一致')return '（與書上一致）';
+    if(r.st==='書上獨有')return '（審訂表無對應；書上原文照錄）';
+    return py(r.rpy)+esc(r.ren)+(r.why?'<div class="why">'+esc(r.why)+'</div>':'');
+  }
+  function build(){
+    if(done)return;
+    var box=document.getElementById('appendix4Tables');if(!box)return;
+    var D=window.APPENDIX4_DATA;
+    if(!D){box.innerHTML='<p>對照表資料載入失敗，請重新整理再試。</p>';return;}
+    done=true;
+    var h='<h3>主表（419 行）</h3><table class="ovtable"><tr><th>序號</th><th>書頁</th><th>中文</th><th>書上原文（拼音＋英文）</th><th>審訂看法（拼音＋英文＋理由）</th><th>狀態</th></tr>';
+    for(var i=0;i<D.main.length;i++){var r=D.main[i];
+      h+='<tr><td>'+esc(String(r.n))+'</td><td>'+esc(String(r.pg))+'</td><td>'+esc(r.zh)+'</td><td>'+py(r.bpy)+esc(r.ben)+'</td><td>'+revCell(r)+'</td><td>'+esc(r.st)+'</td></tr>';}
+    h+='</table><h3>審訂獨有（29 筆，A19 已剔除）</h3><table class="ovtable"><tr><th>序號</th><th>書頁</th><th>中文</th><th>書上原文</th><th>審訂看法</th><th>狀態</th></tr>';
+    for(var j=0;j<D.review.length;j++){var q=D.review[j];
+      h+='<tr><td>'+esc(q.n)+'</td><td>'+esc(q.pg)+'</td><td>'+esc(q.zh)+'</td><td>（書上無此條）</td><td>'+py(q.rpy)+esc(q.ren)+(q.why?'<div class="why">'+esc(q.why)+'</div>':'')+'</td><td>'+esc(q.st)+'</td></tr>';}
+    h+='</table>';
+    box.innerHTML=h;
+  }
+  function load(){
+    if(done||loading)return;
+    if(window.APPENDIX4_DATA){build();return;}
+    loading=true;
+    var s=document.createElement('script');
+    s.src='appendix4-data.js?v=20261031-01';
+    s.onload=function(){loading=false;build();};
+    s.onerror=function(){loading=false;var box=document.getElementById('appendix4Tables');if(box)box.innerHTML='<p>對照表資料載入失敗，請重新整理再試。</p>';};
+    document.head.appendChild(s);
+  }
+  if((location.hash||'')==='#appendix4')load();
+  if('IntersectionObserver' in window){
+    var el=document.getElementById('appendix4');
+    if(el){var io=new IntersectionObserver(function(es){for(var i=0;i<es.length;i++){if(es[i].isIntersecting){load();io.disconnect();}}},{rootMargin:'1000px 0px'});io.observe(el);}
+  }else{load();}
+  window.addEventListener('hashchange',function(){if((location.hash||'')==='#appendix4')load();});
 })();
 </script>
 
