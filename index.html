@@ -104,6 +104,9 @@ section.block{padding:44px 0 6px}
 .toc-row .zh{font-size:14px;color:var(--ink2)}
 .toc-row.part{background:var(--surface2);border-color:var(--line)}
 .toc-row.part .en{font-weight:700}
+.toc-row{cursor:pointer}
+.toc-row:hover{border-color:var(--gold2)}
+.toc-group h3{cursor:pointer}
 @media(max-width:560px){.toc-row{flex-wrap:wrap}.toc-row .pg{flex-basis:auto}}
 
 /* ---------- reader ---------- */
@@ -593,7 +596,7 @@ body.sanbao-admin .expl-btns{display:flex}
 
   <section class="block" id="appendix1">
     <div class="sec-head"><h2>附錄一</h2><span class="en">Appendix 1 · 書頁 179–223 · 已全文轉錄</span></div>
-    <p class="sec-sub">共 302 句（AP1-01 – AP1-302），照書上英文原樣轉錄；內含三節：一、求道後須注意事項（書頁 179 起）、二、叩首修持（210 起）、三、求道功德費意義（220 起）。中文大意是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。書上中文段、註、節標題穿插後續再補。</p>
+    <p class="sec-sub">共 302 句（AP1-01 – AP1-302），照書上英文原樣轉錄；內含三節：一、求道後須注意事項（書頁 179 起）、二、叩首修持（210 起）、三、求道功德費意義（220 起）。中文大意是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。含書上中文段 41 段、註 8、節內小標 47。</p>
     <div class="reader-tools" data-reader="appendix1">
       <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
       <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
@@ -605,11 +608,14 @@ body.sanbao-admin .expl-btns{display:flex}
     </div>
     <div id="appendix1Cards"></div>
     <div class="empty-note" data-empty="appendix1">沒有符合的句子，換個關鍵字試試。</div>
+    <div class="notebox"><h4>註（照書錄入，依書頁列出）</h4><ul><li>書頁 181：16 The Oneness of Tao（一貫道） &quot;Oneness&quot; in Chinese is &quot;一貫 (Yi-Guan)&quot;. The concept of Oneness carries the connotations of Tao&#x27;s consistency and pervading attributes, connecting and unifying all things in the universe and across all different realms of existence. Tao（道） exists in every visible and invisible thing. It is the absolute truth, the primordial conditions of nature. It is the one and only original source of everything and manifested as the laws of nature. In a worldly reference, Tao is the root of all orthodox religions and teachings.</li><li>書頁 192：※「金公祖師」</li><li>書頁 208：17 Heavenly Connections and Dominion (參考附錄的詞彙&quot;不亂系統&quot;):</li><li>書頁 209：The term &quot;Heavenly Connections&quot; means to enable one&#x27;s True Self to take charge (since everyone&#x27;s True Self is part of Heavenly Mater). The &quot;Heavenly Dominion&quot; describes Tao&#x27;s governance of all beings. Disrupting the Heavenly Connections and Dominion occurs when one has deviated from their Innate Nature, the righteous True Tao to other unorthodox practices (e.g. manifesting supernatural abilities, focusing on the body&#x27;s energy flow, pursuing emptiness in mind, mind-reading) in lieu of genuine Tao cultivation and propagation efforts.</li><li>書頁 215：18 Transfer of Merit (功德迴向): Merit transfer is redirecting one&#x27;s own merit from one&#x27;s accumulated good deeds and reflections of good will to benefit sentient being(s). Through a spirit&#x27;s numerous reincarnations, one may have committed countless sinful deeds and incurred immeasurable karmic debts. As per the Universal Laws of Cause and Effect, bad karmas inevitably mature and cause harmful consequences. Such unsettled debts can be the reason for hurdles to appear in our life-events (in health, career and relationships, etc.), including hindrances in one&#x27;s wish to cultivate and propagate the Holy Tao. In saying so, there are ways that we can transfer merits to our karmic creditors to settle our karmic debt. Some common methods to accumulate merit for transferring are the Three Givings: through monetary giving, sharing with others the Truth and participating in fearless and unconditional volunteering giving. Specific examples include: the printing of holy books, chanting of sutra, propagating Tao, performing daily Kneel-and-Bow rituals, helping the elderly and those in need.</li><li>書頁 219：19 State of the Mean（中道）Confucius used the term &#x27;The State of the Mean&#x27; to describe the state of one&#x27;s Innate Nature. It is the original state of everyone&#x27;s spirit, void of any material attachment or desires. All thoughts and actions are not overly exorbitant or purposely suppressed, instead, they naturally manifest from one&#x27;s Innate Nature. This is also the state of utter innocence in infants. When one experiences emotion, one can still do so without swinging from one extreme to another and are able to modulate accordingly. For example: when happiness or joy arises, one can express it modestly; when anger arises, it is brief and moderate, without hatred or prejudice since one uses it with a pure intent; when grief arises, one will not dwell on the low and can use one&#x27;s Innate Wisdom to move forward. Hence, to summarise, the State of the Mean is a state of being where one does not deviate from one&#x27;s Innate Nature for the slightest second. In saying so, it is the most compassionate response to any situation. In fact, Confucius&#x27; Doctrine of Mean elaborates on this core teaching of the State of the Mean.</li><li>書頁 222：20 Final Reckoning and Settlement (大清算) is an assessment process where each individual&#x27;s karmic debts owed to all creditors in the Three Realms will be accounted for in order for all karmic debts to be adequately repaid.</li><li>書頁 222：21 Final Judgment (大對案) is the final reconciliation of one&#x27;s karmic history, which will be conducted by officials in Heaven or Hell to decide the extent of the complete resolution between the spiritual debtor and creditor parties. One&#x27;s accumulated merits determines if one&#x27;s spirit returns safely to the Heaven of Ultimate Truth, or is destroyed if one is unable to return to Heaven of Ultimate Truth.</li></ul></div>
+    <div class="notebox"><h4>節內小標（照書錄入，依書頁列出）</h4><ul><li>書頁 179：一、求道後須注意事項</li><li>書頁 179：（一）莫忘三寶修持</li><li>書頁 179：A. Things to Remember After Receiving the Tao Transmission.</li><li>書頁 179：I. Do Not Forget to Cultivate Via the Three Treasures</li><li>書頁 184：（二）不可洩露天機</li><li>書頁 185：II. Do Not Divulge the Heavenly Secret (the Three Treasures).</li><li>書頁 187：(三) 緊握金線、莫忘三師</li><li>書頁 187：III. Hold Tightly Onto the Golden Path and Never Forget the Three Teachers</li><li>書頁 192：(1) 當代的天命明師「白陽三聖」</li><li>書頁 193：(i) The Heavenly Decreed Enlightened Teachers of the Current Era - The Three Saints of the White Yang Era</li><li>書頁 193：- Jin-Gong Grand Patriarch</li><li>書頁 194：- Venerable Teacher Tian Ran Shi Zun</li><li>書頁 195：- Venerable Teacher Lady Yue Hui Shi Mu</li><li>書頁 196：(2) 代表明師的「點傳師」</li><li>書頁 197：(ii) Tao Transmitting Masters Acting as the Enlightened Teacher&#x27;s Representatives</li><li>書頁 198：As a supporting side note:</li><li>書頁 199：Matthew 28:16-20</li><li>書頁 200：(3) 引保師</li><li>書頁 201：(iii) Introducer and Guarantor</li><li>書頁 204：(4) 天命金線</li><li>書頁 204：(iv) The Heavenly Decreed Golden Path</li><li>書頁 207：Bible Example of Heavenly Decree</li><li>書頁 209：To elaborate on the list,</li><li>書頁 211：二、叩首修持</li><li>書頁 211：（一）叩首的目的與姿勢</li><li>書頁 211：※、濟公活佛老師慈訓</li><li>書頁 211：B. Cultivation Through the Kneel-and-Bowing Ritual</li><li>書頁 211：I. The Purpose of the Kneel-And-Bow Practice and Elaboration of the Kneel-And-Bow Posture.</li><li>書頁 211：Merciful Holy Message from Ji-Gong Living Buddha:</li><li>書頁 213：（二）叩首可使心念清淨</li><li>書頁 213：a) 濟公活佛老師慈訓</li><li>書頁 213：II. The Kneel-and-Bow Rituals Facilitate the Manifestation of Purity and Tranquility In Our Mind</li><li>書頁 213：a) Holy Message from Ji-Gong Living Buddha:</li><li>書頁 214：b) 三官大帝慈悲訓</li><li>書頁 214：b) Holy Message From the Three Governing Lords:</li><li>書頁 215：(三) 叩首可以迴向與感應顯化</li><li>書頁 215：※、濟公活佛老師慈訓</li><li>書頁 215：III. Kneel-And-Bowing Rituals Can Be Used to Transfer Merits¹⁸ (Sanskrit: Parināmānā), Build Connection With and Receive Revelations From Heaven and Spiritual Beings.</li><li>書頁 216：Holy Message From Ji-Gong Living Buddha:</li><li>書頁 218：※南海古佛慈悲訓</li><li>書頁 218：Holy Message From Nan-Hai Ancient Buddha:</li><li>書頁 220：三、求道功德費意義</li><li>書頁 220：（一）關聖帝君降壇慈諭：</li><li>書頁 220：C. An Explanation of The Token of Merit as Part of The Tao Transmission Ceremony</li><li>書頁 220：I. Judicial Master Guan&#x27;s Holy Message:</li><li>書頁 221：（二）求道者當天所了愿的財施，稱為功德費。</li><li>書頁 221：II.The Monetary Giving On the Day of the Tao Transmission Ceremony is Called The Token of Merit.</li></ul></div>
+    <div class="notebox"><h4>待核對（照書原樣收錄，請老師翻書確認）</h4><ul><li>書頁 192：中文段「姓路名上中下一」：放大圖核實書上原樣確為「上中下一」四字（非常規姓名寫法，疑為排版標記殘留），已照原樣錄入，未擅改為「中一」，請協調員／Cheng 裁示是否保留原樣。【2026-10-29 Cheng 裁示：保留原樣；「上」「下」是對長輩或受尊敬者名字的尊敬寫法。】</li><li>書頁 189：英文 D-14「on an oxen」兩處：文法上應為 ox，但書上兩處皆確為 oxen，已照原樣錄入，未「改正」。</li><li>書頁 191：英文 D-28「numerous shackles」之間書上為雙倍空格，屬排版間距，已歸一為單空格，文字本身無疑。</li><li>書頁 192：中文段「成道後 上天老母」之間書上有較寬空隙、無標點，已照原樣以一空格錄入，未補逗號。</li><li>書頁 196：E-17 句中人名書上清晰印為 Hue-Yui（裁切放大核實），與同頁他處及全組他處的 Yue-Hui 拼法不一致；已照書上原樣錄入 Hue-Yui，未擅改，是否為書上誤植請協調員／Cheng 裁示。【2026-10-29 Cheng 裁示：書上誤植，AP1-122 已改為 Yue-Hui（同頁他處及全卷他處皆為 Yue-Hui）；書上原印 Hue-Yui 備查。】</li><li>書頁 220：（一）關聖帝君降壇慈諭行末標點：放大圖上僅見一點狀痕跡，無法確辨為冒號或頓點，暫按全頁原貌記為「：」，請協調員／上一組以高清原圖複核此一標點。</li></ul></div>
   </section>
 
   <section class="block" id="appendix2">
     <div class="sec-head"><h2>附錄二</h2><span class="en">Appendix 2 · 道之宗旨 · 書頁 224–228 · 已全文轉錄</span></div>
-    <p class="sec-sub">共 28 句（AP2-01 – AP2-28），道之宗旨全文，照書上英文原樣轉錄；中文大意是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。書上中文段、註、節標題穿插後續再補。</p>
+    <p class="sec-sub">共 28 句（AP2-01 – AP2-28），道之宗旨全文，照書上英文原樣轉錄；中文大意是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。含書上中文段 6 段、註 2、節內小標 4。</p>
     <div class="reader-tools" data-reader="appendix2">
       <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
       <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
@@ -621,11 +627,14 @@ body.sanbao-admin .expl-btns{display:flex}
     </div>
     <div id="appendix2Cards"></div>
     <div class="empty-note" data-empty="appendix2">沒有符合的句子，換個關鍵字試試。</div>
+    <div class="notebox"><h4>註（照書錄入，依書頁列出）</h4><ul><li>書頁 225：22 There are two aspects of the phrase &#x27;Heaven and Earth&#x27;.<br>1. The visible aspects of Heaven and Earth: skies and atmosphere, sun and moon, and everything on its landscape, which one shall respect and show gratitude for characteristics as listed below.<br>-- the sun&#x27;s abundant supply of light and energy source<br>-- the skies and atmosphere&#x27;s protection against harmful cosmic radiations, comets and asteroids (as much as possible), as well as its ability to trap and collect water vapour which then precipitates to rejuvenate the land and provide fresh water supply.<br>-- the land for its provision of a solid ground for living beings to dwell on and to harvest off, as well as providing a reservoir of fresh water supply from rivers and lakes (above and underground) and also a deposit of minerals, metals, oils, etc.<br>-- the Earth&#x27;s magnetic field (arising from its moving molten iron core) to provide shielding from the high energy particles such as solar wind.<br>2. The invisible aspects of Heaven and Earth: the Creator as in the Heavenly Mater, and the Buddhas, Saints, prophets, etc. that Heaven has sent in the rescue of all sentient beings.</li><li>書頁 226–227：23 The Four Moral Pillars (Si Wei, 四維) are:<br>● Propriety - 禮 (li)<br>● Righteousness - 義 (yi)<br>● Integrity - 廉 (lian)<br>● Shame - 恥 (chi)<br>Three Exemplary Relationships in a harmonious society (San Gang, 三綱) are:<br>1. Traditionally, the ruler must be righteous and respectful towards his subjects while subjects should be loyal towards the ruler. In modern times, these attributes also apply between employers and employees.<br>2. Parents must demonstrate love and responsibility for their children by providing a structured upbringing to ensure the children become a useful member of society. The children must in turn demonstrate filial piety towards parents.<br>3. In a marital relationship, husbands and wives have distinct roles hence evoking mutual respect. Traditionally, the husband has a leadership, provider role within the family, leading a harmonious family. In modern times, both husband and wife share roles within the family for a complete harmonious family.<br>The Five Innate Virtues (Wu Chang, 五常) are:<br>• Benevolence - 仁 (ren)<br>• Righteousness - 義 (yi)<br>• Propriety - 禮 (li)<br>• Wisdom - 智 (zhi)<br>• Honesty and Trustworthiness - 信 (xin)</li></ul></div>
+    <div class="notebox"><h4>節內小標（照書錄入，依書頁列出）</h4><ul><li>書頁 224：The Tenets of Tao 道之宗旨</li><li>書頁 224：前言</li><li>書頁 224：Introduction</li><li>書頁 225：Content</li></ul></div>
+    <div class="notebox"><h4>待核對（照書原樣收錄，請老師翻書確認）</h4><ul><li>書頁 224：頁界：224頁以「附錄二／Appendix 2」開篇，非223頁句之續行，故223→224無接合句；附錄二自224頁第一個完整句（Introduction首句）起算，本組未另立223頁殘段卡。</li><li>書頁 225：頁頂被照片上方金屬物遮擋，僅見殘片「...ultivation of Tao」，無法完整錄出書名眉題，故未列入 headers；左緣露出鄰頁（224頁）殘字，屬鄰頁內容而非225頁正文，已排除。</li><li>書頁 225：全頁淡色反向字跡為紙薄背面透字，依鐵律排除，未錄入正文。</li><li>書頁 226：全頁淡色反向字跡為紙薄背面透字，依鐵律排除，未錄入正文；註23第1項末句在頁末截斷（見crossPage 226→227），本組未補寫。</li><li>書頁 226：字形疑讀：無。226頁Content後三行經放大圖核實，行末確無標點（Be trustworthy and exemplify honesty within friendship／Live harmoniously with neighbours／Atone for one&#x27;s sins and act out of kindness and compassion 皆無逗號或句號），與225頁及226頁前兩行行末逗號不同，照原樣錄入，未統一加標點。</li></ul></div>
   </section>
 
   <section class="block" id="appendix3">
     <div class="sec-head"><h2>附錄三</h2><span class="en">Appendix 3 · 禮運大同篇 · 書頁 229–230 · 已全文轉錄</span></div>
-    <p class="sec-sub">共 13 句（AP3-01 – AP3-13），禮運大同篇全文，照書上英文原樣轉錄；中文大意是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。書上中文段、註、節標題穿插後續再補。</p>
+    <p class="sec-sub">共 13 句（AP3-01 – AP3-13），禮運大同篇全文，照書上英文原樣轉錄；中文大意是學習用 AI 草稿，待老師審定，不宣稱是書上逐句對譯。含書上中文段 4 段、節內小標 1。</p>
     <div class="reader-tools" data-reader="appendix3">
       <label class="sel-row"><input type="checkbox" data-act="selectall"> 全選 <span class="sel-count"></span></label>
       <button class="toolbtn" data-act="playselected">▶ 播放勾選</button>
@@ -637,6 +646,8 @@ body.sanbao-admin .expl-btns{display:flex}
     </div>
     <div id="appendix3Cards"></div>
     <div class="empty-note" data-empty="appendix3">沒有符合的句子，換個關鍵字試試。</div>
+    <div class="notebox"><h4>節內小標（照書錄入，依書頁列出）</h4><ul><li>書頁 229：The Chapter of Propriety and Rites Towards Great Harmony and Unity 禮運大同篇</li></ul></div>
+    <div class="notebox"><h4>待核對（照書原樣收錄，請老師翻書確認）</h4><ul><li>書頁 229：229頁頂眉被照片上方金屬物遮擋，僅見殘片「...nings of the」與「...Cultivation of Tao」，無法完整錄出，故未列入 headers，待協調員裁定是否補書名眉題。</li><li>書頁 229：229頁照片左緣露出鄰頁（228頁）殘字「Xin Wei Liang」「same,」「e same,」，屬鄰頁內容而非229頁正文，已排除；229頁本身以「附錄三」開篇，故228→229頁界無接合句。</li><li>書頁 230：230頁中下部淡色反向字跡為紙薄背面透字（229頁中英文反印），依鐵律排除，未錄入正文。</li></ul></div>
   </section>
 
   <!-- ================= APPENDIX 4 ================= -->
@@ -663,9 +674,9 @@ body.sanbao-admin .expl-btns{display:flex}
           <li><span class="dot"></span><span>貳、求道的真義 書頁 54–88<b> 已全文轉錄</b><small>C2-01 – C2-696 句子卡已上線，含中文段 15 段、註 13、書頁 85 註、71 頁圖註記、72 頁冠頂訓；C2-696 末句在書頁 88 截斷，89 頁首已核對無接續</small></span></li>
           <li><span class="dot"></span><span>參、三寶真義與修道 書頁 89–158<b> 已全文轉錄</b><small>C3-01 – C3-245 句子卡已上線，含中文段 42 段、註 2（93 頁、135 頁註 15）、節內小標與照片註記；C2-696 在 89 頁首已核對無接續，維持截斷</small></span></li>
           <li><span class="dot"></span><span>肆、結語 書頁 159–178<b> 已全文轉錄</b><small>C4-01 – C4-123 句子卡已上線，含中文段 16 段、註 2（169 頁太極圖、170 頁佛名年數表）、節內小標；第四章至此結束，附錄一自 179 頁起</small></span></li>
-          <li><span class="dot"></span><span>附錄一 書頁 179–223<b> 已全文轉錄</b><small>AP1-01 – AP1-302 句子卡已上線，中文大意為 AI 草稿待審定；書上中文段、註、節標題穿插後續再補</small></span></li>
-          <li><span class="dot"></span><span>附錄二 書頁 224–228<b> 已全文轉錄</b><small>AP2-01 – AP2-28 句子卡已上線（道之宗旨），中文大意為 AI 草稿待審定；書上中文段、註、節標題穿插後續再補</small></span></li>
-          <li><span class="dot"></span><span>附錄三 書頁 229–230<b> 已全文轉錄</b><small>AP3-01 – AP3-13 句子卡已上線（禮運大同篇），中文大意為 AI 草稿待審定；書上中文段、註、節標題穿插後續再補</small></span></li>
+          <li><span class="dot"></span><span>附錄一 書頁 179–223<b> 已全文轉錄</b><small>AP1-01 – AP1-302 句子卡已上線，中文大意為 AI 草稿待審定；含書上中文段 41 段、註 8、節內小標 47</small></span></li>
+          <li><span class="dot"></span><span>附錄二 書頁 224–228<b> 已全文轉錄</b><small>AP2-01 – AP2-28 句子卡已上線（道之宗旨），中文大意為 AI 草稿待審定；含書上中文段 6 段、註 2、節內小標 4</small></span></li>
+          <li><span class="dot"></span><span>附錄三 書頁 229–230<b> 已全文轉錄</b><small>AP3-01 – AP3-13 句子卡已上線（禮運大同篇），中文大意為 AI 草稿待審定；含書上中文段 4 段、節內小標 1</small></span></li>
           <li><span class="dot"></span><span>附錄四 書頁 231–255<b> 已全文轉錄</b><small>書末對照表（主表 419 行＋審訂獨有 29 行）已併入主頁附錄四節</small></span></li>
         </ul>
       </div>
@@ -745,6 +756,34 @@ var TOC_GROUPS=[
  ]}
 ];
 var STATUS_TXT={done:"已全文轉錄",overview:"已有總覽",wait:"待拍攝"};
+function pageToSection(pg){
+  if(pg<12)return 'preface';
+  if(pg<15)return 'foreword';
+  if(pg<28)return 'signif';
+  if(pg<54)return 'chapter1';
+  if(pg<89)return 'chapter2';
+  if(pg<159)return 'chapter3';
+  if(pg<179)return 'chapter4';
+  if(pg<224)return 'appendix1';
+  if(pg<229)return 'appendix2';
+  if(pg<231)return 'appendix3';
+  return 'appendix4';
+}
+/* 目錄點選跳轉（2026-10-31）：章節列跳到該節頂；標題列跳到該頁第一張句子卡（節未渲染先渲染再跳；附錄四無句子卡，跳到該節頂）。 */
+function tocJump(sec,pg){
+  if(sec==='appendix4'){location.hash='appendix4';return;}
+  var e=SANBAO_LAZY[sec];if(!e)return;
+  if(!e.rendered)renderLazySection(sec);
+  var host=document.getElementById(e.hostId);if(!host)return;
+  var cards=host.querySelectorAll('.card');
+  var idx=-1;
+  for(var i=0;i<e.list.length;i++){
+    var start=parseInt(String(e.list[i].pg).split('\u2013')[0].split('-')[0],10);
+    if(start===pg){idx=i;break;}
+  }
+  if(idx>=0&&cards[idx]){cards[idx].scrollIntoView();}
+  else{var el=document.getElementById(e.sectionElId);if(el)el.scrollIntoView();}
+}
 function renderTOC(filter){
   var host=document.getElementById('tocList');host.innerHTML='';
   TOC_GROUPS.forEach(function(g){
@@ -756,12 +795,14 @@ function renderTOC(filter){
         h.innerHTML='';h.textContent=g.en;
         var s=document.createElement('span');s.className='pg';s.textContent=g.zh+' · 書頁 '+g.page;
         h.appendChild(s);div.appendChild(h);
+        h.style.cursor='pointer';h.title='點此跳到該節';h.addEventListener('click',function(){location.hash=pageToSection(g.page);});
         var pr=document.createElement('div');pr.className='toc-row part';
         pr.innerHTML='<span class="pg">'+g.page+'</span><span class="tt"><span class="en"></span> <span class="zh"></span></span>';
         pr.querySelector('.en').textContent=g.en;pr.querySelector('.zh').textContent=g.zh;
         var allDone=g.items.every(function(it){return it[3]==='done';});
         var t=document.createElement('span');t.className='tag '+(allDone?'done':'wait');t.textContent=STATUS_TXT[allDone?'done':'wait'];pr.appendChild(t);
         div.appendChild(pr);
+        pr.style.cursor='pointer';pr.title='點此跳到該節';pr.addEventListener('click',function(){location.hash=pageToSection(g.page);});
       }
     }
     g.items.forEach(function(it){
@@ -774,6 +815,7 @@ function renderTOC(filter){
       if(it[2]){tt.appendChild(document.createElement('br'));var zh=document.createElement('span');zh.className='zh';zh.textContent=it[2];tt.appendChild(zh);}
       var tag=document.createElement('span');tag.className='tag '+it[3];tag.textContent=STATUS_TXT[it[3]];
       r.appendChild(pg);r.appendChild(tt);r.appendChild(tag);div.appendChild(r);
+      r.style.cursor='pointer';r.title='點此跳到該頁第一張句子卡';r.addEventListener('click',function(){tocJump(pageToSection(it[0]),it[0]);});
     });
     if(div.children.length)host.appendChild(div);
   });
@@ -3804,6 +3846,90 @@ queueCards(APPENDIX3,'appendix3Cards',function(s){return '書頁 '+s.pg;},'appen
 wireReader('appendix1');
 wireReader('appendix2');
 wireReader('appendix3');
+(SANBAO_POST['appendix1']=(SANBAO_POST['appendix1']||[])).push(function(){
+  var host=document.getElementById('appendix1Cards');
+  var cards=host.querySelectorAll('.card');
+  function zhpara(title,paras,beforeCard){
+    var d=document.createElement('div');d.className='zhpara';
+    var h=document.createElement('h4');h.textContent=title;d.appendChild(h);
+    paras.forEach(function(t){var p=document.createElement("p");p.textContent=t;d.appendChild(p);});
+    host.insertBefore(d,beforeCard);
+  }
+  zhpara("書上中文段（書頁 179）",["白陽三寶是廣被三曹上中下根器眾生，是諸法之王，是諸佛亘古不輕傳的密寶，是正法眼藏，是究竟解脫的無上乘法。要常持常應，常應常靜，常清靜；不假半步直入理天的正路，二六常守、常護念，使念念皆從自性中出，萬念歸於一念，一念不生，則久久自然功純，流露清淨慈悲心而渡己渡人。"],cards[0]);
+  zhpara("書上中文段（書頁 180）",["「三寶修持」是末法修士最簡單、最敏捷的頓悟法門，從念頭輕提於「自性」中，制心於一處，於一切時一切處念念不離戌己土。從守玄到守而不守，從默念「五字真言」到念無念念；從自性中淨化人心而與聖佛同，而與天心同。內外一貫，言行一貫，自性佛性一貫，平時與造次一貫，動靜一貫，自然天人一貫，而流露出鴻慈悲願；而積極自動的參與學修辦道，代天宣化，普渡眾生矣。"],cards[5]);
+  zhpara("書上中文段（書頁 182）",["學佛基礎「戒、定、慧」三學，修此三學，可以斷除煩惱疑惑，超凡入聖。佛家談修道，啟於修學八正道，攝受於戒、定、慧三學。戒者，包括正語、正業、正命和正精進。定者，包括正念和正定。慧者，則包括正見和正思惟。"],cards[16]);
+  zhpara("書上中文段（書頁 183）",["戒，是止惡修善，依戒生定；即道場之謹守佛規、尊師重道、認理實修之修持。定，是息緣靜慮，依定發慧；即常持三寶修持，使不起執著、煩惱、妄念，制心於一處，自然由此處所發出的心念，念念皆真，念念皆是正念、真念；沒有邪念、妄念、雜念等。慧，是破惑證真，依慧成佛；能制心一處，自心自然能定靜，而產生妙智慧。此三學與三寶，為學修辦道的基礎也。故平時常修持三寶，久久自然心平氣和，收束毛病、脾氣、習染，又真修實煉的腳踏實地修辦道，渡己渡人，則立愿了愿，愿了還鄉歸位矣。"],cards[23]);
+  zhpara("書上中文段（書頁 184）",["詩曰：「天機不是不可洩，唯有明師方傳人。」白陽三寶，乃非時不降，非人不傳，亙古不輕傳的無上乘秘法。求道後理當謹守佛規、尊師重道，誠心抱守、實心懺悔修煉；不可以任何文字或方式記寫、傳說而洩露予他人，此為「不可洩露天機」。"],cards[30]);
+  zhpara("書上中文段（書頁 185）",["所謂「自性自渡，佛不可渡」、「師父引進門，修行在個人」；道是渡有緣，有緣者自然得之。再說現今科學文明、資訊發達，縱使循其他途徑而得知三寶者，也只是一般知識而已；如果沒有大德天命明師的親授指傳，任何誰也無此大能量可以打開這妙竅，更不用說得以超生了死！但是若是自己不遵守佛規而洩露天機，那自然自己是要擔過的。因此，求道過的人，若是忘記了三寶，理當返回佛堂，點燃佛燈，叩求上天開恩、仙佛慈悲護法，即可複習三寶。"],cards[38]);
+  zhpara("書上中文段（書頁 187）",["在《四十二章經》佛說人生得道有四難：「人身難得，中華難生；三期難遇，真道難逢。」又詩曰：「萬劫千生得個人，須知前世種來因；此身不向今生渡，更待何時渡此身。」現今末法適逢白陽三期，上天慈憫降道普渡三曹眾生，故當今能求得大道者，四難已成四易。只因天時應運，明師降世，大道普傳，此為天恩師德浩大。"],cards[54]);
+  zhpara("書上中文段（書頁 187）",["（1999年，發一崇德新加坡道場到印度開荒所舉辦的第一場法會中，老師慈悲說：「什麼叫中華難生？中是至中至正，華是最精華，所以最至中至正、最精華的地方，那是什麼地方啊？就是有道可求的地方。」）"],cards[54]);
+  zhpara("書上中文段（書頁 188）",["自古修道者，無不是拋家捨業、出家苦修苦行，歷經千魔萬考，為的就是「千里訪明師，萬里求口訣」；想求得超生了死的大道，還未必能如願。所謂：「有緣逢遇佛出世，無緣遇著佛涅槃」、「修道者如牛毛，成道者如牛角」；說的就是真道難遇、明師難逢啊！"],cards[59]);
+  zhpara("書上中文段（書頁 189）",["現今末法大道普傳，乃上天慈憫垂降金線大道，彌勒祖師鴻慈，師尊、師母的無量悲願，以及諸天仙佛萬仙菩薩的打幫助道，還有大德的老前人、前人們的犧牲奉獻，及點傳師、引保師苦口婆心的慈悲渡化成全，救我靈性超脫六道輪迴。須知此恩此德浩大，殺身亦難報於萬一。"],cards[68]);
+  zhpara("書上中文段（書頁 190）",["因此，求道後，要心存感恩而誠敬主動積極的參與學修辦道行列，緊握一條金線，立愿了愿，行功立德，以報答天恩師德於萬一。所以，修辦道千萬不能欺師滅祖、藐視前人，更要謹守佛規、尊師重道，時刻不忘「三師」救我性命脫出生死苦海之恩德。試想若無「三師」救渡，我們又何德何能求得至尊至貴的大道，又豈能衝破重重的枷鎖，頓見真如本來而直超入理，永證品蓮。"],cards[74]);
+  zhpara("書上中文段（書頁 191）",["所謂「三師」，有「上三師」與「下三師」。「上三師」是指「白陽三聖」，即當代的三位天命明師：金公祖師、天然師尊、月慧師母。「下三師」是指代表天命明師的點傳師，以及渡化我們求道的引師、保師。"],cards[82]);
+  zhpara("書上中文段（書頁 192）",["乃彌勒古佛化身，清朝道光廿九年（西元一八四九年），陰曆四月廿四日誕生於中國山東省濟寧縣。姓路名上中下一，是後東方第十七代祖師；又稱為白陽初祖，成道後 上天老母敕封為「金公祖師」。"],cards[91]);
+  zhpara("書上中文段（書頁 192）",["現今時運已至末法，彌勒祖師應運掌天盤，開啟道降火宅、儒教應運的白陽期三曹普渡收圓的一大事因緣。是末法眾生的大導師、大歸依處、救世主，是繼承釋迦牟尼佛正法聖業的應運佛。以其宏慈悲願「化娑婆世界為蓮花邦」，實踐「世界大同」。留有《金公妙典》、《彌勒救苦真經》等傳世。"],cards[91]);
+  zhpara("書上中文段（書頁 194）",["※「天然師尊」為「弓長祖師」，乃濟公活佛化身，清朝光緒十五年（西元一八八九年）陰曆七月十九日誕生於中國山東濟寧縣。姓張名上奎下生，字上光下璧。是後東方第十八代祖師；又稱為白陽二祖，成道後 上天老母敕封為「天然古佛」。"],cards[105]);
+  zhpara("書上中文段（書頁 194）",["師尊大德悲愿於民國十九年（西元一九三〇年），奉天承運與師母同領天命，掌白陽道盤，幫助彌勒祖師辦理末後一著三曹普渡收圓大事。"],cards[105]);
+  zhpara("書上中文段（書頁 195）",["※「月慧師母」為「子系祖師」，乃月慧菩薩化身，清朝光緒廿一年（西元一八九五年），陰曆八月廿八日誕生於中國山東單縣。姓孫名上素下真，字上明下善，道號上慧下明。亦是後東方第十八代祖師；又稱為白陽二祖，成道後 上天老母敕封為「中華聖母」。"],cards[113]);
+  zhpara("書上中文段（書頁 195）",["師母大德悲愿於民國十九年（西元一九三〇年），奉天承運與師尊同領天命，掌白陽道盤，幫助彌勒祖師辦理末後一著三曹普渡收圓大事。師尊於民國三十六年殯天後，師母以其宏慈悲愿，一肩擔起末後一著重任；乃天意之日月換肩，也是坤道輩同修蒙沾天恩與師母大德，而得以運轉坤乾之機運。"],cards[113]);
+  zhpara("書上中文段（書頁 196）",["在《暫訂佛規》中師尊慈悲：「凡替老師點傳道法者，皆稱為點傳師」。故「點傳師」乃同修中大德者身擔天命，負有「借火傳法，代師收徒」之點道與傳授「性理真傳」的使命。點傳師，替師尊、師母分憂代勞的「代理明師」，又稱為「傳道師」。濟公活佛老師慈悲：「點傳師所點的道，所傳授的性理心法，都是與為師一樣，沒有不同。」"],cards[120]);
+  zhpara("書上中文段（書頁 199）",["「點傳師」都是道場同修中道高德重，肯為大道犧牲奉獻之大德者；《中庸》云：「大德者必受命」。自古道在師傳，點傳師身擔天命代理活佛老師點傳授予真法，犧牲奉獻替師分憂代勞；自當人人尊敬並配合修辦道。做到尊師重道、謹守佛規、承上啟下、聽師調遣，認理實修而不是認人修，否則易落入修「人情道」，就有缺欠矣。"],cards[140]);
+  zhpara("書上中文段（書頁 200）",["所謂「引師」，就是渡化帶引我們到佛堂求道者。求道時，「引保師」，同時跪在佛前用性命為我們立愿擔保，「引師」除了保證求道人是家世清白、品行端正外；更與「保師」共同擔保我們所求的大道，是道真、理真、天命真，是「性理真傳」，可以究竟成佛的無上乘法。而不是邪魔外道，也不是入一般宗教信仰或拜拜，更不是騙人錢財，或加入什麼人事團體等等。換言之，我們之所以在佛前立愿求得寶貴的大道，首先乃沾天恩師德，以及憑藉著引保師在的佛前立愿以性命擔保；否則即使手托黃金萬兩，點傳師也不會把道傳給我們。"],cards[148]);
+  zhpara("書上中文段（書頁 202）",["須知求道者與引保師的關係是佛緣深厚，不只是今生有緣，更是多生累劫所結的善因緣，所以引保師才會擔任這份使命搭起眾生與上天的橋樑。引保師可謂是天使，是上天福音的傳播者，是求道者的貴人，才會無怨無悔苦口婆心的勸化引渡我們求道，讓我們靈性受明師點化而得以超生了死。此恩此德又豈是用言語或任何文字可以表達，或一個「感恩謝謝」就足以帶過。所以這分佛緣，是源於自己前世有修、家世清白及祖上有德，以及引保師的發菩提心與愿立之外，最重要的還有天恩師德護庇；即上天降道之恩，祖師鴻慈悲愿，師尊、師母的大德悲愿無量。"],cards[160]);
+  zhpara("書上中文段（書頁 203）",["因此我們求道後，理當感謝天恩師德，及引保師擔保引渡之恩不可忘。要緊握一條金線，誠心抱守，實心懺悔修煉，效法引保師的修辦道精神，也能發揮慈悲心去廣渡有緣者求道。"],cards[166]);
+  zhpara("書上中文段（書頁 204）",["上天於末法垂降金線大道，乃為救渡三曹眾生回天歸位，按功定果，重整天盤，是眾生究竟解脫回理天的一條光明正路。這是白陽三期才有的三曹普渡收圓，要緊握金線，以感恩的心珍惜有限的學修辦道時間，要懂得飲水思源。"],cards[172]);
+  zhpara("書上中文段（書頁 204）",["金線有兩種，一條(無形的)屬先天，一條(有形的)屬後天。先天的天命金線，自然是人人具足的天心、自性，可以以心印心，與天相通的佛心，它在聖不增、在凡不減。至於後天的人事金線，那是由於我們與引保師、點傳師、前賢之間宿世有佛緣，而在這三期末劫年大開普渡之時，因緣再聚會，彼此再相遇，才有這一個修辦的善因緣。因此，有形天命金線的連繫是指：「彌勒祖師→師尊、師母→點傳師→引保師→求道者」。"],cards[172]);
+  zhpara("書上中文段（書頁 206）",["所謂「金線」的斷或連繫，不是在有形的跟某人修辦道；而是視修辦道者，是否道心堅定的誠敬修辦道，為道無為的付出、犧牲奉獻，始終如一，立愿了愿。故道相連，才是金線。道在心，金線連。道離心，金線斷。雖道真、理真、天命真，但如修道、行道、了道等，一切不能腳踏實地，實行做到，即使與明師同在，也非金線。"],cards[182]);
+  zhpara("書上中文段（書頁 208）",["《使徒行傳 8:18~24》18 西門看見使徒按手，便有聖靈賜下，就拿錢給使徒，19 說：把這權柄也給我，叫我手按著誰，誰就可以受聖靈。20 彼得說：你的銀子和你一同滅亡罷！因你想神的恩賜是可以用錢買的。21 你在這道上無分無關；因為在神面前，你的心不正。22 你當懊悔你這罪惡，祈求主，或者你心裡的意念可得赦免。23 我看出你正在苦膽之中，被罪惡捆綁。24 西門說：願你們為我求主，叫你們所說的，沒有一樣臨到我身上。"],cards[200]);
+  zhpara("書上中文段（書頁 208）",["故修辦道人若無明，亂道盤、亂接線、亂拜師，紊亂系統而欺師滅祖者；亦或執著形象，修顯化道，修人情道，不謹守佛規，不尊師不重道者；可謂是「自斷天命金線」矣。若亡失而自斷天命金線，性命恐將難保全；自己墮落輪迴事小，牽連自己的九玄七祖也同遭沉淪受苦，乃非同小可之事，豈可不明辨慎思焉！"],cards[200]);
+  zhpara("書上中文段（書頁 210）",["總之，天道自古以來，師師相承，無令斷絕。有道者得，無心者通。即使得到明師開竅者，要去卻內心之妄想，行上天所秉受之天性，利益眾生，代天宣化，則金線相連。亦即得道、修道、行道、了道，能一貫相連，體係不亂；心真則一切真，統統真，就是金線。"],cards[208]);
+  zhpara("書上中文段（書頁 211）",["磕頭心要誠，要迴光返照；筋脈拉直，頭部放鬆，手和頭一起動，力由腳來支撐。「叩首」不是「叩手」。磕頭的動作，有發有收，頭尾動作一貫，這是一貫之道的精神。"],cards[215]);
+  zhpara("書上中文段（書頁 212）",["叩首的目的，在於養成恭敬謙和的心；而且叩首的姿勢正確，可打通經脈，有益於身體健康。……叩首、跪拜，是拜什麼？是拜你的自性。（人一叩即是命，也就是叩自己的命。）"],cards[220]);
+  zhpara("書上中文段（書頁 213）",["叩首就好像在天門一樣，當時沒有欲念，只有一顆和老母相近的心。獻香時間就是給你們清靜一下自己的心，反省一下自己的所做所為。早晚獻香不是給仙佛獻獻香而已，而是讓自己好好反省反省。磕頭燒香，要的是一顆真心；所以磕頭要至誠，不要隨便，要一叩一叩慢慢的磕，不要像趕火車般的快。"],cards[227]);
+  zhpara("書上中文段（書頁 214）",["修子每日抱合同叩首禮佛，若能心持赤誠，天真顯露，五百叩、一千叩、或二千叩、三千叩之時，皆能萬緣放下，雜念不興，全神貫注於叩首。如此功夫若能始終不斷，不但燒香叩首之時，能心無雜念，即使是在日常生活之中，心亦能清淨無妄；久久功純，叩而無叩，常清常靜，不再受妄念牽纏，則亦自然不被生死輪迴所苦。"],cards[233]);
+  zhpara("書上中文段（書頁 215）",["這個肉體如果沒有水可以洗，是很髒的。所以我們天天為眾生祈福，早晚獻香叩完一百叩首，要不要加叩是看你們。可是希望你們都能夠加叩一千叩首，好不好？（好）你每天一千叩首的迴向，眾生好安慰啊！你的冤欠不敢來找你啊！你天天為人家祈福，天天為人家擦腳、換尿布，他還恨你嗎？（不會）是啊！你對人家好，人家就對你好，那我們快樂嗎？（快樂）"],cards[240]);
+  zhpara("書上中文段（書頁 216）",["講到顯化、感應，你們有沒有顯化，有沒有感應？（有）每一個人的因緣不一樣，所以遇到的事情也不一樣。有的人求供茶、求供果，特別靈驗；有的人誦彌勒真經，特別有效。小孩子哇哇大哭，彌勒真經一誦，他就停了！你們有沒有那種功力？"],cards[240]);
+  zhpara("書上中文段（書頁 217）",["有些人供茶也喝了，供果也請了，彌勒真經也唸了好幾遍，可是效果怎麼樣？好像看不太出來！這個差別在那裡？看我們的心有沒有誠，心念夠不夠清靜？我們要去成全人的時候，就跟老母磕頭。若家裡沒有佛堂，沒有關條，找個乾淨的地方向著上天磕一百叩首，很簡單！聽懂話嗎？"],cards[251]);
+  zhpara("書上中文段（書頁 218）",["在叩首禮拜時，可以引發全身的核子反應，核子反應器就在你的玄關處。所以叩首時：意念清靜，心神集中，散發菩提心，無人我對待分別，掃除妄想，刪除不潔念頭，久久功純。配合行功立德，必定身心健全，久依玄關核子反應修持，可煉得光能顯現。在叩首當中，守住玄關一竅，認本歸宗，萬法歸一，心無旁騖；斷除七情六慾，一切歸於中道。抱起合同，做十方圓滿，無有分別對待，如此陰陽磁場，皆無法束縛於你。"],cards[262]);
+  zhpara("書上中文段（書頁 220）",["驗其信道真與偽，代印善書與救濟，甚可消冤及解業，一生一次功德費，絕無規定錢數目，肆佰伍佰不嫌少，伍仟壹萬不算多，自發意願真心獻，表文昇天天記全。"],cards[276]);
+  zhpara("書上中文段（書頁 221）",["既然叫做功德費，就是在幫求道者作功德，不同一般寺廟香油錢；既非佛堂雜支用，亦非辦事服務費。如關法律主慈悲說：「代印善書與救濟，甚可消冤及解業。」故說「真功德可以消業障」。"],cards[283]);
+  zhpara("書上中文段（書頁 221）",["因此，求道要繳交功德費的意義深遠。簡言之，皆因大道至尊至貴，古來求道者都是歷經千魔萬考，考其心志是否真心？驗其道心是否堅定？且行善積德滿三千功八百果者，始有機會求得大道。雖說現今上天開恩，大赦三曹、大開普渡三曹；但此時正值末劫年，劫難頻降，是業力加速討報的三曹大清算、大對案之末法，我們無功無德又如何承受得起劫難與考驗。"],cards[283]);
+  zhpara("書上中文段（書頁 223）",["關法律主慈喻，求道時酌收功德費，乃表示求道者對道的誠心，也是替自己靈性所做的第一件真正的功德。所謂「未求道修道，即先行功立德」；這也是上天的用意，要藉此考驗求道者對道的誠心與信心，有了誠心與信心才能有所得、有所成就。況且呈奏上天的「龍天表文」，也記載了求道者發心的詳細功德費數目，大家可以放心。"],cards[297]);
+});
+
+(SANBAO_POST['appendix2']=(SANBAO_POST['appendix2']||[])).push(function(){
+  var host=document.getElementById('appendix2Cards');
+  var cards=host.querySelectorAll('.card');
+  function zhpara(title,paras,beforeCard){
+    var d=document.createElement('div');d.className='zhpara';
+    var h=document.createElement('h4');h.textContent=title;d.appendChild(h);
+    paras.forEach(function(t){var p=document.createElement("p");p.textContent=t;d.appendChild(p);});
+    host.insertBefore(d,beforeCard);
+  }
+  zhpara("書上中文段（書頁 224）",["道的宗旨，是師尊所慈悲，在闡述白陽弟子修天道的宗旨與箴砭。一般不涉及政治，沒有人事團體與組織；目的在求靈性的解脫，培養高尚的品格與改變氣質。即修天道從人道做起。正己成人，以達本還源，實現世界大同。"],cards[0]);
+  zhpara("書上中文段（書頁 225）",["敬天地，禮神明，愛國忠事，敦品崇禮。"],cards[6]);
+  zhpara("書上中文段（書頁 226）",["孝父母，重師尊，信朋友，和鄉鄰，改惡向善。"],cards[11]);
+  zhpara("書上中文段（書頁 226）",["講明五倫八德，闡發五教聖人之奧旨，恪遵四維綱常之古禮。"],cards[11]);
+  zhpara("書上中文段（書頁 227）",["洗心滌慮，借假修真，恢復本性之自然，啟發良知良能之至善。"],cards[19]);
+  zhpara("書上中文段（書頁 228）",["己立立人，己達達人，挽世界為清平，化人心為良善，冀世界為大同。"],cards[23]);
+});
+
+(SANBAO_POST['appendix3']=(SANBAO_POST['appendix3']||[])).push(function(){
+  var host=document.getElementById('appendix3Cards');
+  var cards=host.querySelectorAll('.card');
+  function zhpara(title,paras,beforeCard){
+    var d=document.createElement('div');d.className='zhpara';
+    var h=document.createElement('h4');h.textContent=title;d.appendChild(h);
+    paras.forEach(function(t){var p=document.createElement("p");p.textContent=t;d.appendChild(p);});
+    host.insertBefore(d,beforeCard);
+  }
+  zhpara("書上中文段（書頁 229）",["大道之行也，天下為公。選賢與能，講信修睦。"],cards[0]);
+  zhpara("書上中文段（書頁 229）",["故人不獨親其親，不獨子其子；使老有所終，壯有所用，幼有所長，矜、寡、孤、獨、廢疾者，皆有所養；男有分，女有歸。"],cards[0]);
+  zhpara("書上中文段（書頁 229）",["貨，惡其棄於地也，不必藏於己；力，惡其不出於身也，不必為己。"],cards[0]);
+  zhpara("書上中文段（書頁 229）",["是故謀閉而不興，盜竊亂賊而不作，故外戶而不閉，是謂「大同」。"],cards[0]);
+});
+
 
 /* ================= 懶渲染啟動（接上 queueCards） ================= */
 (function(){
