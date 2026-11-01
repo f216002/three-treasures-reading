@@ -222,6 +222,9 @@ footer{border-top:1px solid var(--line);margin-top:56px;padding:22px 0 6px;color
 <style>
 .edit-btn{display:none}
 body.sanbao-admin .edit-btn{display:inline-block}
+/* 筆記連結（2026-11-01）：只顯示給核准學員，沿用 body.sanbao-approved 門檻；未登入、待審核、登出時皆隱藏（門檻只在 openGate() 加上，登出即移除）。 */
+#sanbaoUtilNotes{display:none}
+body.sanbao-approved #sanbaoUtilNotes{display:inline-block}
 /* 老師錄音共用（2026-10-29）：錄音鍵只顯示給管理員；整列平時隱藏，管理員或有共用錄音時才顯示。 */
 .teacher-audio-row{display:none;gap:6px;flex-wrap:wrap;align-items:center;margin:2px 0 10px}
 body.sanbao-admin .teacher-audio-row{display:flex}
@@ -294,6 +297,7 @@ body.sanbao-admin .expl-btns{display:flex}
 <audio id="sanbaoAudio" preload="none" style="display:none"></audio>
 <div id="sanbaoUtil" style="position:fixed;top:10px;right:12px;z-index:900;display:flex;gap:6px;align-items:center">
 <span id="sanbaoUtilUser" title="" style="display:none;width:30px;height:30px;border-radius:50%;overflow:hidden;align-items:center;justify-content:center;background:#26221b;color:#fff;font-size:.9rem;box-shadow:0 1px 6px rgba(60,45,10,.15);flex:none"></span>
+<a id="sanbaoUtilNotes" href="https://docs.google.com/document/d/1HzSlMsdZdPRRs0TXVqLpkF0LG-mXCbPRDT0sAVjZcKo/edit?usp=sharing" target="_blank" rel="noopener" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15);text-decoration:none">筆記</a>
 <button id="sanbaoUtilSignIn" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">登入</button>
 <button id="sanbaoUtilSignOut" type="button" style="display:none;cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#fffdf8;color:#26221b;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">登出</button>
 <button id="sanbaoUtilRefresh" type="button" style="cursor:pointer;border-radius:20px;border:1px solid #d8cdb4;background:#26221b;color:#fff;padding:6px 14px;font:inherit;font-size:.85rem;box-shadow:0 1px 6px rgba(60,45,10,.15)">重新整理</button>
